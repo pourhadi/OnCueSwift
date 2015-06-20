@@ -1,0 +1,871 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		064195787C4FEF8769302B88 /* AEExpanderFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = D733CB6D005BFA078E7F41AA /* AEExpanderFilter.m */; };
+		0B1E9C8651490F5E1A694CB9 /* AEUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C7C2F38140BD012929CF5B6 /* AEUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DD0951AD7BFCDD72627144E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C28320844D938389A2E6B364 /* Foundation.framework */; };
+		0E137DE56E148D3A80F8E91C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C28320844D938389A2E6B364 /* Foundation.framework */; };
+		143935EA9B509BFBD96DF9FE /* AEBlockScheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = A5564F45592EF9EB7E766108 /* AEBlockScheduler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1775D404F02DE73A2C33EAD2 /* AEAudioUnitChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = 85FBED2A196167CE411FDEF2 /* AEAudioUnitChannel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2C9661E568F38705DB8DD23A /* ConstraintAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AA9258CB27FA61C94BF085 /* ConstraintAttributes.swift */; };
+		2CFBB36E284FC490B08221D1 /* AEFloatConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 002975657D3A82B6DA606EE3 /* AEFloatConverter.m */; };
+		2F8431CB510B493956A3FE11 /* AEBlockScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8159F777720A946E349B6F /* AEBlockScheduler.m */; };
+		31BA602CBBBB4E40ACCDD7B4 /* TheAmazingAudioEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = CE3BDFD3385EB7F98B171034 /* TheAmazingAudioEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3A96F320E6685BE82A444156 /* AEBlockFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = DF2BE03142C40C1ED8AC95B8 /* AEBlockFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3AADFDDE4F7F28073F576699 /* AEAudioFilePlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = D9FD4709B5531DCE8CCC1B17 /* AEAudioFilePlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3DCF0985D35416E4A3DB8778 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C28320844D938389A2E6B364 /* Foundation.framework */; };
+		3FB4B4174FA828B7E36577AD /* Pods-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4DD1303F7D50AA6C19C02B /* Pods-dummy.m */; };
+		42E177ECD3C5DBFE097EDFC4 /* TPCircularBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F5C3DE59D109B2ABC7D9A /* TPCircularBuffer.c */; };
+		48F6ED4D2F06758A44C2A619 /* ConstraintItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA112782E34E2AF1ABE7DB0 /* ConstraintItem.swift */; };
+		55BC335B098D94B3FDE96D96 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B992BE8FEF79DA2F72D7666 /* Accelerate.framework */; };
+		62397EC8277B1CE07E301998 /* AEAudioUnitFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1FD9BCD84AA573D90E9033 /* AEAudioUnitFilter.m */; };
+		640AE42FC0151587201F74F7 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A920D44B1D5B41681B8143B /* Constraint.swift */; };
+		661FABD2674CB8B17E699850 /* AELimiterFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 982CF8098D4D4EF8628C0F1F /* AELimiterFilter.m */; };
+		6A4FB418257A3D79CB695AB7 /* AEAudioFileLoaderOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3E1A027CCE251E608CDF6A /* AEAudioFileLoaderOperation.m */; };
+		6C752F95EC3B8314C8ED70F6 /* TPCircularBuffer+AudioBufferList.h in Headers */ = {isa = PBXBuildFile; fileRef = AC7CB26C6EA69394E3D0DEB6 /* TPCircularBuffer+AudioBufferList.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C7713940D9B9B71F2E4287C /* AEFloatConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = DA87D64C77BA776A25CCE021 /* AEFloatConverter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6F41C1E9D6686E7ABA6A8A15 /* AEAudioFileWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 633483134194C1D4235E2627 /* AEAudioFileWriter.m */; };
+		6FC2136FA0773D7CC8AB9994 /* AEPlaythroughChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = 874F7C0E7758220DFB8AFD28 /* AEPlaythroughChannel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		740ADC49C16592490F18ABEB /* AERecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = C67B22631A0F9EA3452048D8 /* AERecorder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		740D22EB6887BC798D3E9A3F /* Pods-TheAmazingAudioEngine-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 224C8014894A31DE5B807407 /* Pods-TheAmazingAudioEngine-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		74F7D3E6700BB1B7E7DBFE32 /* AEAudioController+Audiobus.h in Headers */ = {isa = PBXBuildFile; fileRef = 33CD44A357D4EE0FBA1C6627 /* AEAudioController+Audiobus.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		769305E86BB118683999DA96 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A11D1A826FA8FF35E55E95D /* AudioToolbox.framework */; };
+		77D11757D973BA6046B658B4 /* Pods-TheAmazingAudioEngine-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AA3B92524E88B4F3D9669AB /* Pods-TheAmazingAudioEngine-dummy.m */; };
+		80B603712054019DE82AFA0D /* AEPlaythroughChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF3DB848FF0C726E5B23B2A /* AEPlaythroughChannel.m */; };
+		84453C1CC31DB55F2184521A /* AELimiter.m in Sources */ = {isa = PBXBuildFile; fileRef = 527D5F87B243F38ACFEDE0C6 /* AELimiter.m */; };
+		85D70DD94A38D1202F5F92D0 /* AERecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DE747641B9E27CC19BA6CA /* AERecorder.m */; };
+		8C93D275B4F4817D18C7EEFC /* LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D69BCCB10AC60C809923E6F /* LayoutConstraint.swift */; };
+		8D958178564D7245159552C2 /* Pods-Snap-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E07454FB47E5E17B10CAA2E /* Pods-Snap-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E1FD7D3C1CA04C3D56F4739 /* TPCircularBuffer+AudioBufferList.c in Sources */ = {isa = PBXBuildFile; fileRef = 0DD6D210CC14BFC2B6EB216A /* TPCircularBuffer+AudioBufferList.c */; };
+		94FAC692279DBDE5430BBFB4 /* AEAudioFileWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 0B2CD9698223A4D3A244A159 /* AEAudioFileWriter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		958958BA0CD26D6E6A9F5D69 /* AEMixerBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = DE74A95358F1967E5BDBFCC9 /* AEMixerBuffer.m */; };
+		989A6268F8D84357BCA073AB /* Pods-Snap-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BA3E8353A79BFFDCEB555D4A /* Pods-Snap-dummy.m */; };
+		98D77AC4DBA154EB299BF3F8 /* AEBlockAudioReceiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 53504DF5CBB220E3BF3AFD81 /* AEBlockAudioReceiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9BFF30EF64EED83846360473 /* AEAudioController.h in Headers */ = {isa = PBXBuildFile; fileRef = BF97C69A35D41BECD76D5696 /* AEAudioController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9F41DC955A06558F508F693C /* AEMixerBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FC7F2959B5432C6A9908C2D /* AEMixerBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A34C82544FDBBD8179997C5E /* AEBlockChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = 713853E5714CF0F3F8225AC9 /* AEBlockChannel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A7B69BD8FA8B5FC25BB53C49 /* AELimiter.h in Headers */ = {isa = PBXBuildFile; fileRef = F5DF4AC08C9557FB1D9AC407 /* AELimiter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AA259654EC30A5355CB1F320 /* AEExpanderFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 425BC207BF834A0F3D74C005 /* AEExpanderFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B1311E0F0950726BF807456A /* AEAudioFileLoaderOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 7069B8520B5D1870E20FFD18 /* AEAudioFileLoaderOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B61F825DCF361C0EF71C4F60 /* AEBlockFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D90E8A774B19AA719E0053 /* AEBlockFilter.m */; };
+		BDDF10507BB578AD150C726B /* AEAudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6555E58944B5E4323AD1446E /* AEAudioController.m */; };
+		C45A9479823F9AC549760648 /* AEAudioController+Audiobus.m in Sources */ = {isa = PBXBuildFile; fileRef = C61C471D0FE80050B1BC09CC /* AEAudioController+Audiobus.m */; };
+		C5F7E90C71AD83F098A21669 /* View+Snap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB18881B42F8A5302426F72 /* View+Snap.swift */; };
+		C7CF4512C306C2657418A021 /* TPCircularBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = CA3EAF162C4B575317688F5B /* TPCircularBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C9B34285357EF5D1E1346CC3 /* AEAudioController+AudiobusStub.h in Headers */ = {isa = PBXBuildFile; fileRef = C448E6AAA006700E3F2E9487 /* AEAudioController+AudiobusStub.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB48C49D7B6EE313859D79C1 /* ConstraintMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68C0D13323E41BCB8AA4CAD /* ConstraintMaker.swift */; };
+		D21225454854D7435DA95826 /* AELimiterFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = DCE221CD5799BA3F91EA7155 /* AELimiterFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D33052FE7936915F6A04FF42 /* ConstraintRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9945D8AFBF3BF7B158A54353 /* ConstraintRelation.swift */; };
+		D720FD13EA1AD8DB211CBC87 /* AEAudioUnitFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = F05C2B781716380663B53FDD /* AEAudioUnitFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D84857F613F0C05D9BB7F371 /* Pods-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = CE73197CC37D8A13D65A0FF8 /* Pods-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DFF39969A79676E439CC975C /* EdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65844FCEB02B773D11142B4 /* EdgeInsets.swift */; };
+		E48E94FEACE6AFBEF7CB394F /* AEAudioFilePlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6623EF31C23E60B6A34938 /* AEAudioFilePlayer.m */; };
+		F22769901241ACB108F14DF2 /* AEAudioUnitChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = F0EAA78A480B17CED0519122 /* AEAudioUnitChannel.m */; };
+		F472E841A59301B308849C84 /* AEUtilities.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C76D91FBB9F9564DB770CBB /* AEUtilities.c */; };
+		F53AAC34ED805750862179F0 /* AEBlockChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1604F830F513E391972AFA76 /* AEBlockChannel.m */; };
+		FBA9EB34F293FE8155121211 /* AEBlockAudioReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A7565DF1DE6AD3B1F03D278 /* AEBlockAudioReceiver.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D28188933CCF396C982921CE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 40C171DAFD6BCA47DAE5F019 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7A1040E2FE3F528D1424C1CD;
+			remoteInfo = "Pods-TheAmazingAudioEngine";
+		};
+		F1FD8666FB24E6BF36EF02A2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 40C171DAFD6BCA47DAE5F019 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 41D67ABF8C6D0E631D430433;
+			remoteInfo = "Pods-Snap";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		002975657D3A82B6DA606EE3 /* AEFloatConverter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AEFloatConverter.m; path = TheAmazingAudioEngine/AEFloatConverter.m; sourceTree = "<group>"; };
+		0B2CD9698223A4D3A244A159 /* AEAudioFileWriter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AEAudioFileWriter.h; path = TheAmazingAudioEngine/AEAudioFileWriter.h; sourceTree = "<group>"; };
+		0C3E1A027CCE251E608CDF6A /* AEAudioFileLoaderOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AEAudioFileLoaderOperation.m; path = TheAmazingAudioEngine/AEAudioFileLoaderOperation.m; sourceTree = "<group>"; };
+		0DD6D210CC14BFC2B6EB216A /* TPCircularBuffer+AudioBufferList.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = "TPCircularBuffer+AudioBufferList.c"; path = "TheAmazingAudioEngine/Library/TPCircularBuffer/TPCircularBuffer+AudioBufferList.c"; sourceTree = "<group>"; };
+		1604F830F513E391972AFA76 /* AEBlockChannel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AEBlockChannel.m; path = TheAmazingAudioEngine/AEBlockChannel.m; sourceTree = "<group>"; };
+		1A920D44B1D5B41681B8143B /* Constraint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Constraint.swift; path = Source/Constraint.swift; sourceTree = "<group>"; };
+		1AA3B92524E88B4F3D9669AB /* Pods-TheAmazingAudioEngine-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-TheAmazingAudioEngine-dummy.m"; sourceTree = "<group>"; };
+		1DD4531DE1A20385B827CAF8 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.debug.xcconfig; sourceTree = "<group>"; };
+		224C8014894A31DE5B807407 /* Pods-TheAmazingAudioEngine-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-TheAmazingAudioEngine-umbrella.h"; sourceTree = "<group>"; };
+		2B6623EF31C23E60B6A34938 /* AEAudioFilePlayer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AEAudioFilePlayer.m; path = TheAmazingAudioEngine/AEAudioFilePlayer.m; sourceTree = "<group>"; };
+		2FC7F2959B5432C6A9908C2D /* AEMixerBuffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AEMixerBuffer.h; path = Modules/AEMixerBuffer.h; sourceTree = "<group>"; };
+		33CD44A357D4EE0FBA1C6627 /* AEAudioController+Audiobus.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "AEAudioController+Audiobus.h"; path = "TheAmazingAudioEngine/AEAudioController+Audiobus.h"; sourceTree = "<group>"; };
+		37DDE98D3BD2B8C126340527 /* Pods-TheAmazingAudioEngine.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TheAmazingAudioEngine.xcconfig"; sourceTree = "<group>"; };
+		3A7565DF1DE6AD3B1F03D278 /* AEBlockAudioReceiver.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AEBlockAudioReceiver.m; path = TheAmazingAudioEngine/AEBlockAudioReceiver.m; sourceTree = "<group>"; };
+		3C76D91FBB9F9564DB770CBB /* AEUtilities.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = AEUtilities.c; path = TheAmazingAudioEngine/AEUtilities.c; sourceTree = "<group>"; };
+		425BC207BF834A0F3D74C005 /* AEExpanderFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AEExpanderFilter.h; path = Modules/AEExpanderFilter.h; sourceTree = "<group>"; };
+		43FC5A1BF64C1EBED802986E /* Pods-environment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-environment.h"; sourceTree = "<group>"; };
+		4B4DD1303F7D50AA6C19C02B /* Pods-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-dummy.m"; sourceTree = "<group>"; };
+		4CF3DB848FF0C726E5B23B2A /* AEPlaythroughChannel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AEPlaythroughChannel.m; path = Modules/AEPlaythroughChannel.m; sourceTree = "<group>"; };
+		527D5F87B243F38ACFEDE0C6 /* AELimiter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AELimiter.m; path = Modules/AELimiter.m; sourceTree = "<group>"; };
+		53504DF5CBB220E3BF3AFD81 /* AEBlockAudioReceiver.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AEBlockAudioReceiver.h; path = TheAmazingAudioEngine/AEBlockAudioReceiver.h; sourceTree = "<group>"; };
+		59B58C3A175E02A446A519F4 /* Pods-TheAmazingAudioEngine.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-TheAmazingAudioEngine.modulemap"; sourceTree = "<group>"; };
+		5BB18881B42F8A5302426F72 /* View+Snap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "View+Snap.swift"; path = "Source/View+Snap.swift"; sourceTree = "<group>"; };
+		5D69BCCB10AC60C809923E6F /* LayoutConstraint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LayoutConstraint.swift; path = Source/LayoutConstraint.swift; sourceTree = "<group>"; };
+		633483134194C1D4235E2627 /* AEAudioFileWriter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AEAudioFileWriter.m; path = TheAmazingAudioEngine/AEAudioFileWriter.m; sourceTree = "<group>"; };
+		6555E58944B5E4323AD1446E /* AEAudioController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AEAudioController.m; path = TheAmazingAudioEngine/AEAudioController.m; sourceTree = "<group>"; };
+		699ABA50B8A38EAF5773581B /* Pods-Snap-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Snap-Private.xcconfig"; sourceTree = "<group>"; };
+		6A11D1A826FA8FF35E55E95D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
+		6B4B6B5D0F12E601F2406B69 /* Pods-Snap.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Snap.xcconfig"; sourceTree = "<group>"; };
+		6C7C2F38140BD012929CF5B6 /* AEUtilities.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AEUtilities.h; path = TheAmazingAudioEngine/AEUtilities.h; sourceTree = "<group>"; };
+		6D8159F777720A946E349B6F /* AEBlockScheduler.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AEBlockScheduler.m; path = TheAmazingAudioEngine/AEBlockScheduler.m; sourceTree = "<group>"; };
+		6E07454FB47E5E17B10CAA2E /* Pods-Snap-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Snap-umbrella.h"; sourceTree = "<group>"; };
+		6FA112782E34E2AF1ABE7DB0 /* ConstraintItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintItem.swift; path = Source/ConstraintItem.swift; sourceTree = "<group>"; };
+		7069B8520B5D1870E20FFD18 /* AEAudioFileLoaderOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AEAudioFileLoaderOperation.h; path = TheAmazingAudioEngine/AEAudioFileLoaderOperation.h; sourceTree = "<group>"; };
+		713853E5714CF0F3F8225AC9 /* AEBlockChannel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AEBlockChannel.h; path = TheAmazingAudioEngine/AEBlockChannel.h; sourceTree = "<group>"; };
+		7A66EAEBDEADF957C4AE42E3 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7C8A1EECB84B0EC062153CA6 /* Pods-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = "<group>"; };
+		7D6028955D65FE7DBEB0BCFF /* Snap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Snap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7EA1B7EE654F5F6C8B1EDB23 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.release.xcconfig; sourceTree = "<group>"; };
+		7EE1079093C024193BAD2C2E /* Pods-TheAmazingAudioEngine-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TheAmazingAudioEngine-Private.xcconfig"; sourceTree = "<group>"; };
+		85FBED2A196167CE411FDEF2 /* AEAudioUnitChannel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AEAudioUnitChannel.h; path = TheAmazingAudioEngine/AEAudioUnitChannel.h; sourceTree = "<group>"; };
+		874F7C0E7758220DFB8AFD28 /* AEPlaythroughChannel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AEPlaythroughChannel.h; path = Modules/AEPlaythroughChannel.h; sourceTree = "<group>"; };
+		8A1FD9BCD84AA573D90E9033 /* AEAudioUnitFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AEAudioUnitFilter.m; path = TheAmazingAudioEngine/AEAudioUnitFilter.m; sourceTree = "<group>"; };
+		92DE747641B9E27CC19BA6CA /* AERecorder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AERecorder.m; path = Modules/AERecorder.m; sourceTree = "<group>"; };
+		982CF8098D4D4EF8628C0F1F /* AELimiterFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AELimiterFilter.m; path = Modules/AELimiterFilter.m; sourceTree = "<group>"; };
+		9945D8AFBF3BF7B158A54353 /* ConstraintRelation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintRelation.swift; path = Source/ConstraintRelation.swift; sourceTree = "<group>"; };
+		9B992BE8FEF79DA2F72D7666 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
+		9D1F5C3DE59D109B2ABC7D9A /* TPCircularBuffer.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = TPCircularBuffer.c; path = TheAmazingAudioEngine/Library/TPCircularBuffer/TPCircularBuffer.c; sourceTree = "<group>"; };
+		A5564F45592EF9EB7E766108 /* AEBlockScheduler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AEBlockScheduler.h; path = TheAmazingAudioEngine/AEBlockScheduler.h; sourceTree = "<group>"; };
+		AA92E062D7A39F804F179066 /* Pods-TheAmazingAudioEngine-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-TheAmazingAudioEngine-prefix.pch"; sourceTree = "<group>"; };
+		AC7CB26C6EA69394E3D0DEB6 /* TPCircularBuffer+AudioBufferList.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "TPCircularBuffer+AudioBufferList.h"; path = "TheAmazingAudioEngine/Library/TPCircularBuffer/TPCircularBuffer+AudioBufferList.h"; sourceTree = "<group>"; };
+		B68C0D13323E41BCB8AA4CAD /* ConstraintMaker.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMaker.swift; path = Source/ConstraintMaker.swift; sourceTree = "<group>"; };
+		B8CFBB48D623402AB59E178C /* Pods-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-acknowledgements.markdown"; sourceTree = "<group>"; };
+		BA3E8353A79BFFDCEB555D4A /* Pods-Snap-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Snap-dummy.m"; sourceTree = "<group>"; };
+		BD50801273C471CF23E92439 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF97C69A35D41BECD76D5696 /* AEAudioController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AEAudioController.h; path = TheAmazingAudioEngine/AEAudioController.h; sourceTree = "<group>"; };
+		C28320844D938389A2E6B364 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		C2C3D2D1850A60B6E386D67D /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		C448E6AAA006700E3F2E9487 /* AEAudioController+AudiobusStub.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "AEAudioController+AudiobusStub.h"; path = "TheAmazingAudioEngine/AEAudioController+AudiobusStub.h"; sourceTree = "<group>"; };
+		C61C471D0FE80050B1BC09CC /* AEAudioController+Audiobus.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "AEAudioController+Audiobus.m"; path = "TheAmazingAudioEngine/AEAudioController+Audiobus.m"; sourceTree = "<group>"; };
+		C67B22631A0F9EA3452048D8 /* AERecorder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AERecorder.h; path = Modules/AERecorder.h; sourceTree = "<group>"; };
+		CA3EAF162C4B575317688F5B /* TPCircularBuffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TPCircularBuffer.h; path = TheAmazingAudioEngine/Library/TPCircularBuffer/TPCircularBuffer.h; sourceTree = "<group>"; };
+		CBDF361CE8ABC26C6811744E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CE3BDFD3385EB7F98B171034 /* TheAmazingAudioEngine.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TheAmazingAudioEngine.h; path = TheAmazingAudioEngine/TheAmazingAudioEngine.h; sourceTree = "<group>"; };
+		CE73197CC37D8A13D65A0FF8 /* Pods-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-umbrella.h"; sourceTree = "<group>"; };
+		CEE109BEA4AC8AA6BC8F4E10 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D139D9C1F1160169B9074D20 /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
+		D733CB6D005BFA078E7F41AA /* AEExpanderFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AEExpanderFilter.m; path = Modules/AEExpanderFilter.m; sourceTree = "<group>"; };
+		D95FD116A6835B8984DBAF66 /* Pods.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Pods.modulemap; sourceTree = "<group>"; };
+		D9FD4709B5531DCE8CCC1B17 /* AEAudioFilePlayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AEAudioFilePlayer.h; path = TheAmazingAudioEngine/AEAudioFilePlayer.h; sourceTree = "<group>"; };
+		DA87D64C77BA776A25CCE021 /* AEFloatConverter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AEFloatConverter.h; path = TheAmazingAudioEngine/AEFloatConverter.h; sourceTree = "<group>"; };
+		DCE221CD5799BA3F91EA7155 /* AELimiterFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AELimiterFilter.h; path = Modules/AELimiterFilter.h; sourceTree = "<group>"; };
+		DE74A95358F1967E5BDBFCC9 /* AEMixerBuffer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AEMixerBuffer.m; path = Modules/AEMixerBuffer.m; sourceTree = "<group>"; };
+		DF2BE03142C40C1ED8AC95B8 /* AEBlockFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AEBlockFilter.h; path = TheAmazingAudioEngine/AEBlockFilter.h; sourceTree = "<group>"; };
+		E293F64E0AB4AB259316C057 /* Pods-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-frameworks.sh"; sourceTree = "<group>"; };
+		E3AA9258CB27FA61C94BF085 /* ConstraintAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintAttributes.swift; path = Source/ConstraintAttributes.swift; sourceTree = "<group>"; };
+		E65844FCEB02B773D11142B4 /* EdgeInsets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EdgeInsets.swift; path = Source/EdgeInsets.swift; sourceTree = "<group>"; };
+		F05C2B781716380663B53FDD /* AEAudioUnitFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AEAudioUnitFilter.h; path = TheAmazingAudioEngine/AEAudioUnitFilter.h; sourceTree = "<group>"; };
+		F082E7A863EC811EFCBC7E19 /* TheAmazingAudioEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TheAmazingAudioEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0D90E8A774B19AA719E0053 /* AEBlockFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AEBlockFilter.m; path = TheAmazingAudioEngine/AEBlockFilter.m; sourceTree = "<group>"; };
+		F0EAA78A480B17CED0519122 /* AEAudioUnitChannel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AEAudioUnitChannel.m; path = TheAmazingAudioEngine/AEAudioUnitChannel.m; sourceTree = "<group>"; };
+		F1E33A00B25878A18DD070BC /* Pods-Snap-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Snap-prefix.pch"; sourceTree = "<group>"; };
+		F5DF4AC08C9557FB1D9AC407 /* AELimiter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AELimiter.h; path = Modules/AELimiter.h; sourceTree = "<group>"; };
+		F7E9705CD5DB738741FF0C41 /* Pods-Snap.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Snap.modulemap"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8CF0E54A3D67F3F604EFD890 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3DCF0985D35416E4A3DB8778 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9F71D9E30E15914CA094F0CE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55BC335B098D94B3FDE96D96 /* Accelerate.framework in Frameworks */,
+				769305E86BB118683999DA96 /* AudioToolbox.framework in Frameworks */,
+				0DD0951AD7BFCDD72627144E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EE83968C2C463799CDCDCC15 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0E137DE56E148D3A80F8E91C /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		42AC844282E68B2CA787E5E5 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				CEE109BEA4AC8AA6BC8F4E10 /* Info.plist */,
+				59B58C3A175E02A446A519F4 /* Pods-TheAmazingAudioEngine.modulemap */,
+				37DDE98D3BD2B8C126340527 /* Pods-TheAmazingAudioEngine.xcconfig */,
+				7EE1079093C024193BAD2C2E /* Pods-TheAmazingAudioEngine-Private.xcconfig */,
+				1AA3B92524E88B4F3D9669AB /* Pods-TheAmazingAudioEngine-dummy.m */,
+				AA92E062D7A39F804F179066 /* Pods-TheAmazingAudioEngine-prefix.pch */,
+				224C8014894A31DE5B807407 /* Pods-TheAmazingAudioEngine-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Pods-TheAmazingAudioEngine";
+			sourceTree = "<group>";
+		};
+		5B8D471AAF3D5DDE9F5930A5 /* TheAmazingAudioEngine */ = {
+			isa = PBXGroup;
+			children = (
+				BF97C69A35D41BECD76D5696 /* AEAudioController.h */,
+				6555E58944B5E4323AD1446E /* AEAudioController.m */,
+				33CD44A357D4EE0FBA1C6627 /* AEAudioController+Audiobus.h */,
+				C61C471D0FE80050B1BC09CC /* AEAudioController+Audiobus.m */,
+				C448E6AAA006700E3F2E9487 /* AEAudioController+AudiobusStub.h */,
+				7069B8520B5D1870E20FFD18 /* AEAudioFileLoaderOperation.h */,
+				0C3E1A027CCE251E608CDF6A /* AEAudioFileLoaderOperation.m */,
+				D9FD4709B5531DCE8CCC1B17 /* AEAudioFilePlayer.h */,
+				2B6623EF31C23E60B6A34938 /* AEAudioFilePlayer.m */,
+				0B2CD9698223A4D3A244A159 /* AEAudioFileWriter.h */,
+				633483134194C1D4235E2627 /* AEAudioFileWriter.m */,
+				85FBED2A196167CE411FDEF2 /* AEAudioUnitChannel.h */,
+				F0EAA78A480B17CED0519122 /* AEAudioUnitChannel.m */,
+				F05C2B781716380663B53FDD /* AEAudioUnitFilter.h */,
+				8A1FD9BCD84AA573D90E9033 /* AEAudioUnitFilter.m */,
+				53504DF5CBB220E3BF3AFD81 /* AEBlockAudioReceiver.h */,
+				3A7565DF1DE6AD3B1F03D278 /* AEBlockAudioReceiver.m */,
+				713853E5714CF0F3F8225AC9 /* AEBlockChannel.h */,
+				1604F830F513E391972AFA76 /* AEBlockChannel.m */,
+				DF2BE03142C40C1ED8AC95B8 /* AEBlockFilter.h */,
+				F0D90E8A774B19AA719E0053 /* AEBlockFilter.m */,
+				A5564F45592EF9EB7E766108 /* AEBlockScheduler.h */,
+				6D8159F777720A946E349B6F /* AEBlockScheduler.m */,
+				425BC207BF834A0F3D74C005 /* AEExpanderFilter.h */,
+				D733CB6D005BFA078E7F41AA /* AEExpanderFilter.m */,
+				DA87D64C77BA776A25CCE021 /* AEFloatConverter.h */,
+				002975657D3A82B6DA606EE3 /* AEFloatConverter.m */,
+				F5DF4AC08C9557FB1D9AC407 /* AELimiter.h */,
+				527D5F87B243F38ACFEDE0C6 /* AELimiter.m */,
+				DCE221CD5799BA3F91EA7155 /* AELimiterFilter.h */,
+				982CF8098D4D4EF8628C0F1F /* AELimiterFilter.m */,
+				2FC7F2959B5432C6A9908C2D /* AEMixerBuffer.h */,
+				DE74A95358F1967E5BDBFCC9 /* AEMixerBuffer.m */,
+				874F7C0E7758220DFB8AFD28 /* AEPlaythroughChannel.h */,
+				4CF3DB848FF0C726E5B23B2A /* AEPlaythroughChannel.m */,
+				C67B22631A0F9EA3452048D8 /* AERecorder.h */,
+				92DE747641B9E27CC19BA6CA /* AERecorder.m */,
+				3C76D91FBB9F9564DB770CBB /* AEUtilities.c */,
+				6C7C2F38140BD012929CF5B6 /* AEUtilities.h */,
+				9D1F5C3DE59D109B2ABC7D9A /* TPCircularBuffer.c */,
+				CA3EAF162C4B575317688F5B /* TPCircularBuffer.h */,
+				0DD6D210CC14BFC2B6EB216A /* TPCircularBuffer+AudioBufferList.c */,
+				AC7CB26C6EA69394E3D0DEB6 /* TPCircularBuffer+AudioBufferList.h */,
+				CE3BDFD3385EB7F98B171034 /* TheAmazingAudioEngine.h */,
+				42AC844282E68B2CA787E5E5 /* Support Files */,
+			);
+			path = TheAmazingAudioEngine;
+			sourceTree = "<group>";
+		};
+		689F0F183C5DD1BFB5B472D6 /* Snap */ = {
+			isa = PBXGroup;
+			children = (
+				1A920D44B1D5B41681B8143B /* Constraint.swift */,
+				E3AA9258CB27FA61C94BF085 /* ConstraintAttributes.swift */,
+				6FA112782E34E2AF1ABE7DB0 /* ConstraintItem.swift */,
+				B68C0D13323E41BCB8AA4CAD /* ConstraintMaker.swift */,
+				9945D8AFBF3BF7B158A54353 /* ConstraintRelation.swift */,
+				E65844FCEB02B773D11142B4 /* EdgeInsets.swift */,
+				5D69BCCB10AC60C809923E6F /* LayoutConstraint.swift */,
+				5BB18881B42F8A5302426F72 /* View+Snap.swift */,
+				E188485D31AA6EE251F6F126 /* Support Files */,
+			);
+			path = Snap;
+			sourceTree = "<group>";
+		};
+		8710174D4562EFCE25BA71D0 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				9CDCDE3D33277F2F3D8414AC /* Pods */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		9CDCDE3D33277F2F3D8414AC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7A66EAEBDEADF957C4AE42E3 /* Info.plist */,
+				D95FD116A6835B8984DBAF66 /* Pods.modulemap */,
+				B8CFBB48D623402AB59E178C /* Pods-acknowledgements.markdown */,
+				D139D9C1F1160169B9074D20 /* Pods-acknowledgements.plist */,
+				4B4DD1303F7D50AA6C19C02B /* Pods-dummy.m */,
+				43FC5A1BF64C1EBED802986E /* Pods-environment.h */,
+				E293F64E0AB4AB259316C057 /* Pods-frameworks.sh */,
+				7C8A1EECB84B0EC062153CA6 /* Pods-resources.sh */,
+				CE73197CC37D8A13D65A0FF8 /* Pods-umbrella.h */,
+				1DD4531DE1A20385B827CAF8 /* Pods.debug.xcconfig */,
+				7EA1B7EE654F5F6C8B1EDB23 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			path = "Target Support Files/Pods";
+			sourceTree = "<group>";
+		};
+		A31290F0D4A157E79488B5BD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BD50801273C471CF23E92439 /* Pods.framework */,
+				7D6028955D65FE7DBEB0BCFF /* Snap.framework */,
+				F082E7A863EC811EFCBC7E19 /* TheAmazingAudioEngine.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A61383FBBA5D94C783F3F154 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				689F0F183C5DD1BFB5B472D6 /* Snap */,
+				5B8D471AAF3D5DDE9F5930A5 /* TheAmazingAudioEngine */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		CB3120154534228409075D4E /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				9B992BE8FEF79DA2F72D7666 /* Accelerate.framework */,
+				6A11D1A826FA8FF35E55E95D /* AudioToolbox.framework */,
+				C28320844D938389A2E6B364 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		D0A19E555CF0FB06C984B1F3 = {
+			isa = PBXGroup;
+			children = (
+				C2C3D2D1850A60B6E386D67D /* Podfile */,
+				D50E1DD9D3918DB3AD62FFCB /* Frameworks */,
+				A61383FBBA5D94C783F3F154 /* Pods */,
+				A31290F0D4A157E79488B5BD /* Products */,
+				8710174D4562EFCE25BA71D0 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		D50E1DD9D3918DB3AD62FFCB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CB3120154534228409075D4E /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E188485D31AA6EE251F6F126 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				CBDF361CE8ABC26C6811744E /* Info.plist */,
+				F7E9705CD5DB738741FF0C41 /* Pods-Snap.modulemap */,
+				6B4B6B5D0F12E601F2406B69 /* Pods-Snap.xcconfig */,
+				699ABA50B8A38EAF5773581B /* Pods-Snap-Private.xcconfig */,
+				BA3E8353A79BFFDCEB555D4A /* Pods-Snap-dummy.m */,
+				F1E33A00B25878A18DD070BC /* Pods-Snap-prefix.pch */,
+				6E07454FB47E5E17B10CAA2E /* Pods-Snap-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Pods-Snap";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		6D2A20B40A26A3EC2438844A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74F7D3E6700BB1B7E7DBFE32 /* AEAudioController+Audiobus.h in Headers */,
+				C9B34285357EF5D1E1346CC3 /* AEAudioController+AudiobusStub.h in Headers */,
+				9BFF30EF64EED83846360473 /* AEAudioController.h in Headers */,
+				B1311E0F0950726BF807456A /* AEAudioFileLoaderOperation.h in Headers */,
+				3AADFDDE4F7F28073F576699 /* AEAudioFilePlayer.h in Headers */,
+				94FAC692279DBDE5430BBFB4 /* AEAudioFileWriter.h in Headers */,
+				1775D404F02DE73A2C33EAD2 /* AEAudioUnitChannel.h in Headers */,
+				D720FD13EA1AD8DB211CBC87 /* AEAudioUnitFilter.h in Headers */,
+				98D77AC4DBA154EB299BF3F8 /* AEBlockAudioReceiver.h in Headers */,
+				A34C82544FDBBD8179997C5E /* AEBlockChannel.h in Headers */,
+				3A96F320E6685BE82A444156 /* AEBlockFilter.h in Headers */,
+				143935EA9B509BFBD96DF9FE /* AEBlockScheduler.h in Headers */,
+				AA259654EC30A5355CB1F320 /* AEExpanderFilter.h in Headers */,
+				6C7713940D9B9B71F2E4287C /* AEFloatConverter.h in Headers */,
+				A7B69BD8FA8B5FC25BB53C49 /* AELimiter.h in Headers */,
+				D21225454854D7435DA95826 /* AELimiterFilter.h in Headers */,
+				9F41DC955A06558F508F693C /* AEMixerBuffer.h in Headers */,
+				6FC2136FA0773D7CC8AB9994 /* AEPlaythroughChannel.h in Headers */,
+				740ADC49C16592490F18ABEB /* AERecorder.h in Headers */,
+				0B1E9C8651490F5E1A694CB9 /* AEUtilities.h in Headers */,
+				740D22EB6887BC798D3E9A3F /* Pods-TheAmazingAudioEngine-umbrella.h in Headers */,
+				6C752F95EC3B8314C8ED70F6 /* TPCircularBuffer+AudioBufferList.h in Headers */,
+				C7CF4512C306C2657418A021 /* TPCircularBuffer.h in Headers */,
+				31BA602CBBBB4E40ACCDD7B4 /* TheAmazingAudioEngine.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9533189937CE0CEF6ED0AE2F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D958178564D7245159552C2 /* Pods-Snap-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F399CF1D18843C63DF54E41C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D84857F613F0C05D9BB7F371 /* Pods-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		41D67ABF8C6D0E631D430433 /* Pods-Snap */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 11729C75638106A4C39334B9 /* Build configuration list for PBXNativeTarget "Pods-Snap" */;
+			buildPhases = (
+				56EC3D14DAE0B807FF9CCFF2 /* Sources */,
+				EE83968C2C463799CDCDCC15 /* Frameworks */,
+				9533189937CE0CEF6ED0AE2F /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-Snap";
+			productName = "Pods-Snap";
+			productReference = 7D6028955D65FE7DBEB0BCFF /* Snap.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		7A1040E2FE3F528D1424C1CD /* Pods-TheAmazingAudioEngine */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7B37449641173C35EAD31A79 /* Build configuration list for PBXNativeTarget "Pods-TheAmazingAudioEngine" */;
+			buildPhases = (
+				9105BA9D50903F9C4CF776C8 /* Sources */,
+				9F71D9E30E15914CA094F0CE /* Frameworks */,
+				6D2A20B40A26A3EC2438844A /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-TheAmazingAudioEngine";
+			productName = "Pods-TheAmazingAudioEngine";
+			productReference = F082E7A863EC811EFCBC7E19 /* TheAmazingAudioEngine.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		E7710779B8E36C295E75154C /* Pods */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B208241DB3B293FA5E45B9FE /* Build configuration list for PBXNativeTarget "Pods" */;
+			buildPhases = (
+				709FB00FA98EE68C423588E5 /* Sources */,
+				8CF0E54A3D67F3F604EFD890 /* Frameworks */,
+				F399CF1D18843C63DF54E41C /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2640703842E8CA95F62FAC84 /* PBXTargetDependency */,
+				B5184EF2318B97A25AA28794 /* PBXTargetDependency */,
+			);
+			name = Pods;
+			productName = Pods;
+			productReference = BD50801273C471CF23E92439 /* Pods.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		40C171DAFD6BCA47DAE5F019 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0640;
+			};
+			buildConfigurationList = 8A685D29A85CBBD2C5EC189B /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D0A19E555CF0FB06C984B1F3;
+			productRefGroup = A31290F0D4A157E79488B5BD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E7710779B8E36C295E75154C /* Pods */,
+				41D67ABF8C6D0E631D430433 /* Pods-Snap */,
+				7A1040E2FE3F528D1424C1CD /* Pods-TheAmazingAudioEngine */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		56EC3D14DAE0B807FF9CCFF2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				640AE42FC0151587201F74F7 /* Constraint.swift in Sources */,
+				2C9661E568F38705DB8DD23A /* ConstraintAttributes.swift in Sources */,
+				48F6ED4D2F06758A44C2A619 /* ConstraintItem.swift in Sources */,
+				CB48C49D7B6EE313859D79C1 /* ConstraintMaker.swift in Sources */,
+				D33052FE7936915F6A04FF42 /* ConstraintRelation.swift in Sources */,
+				DFF39969A79676E439CC975C /* EdgeInsets.swift in Sources */,
+				8C93D275B4F4817D18C7EEFC /* LayoutConstraint.swift in Sources */,
+				989A6268F8D84357BCA073AB /* Pods-Snap-dummy.m in Sources */,
+				C5F7E90C71AD83F098A21669 /* View+Snap.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		709FB00FA98EE68C423588E5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3FB4B4174FA828B7E36577AD /* Pods-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9105BA9D50903F9C4CF776C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C45A9479823F9AC549760648 /* AEAudioController+Audiobus.m in Sources */,
+				BDDF10507BB578AD150C726B /* AEAudioController.m in Sources */,
+				6A4FB418257A3D79CB695AB7 /* AEAudioFileLoaderOperation.m in Sources */,
+				E48E94FEACE6AFBEF7CB394F /* AEAudioFilePlayer.m in Sources */,
+				6F41C1E9D6686E7ABA6A8A15 /* AEAudioFileWriter.m in Sources */,
+				F22769901241ACB108F14DF2 /* AEAudioUnitChannel.m in Sources */,
+				62397EC8277B1CE07E301998 /* AEAudioUnitFilter.m in Sources */,
+				FBA9EB34F293FE8155121211 /* AEBlockAudioReceiver.m in Sources */,
+				F53AAC34ED805750862179F0 /* AEBlockChannel.m in Sources */,
+				B61F825DCF361C0EF71C4F60 /* AEBlockFilter.m in Sources */,
+				2F8431CB510B493956A3FE11 /* AEBlockScheduler.m in Sources */,
+				064195787C4FEF8769302B88 /* AEExpanderFilter.m in Sources */,
+				2CFBB36E284FC490B08221D1 /* AEFloatConverter.m in Sources */,
+				84453C1CC31DB55F2184521A /* AELimiter.m in Sources */,
+				661FABD2674CB8B17E699850 /* AELimiterFilter.m in Sources */,
+				958958BA0CD26D6E6A9F5D69 /* AEMixerBuffer.m in Sources */,
+				80B603712054019DE82AFA0D /* AEPlaythroughChannel.m in Sources */,
+				85D70DD94A38D1202F5F92D0 /* AERecorder.m in Sources */,
+				F472E841A59301B308849C84 /* AEUtilities.c in Sources */,
+				77D11757D973BA6046B658B4 /* Pods-TheAmazingAudioEngine-dummy.m in Sources */,
+				8E1FD7D3C1CA04C3D56F4739 /* TPCircularBuffer+AudioBufferList.c in Sources */,
+				42E177ECD3C5DBFE097EDFC4 /* TPCircularBuffer.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2640703842E8CA95F62FAC84 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-Snap";
+			target = 41D67ABF8C6D0E631D430433 /* Pods-Snap */;
+			targetProxy = F1FD8666FB24E6BF36EF02A2 /* PBXContainerItemProxy */;
+		};
+		B5184EF2318B97A25AA28794 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-TheAmazingAudioEngine";
+			target = 7A1040E2FE3F528D1424C1CD /* Pods-TheAmazingAudioEngine */;
+			targetProxy = D28188933CCF396C982921CE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		000F013181BF436034172C21 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 699ABA50B8A38EAF5773581B /* Pods-Snap-Private.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-Snap/Pods-Snap-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Pods-Snap/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Pods-Snap/Pods-Snap.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = Snap;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		1F6E50BEFB028C47DFCF7A23 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 699ABA50B8A38EAF5773581B /* Pods-Snap-Private.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-Snap/Pods-Snap-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Pods-Snap/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Pods-Snap/Pods-Snap.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = Snap;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		205DE05CD3680593165629BD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				ONLY_ACTIVE_ARCH = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		7817319526480E9B603351FD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = "RELEASE=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8A0AAC083F6AB191CEB4CBD6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7EE1079093C024193BAD2C2E /* Pods-TheAmazingAudioEngine-Private.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-TheAmazingAudioEngine/Pods-TheAmazingAudioEngine-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Pods-TheAmazingAudioEngine/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Pods-TheAmazingAudioEngine/Pods-TheAmazingAudioEngine.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = TheAmazingAudioEngine;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		B74CF25037F2ACA89C3D55A2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7EE1079093C024193BAD2C2E /* Pods-TheAmazingAudioEngine-Private.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-TheAmazingAudioEngine/Pods-TheAmazingAudioEngine-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Pods-TheAmazingAudioEngine/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Pods-TheAmazingAudioEngine/Pods-TheAmazingAudioEngine.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = TheAmazingAudioEngine;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		F893D65CE4C7C03CD4DE5DED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1DD4531DE1A20385B827CAF8 /* Pods.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Pods/Pods.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = Pods;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		F942A5D6EC60141088954DB8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7EA1B7EE654F5F6C8B1EDB23 /* Pods.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Pods/Pods.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = Pods;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		11729C75638106A4C39334B9 /* Build configuration list for PBXNativeTarget "Pods-Snap" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				000F013181BF436034172C21 /* Debug */,
+				1F6E50BEFB028C47DFCF7A23 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7B37449641173C35EAD31A79 /* Build configuration list for PBXNativeTarget "Pods-TheAmazingAudioEngine" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B74CF25037F2ACA89C3D55A2 /* Debug */,
+				8A0AAC083F6AB191CEB4CBD6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8A685D29A85CBBD2C5EC189B /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				205DE05CD3680593165629BD /* Debug */,
+				7817319526480E9B603351FD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B208241DB3B293FA5E45B9FE /* Build configuration list for PBXNativeTarget "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F893D65CE4C7C03CD4DE5DED /* Debug */,
+				F942A5D6EC60141088954DB8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 40C171DAFD6BCA47DAE5F019 /* Project object */;
+}

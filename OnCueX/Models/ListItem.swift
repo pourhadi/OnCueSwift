@@ -1,0 +1,180 @@
+//
+//  LibraryItem.swift
+//  
+//
+//  Created by Daniel Pourhadi on 6/17/15.
+//
+//
+
+import UIKit
+import ReactiveCocoa
+
+enum ItemSource {
+    case Library
+    case Spotify
+}
+
+enum ItemType {
+    case Artist
+    case Album
+    case Playlist
+    case Track
+}
+
+
+protocol Item {
+    var source:ItemSource { get }
+    var title:String? { get }
+    var subtitle:String? { get }
+    var identifier:String { get }
+    func getImage(forSize:CGSize, complete:(image:UIImage)->Void)
+    var cellReuseID:String { get }
+    var itemType:ItemType { get }
+}
+
+protocol TrackCollection {
+    func getTracks(page:Int, complete:(list:List<protocol<TrackItem>>?)->Void)
+}
+
+protocol AlbumItem: TrackCollection, Item {}
+
+protocol ArtistItem : TrackCollection, Item {
+    func getAlbums<T:AlbumItem>(page:Int, complete:(albums:List<T>?)->Void)
+}
+
+protocol PlaylistItem : TrackCollection, Item {}
+
+protocol Track {
+    var duration:NSTimeInterval { get }
+}
+
+protocol TrackItem : Track, Item { }
+
+struct List<T> {
+    var items:[T]
+    var totalCount:UInt
+    var pageNumber:Int
+    
+    init(items:[T], totalCount:UInt, pageNumber:Int) {
+        self.items = items
+        self.totalCount = totalCount
+        self.pageNumber = pageNumber
+    }
+    
+    func objectAtIndexPath(path:NSIndexPath) -> T {
+        return self.items[path.row]
+    }
+}
+
+public func subtitleString(artists:[String]?, album:String?) -> String {
+    var string:String = ""
+    if let artists = artists {
+        if artists.count > 0 {
+            string = artists[0]
+        }
+    }
+    if let album = album {
+        if count(string) > 0 {
+            string += " - \(album)"
+        } else {
+            string += " \(album)"
+        }
+    }
+    return string
+}
+
+protocol ItemManagerDelegate: class {
+    func itemManager(itemManager:ItemManager, pushVCForVM:ListVM)
+}
+
+protocol ItemList {
+    var items:[Item] { get }
+    var totalCount:UInt { get }
+    var currentOffset:Int { get }
+    
+}
+
+struct TrackList : ItemList {
+    
+    let list:List<TrackItem>
+    init(list:List<TrackItem>) {
+        self.list = list
+        var newItems:[Item] = []
+        for trackItem in self.list.items {
+            newItems.append(trackItem)
+        }
+        self.items = newItems
+    }
+    
+    var items:[Item]
+    
+    var totalCount:UInt {
+        return self.list.totalCount
+    }
+    
+    var currentOffset:Int {
+        return self.list.pageNumber
+    }
+}
+
+struct TrackCollectionList : ItemList {
+    let list:List<TrackCollection>
+    init(list:List<TrackCollection>) {
+        self.list = list
+        var newItems:[Item] = []
+        for trackItem in self.list.items {
+            newItems.append(trackItem as! Item)
+        }
+        self.items = newItems
+    }
+    
+    var items:[Item]
+    
+    var totalCount:UInt {
+        return self.list.totalCount
+    }
+    
+    var currentOffset:Int {
+        return self.list.pageNumber
+    }
+}
+
+class ItemManager: ListVMDelegate {
+    unowned var delegate:ItemManagerDelegate
+    
+    init(delegate:ItemManagerDelegate) {
+        self.delegate = delegate
+    }
+    
+    var homeVM:ListVM? {
+        didSet {
+            if let vm = self.homeVM {
+                vm.itemSelectedSignal.subscribeNext { [weak self] (val) -> Void in
+                    if let this = self {
+                        var playlist = val as! SpotifyPlaylist
+                            playlist.getTracks(0, complete: { (list) -> Void in
+                                if let list = list {
+                                    let trackList = TrackList(list: list)
+                                    let itemVM = ListVM(list: trackList, grouped: false, delegate:this)
+                                    this.delegate.itemManager(this, pushVCForVM: itemVM)
+                                }
+                            })
+                        
+                    }
+                }
+            }
+        }
+    }
+    
+    func listVM(listVM:ListVM, selectedItem:protocol<Item>) {
+        if let item = selectedItem as? TrackCollection {
+            item.getTracks(0, complete: { (list) -> Void in
+                if let list = list {
+                    let trackList = TrackList(list: list)
+                    let itemVM = ListVM(list: trackList, grouped: false, delegate:self)
+                    self.delegate.itemManager(self, pushVCForVM: itemVM)
+                }
+            })
+        }
+    }
+}
