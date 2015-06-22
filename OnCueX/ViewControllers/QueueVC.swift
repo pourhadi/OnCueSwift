@@ -8,9 +8,17 @@
 
 import UIKit
 
+extension QueueVC: QueueObserver {
+    var identifier:String {
+        return "QueueVC"
+    }
+    
+    func queueUpdated(queue:Queue) {
+        
+    }
+}
 
 class QueueVC: UICollectionViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
 

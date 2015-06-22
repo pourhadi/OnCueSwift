@@ -8,7 +8,7 @@
 
 import UIKit
 
-let _queue = Queue()
+//let _queue = Queue()
 
 struct QueueIndex: Equatable {
     let index:Int
@@ -67,6 +67,9 @@ class Queue {
         return self.operation {
             if let index = self.items.index(item) {
                 self.remove(index)
+                if index < self.playhead {
+                    self.playhead -= 1
+                }
                 return index
             }
             return nil
@@ -83,6 +86,10 @@ class Queue {
                 if foundIndex < atIndex {
                     atIndex -= 1
                 }
+            }
+            
+            if atIndex < self.playhead {
+                self.playhead += 1
             }
             
             self.needsQueueUpdate = true
@@ -136,6 +143,8 @@ class Queue {
         for (_, observer) in self.observers {
             observer.queueUpdated(self)
         }
+        
+        self.operations.removeAll()
     }
 }
 
