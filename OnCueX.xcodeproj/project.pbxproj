@@ -255,7 +255,7 @@
 				4428A1831B30CF4900708716 /* Resources */,
 				BC8623E9CA9933587ADF3B30 /* Copy Pods Resources */,
 				5CAFE0154BB3BE3AB66DFEEC /* Embed Pods Frameworks */,
-				446EAA1F1B360D780041B8C4 /* ShellScript */,
+				446EAA1F1B360D780041B8C4 /* Run Script */,
 				4400B9201B38BD9F00E9E06D /* ShellScript */,
 			);
 			buildRules = (
@@ -297,6 +297,7 @@
 				TargetAttributes = {
 					4428A1841B30CF4900708716 = {
 						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = 84476NUWZH;
 					};
 					4428A19C1B30CF4900708716 = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -357,7 +358,7 @@
 			shellPath = /bin/sh;
 			shellScript = "# Xcode git autocommit script by Andre Arko\n#   This script will automatically commit any changed files to the project's\n#   git repository, in the branch \"builds\"\n\n# If you use this script, you can create more typical commits in the master\n# branch with the commands:\n#   git checkout master\n#   git checkout builds .\n#   git commit -m \"Description of changes since last commit to master\"\n\nif [ -z \"`git branch | grep builds`\" ]; then\ngit co -b builds\nelse\ngit co builds\nfi\n\ngit add .\ngit commit -a -m \"`date +'Build on %F at %r'`\"\n# ignore git-commit exiting >0, since nothing to commit is fine\nexit 0";
 		};
-		446EAA1F1B360D780041B8C4 /* ShellScript */ = {
+		446EAA1F1B360D780041B8C4 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -365,6 +366,7 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/SnapKit.framework",
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -573,6 +575,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -593,6 +596,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
