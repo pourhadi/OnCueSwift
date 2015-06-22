@@ -355,7 +355,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Xcode git autocommit script by Andre Arko\n#   This script will automatically commit any changed files to the project's\n#   git repository, in the branch \"builds\"\n\n# If you use this script, you can create more typical commits in the master\n# branch with the commands:\n#   git checkout master\n#   git checkout builds .\n#   git commit -m \"Description of changes since last commit to master\"\n\nif [ -z \"`git branch | grep builds`\" ]; then\ngit co -b builds\nelse\ngit co builds\nfi\n\ngit add .\ngit commit -a -m \"`date +'Build on %F at %r'`\"\ngit push\n# ignore git-commit exiting >0, since nothing to commit is fine\nexit 0";
+			shellScript = "# Xcode git autocommit script by Andre Arko\n#   This script will automatically commit any changed files to the project's\n#   git repository, in the branch \"builds\"\n\n# If you use this script, you can create more typical commits in the master\n# branch with the commands:\n#   git checkout master\n#   git checkout builds .\n#   git commit -m \"Description of changes since last commit to master\"\n\nif [ -z \"`git branch | grep builds`\" ]; then\ngit co -b builds\nelse\ngit co builds\nfi\n\ngit add .\ngit commit -a -m \"`date +'Build on %F at %r'`\"\n# ignore git-commit exiting >0, since nothing to commit is fine\nexit 0";
 		};
 		446EAA1F1B360D780041B8C4 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
