@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4400B90F1B362E3600E9E06D /* SlideVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400B90E1B362E3600E9E06D /* SlideVC.swift */; };
+		4400B9111B362E4E00E9E06D /* NavVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400B9101B362E4E00E9E06D /* NavVC.swift */; };
+		4400B9131B36327400E9E06D /* UIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400B9121B36327400E9E06D /* UIManager.swift */; };
+		4400B9151B36785900E9E06D /* UIImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400B9141B36785900E9E06D /* UIImageHelpers.swift */; };
+		4400B9171B36995100E9E06D /* QueueVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400B9161B36995100E9E06D /* QueueVC.swift */; };
+		4400B9191B36996300E9E06D /* QueueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400B9181B36996300E9E06D /* QueueCell.swift */; };
+		4400B91B1B36997800E9E06D /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400B91A1B36997800E9E06D /* Queueable.swift */; };
+		4400B91D1B377BC700E9E06D /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400B91C1B377BC700E9E06D /* Queue.swift */; };
 		442780C61B318A89004D1B3A /* SpotifyModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442780C51B318A89004D1B3A /* SpotifyModels.swift */; };
 		442780C81B318CF5004D1B3A /* SpotifyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442780C71B318CF5004D1B3A /* SpotifyController.swift */; };
 		442780D11B31F37F004D1B3A /* ListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442780D01B31F37F004D1B3A /* ListItemCell.swift */; };
@@ -19,14 +27,12 @@
 		4428A1A41B30CF4900708716 /* OnCueXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4428A1A31B30CF4900708716 /* OnCueXTests.swift */; };
 		4428A1B31B317EB400708716 /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4428A1B21B317EB400708716 /* ListItem.swift */; };
 		4428A1B51B31804900708716 /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4428A1B41B31804900708716 /* Spotify.framework */; };
+		442BF13C1B3619D700392467 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 442BF1381B3619D700392467 /* SnapKit.framework */; };
 		446EAA131B34CADE0041B8C4 /* ListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446EAA121B34CADE0041B8C4 /* ListVM.swift */; };
 		446EAA141B34CE770041B8C4 /* ListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442BF1331B33B9D400392467 /* ListVC.swift */; };
 		446EAA161B34D3680041B8C4 /* CellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446EAA151B34D3680041B8C4 /* CellFactory.swift */; };
 		446EAA1A1B360A060041B8C4 /* MainMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446EAA191B360A060041B8C4 /* MainMenuVC.swift */; };
 		446EAA1C1B360AA20041B8C4 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446EAA1B1B360AA20041B8C4 /* Helpers.swift */; };
-		446EAA231B360DD40041B8C4 /* Box.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446EAA201B360DD40041B8C4 /* Box.framework */; };
-		446EAA241B360DD40041B8C4 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446EAA211B360DD40041B8C4 /* ReactiveCocoa.framework */; };
-		446EAA251B360DD40041B8C4 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446EAA221B360DD40041B8C4 /* Result.framework */; };
 		4B6C67CF2C5AEEA6B43C5EEC /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B180B9719C8F2A627B88D5F /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -43,6 +49,14 @@
 /* Begin PBXFileReference section */
 		0B180B9719C8F2A627B88D5F /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B4CA147057E07CA4F9F5C36 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		4400B90E1B362E3600E9E06D /* SlideVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideVC.swift; sourceTree = "<group>"; };
+		4400B9101B362E4E00E9E06D /* NavVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavVC.swift; sourceTree = "<group>"; };
+		4400B9121B36327400E9E06D /* UIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIManager.swift; sourceTree = "<group>"; };
+		4400B9141B36785900E9E06D /* UIImageHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageHelpers.swift; sourceTree = "<group>"; };
+		4400B9161B36995100E9E06D /* QueueVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QueueVC.swift; path = ViewControllers/QueueVC.swift; sourceTree = "<group>"; };
+		4400B9181B36996300E9E06D /* QueueCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QueueCell.swift; path = ViewControllers/Cells/QueueCell.swift; sourceTree = "<group>"; };
+		4400B91A1B36997800E9E06D /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Queueable.swift; path = Models/Queueable.swift; sourceTree = "<group>"; };
+		4400B91C1B377BC700E9E06D /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Queue.swift; path = Controllers/Queue.swift; sourceTree = "<group>"; };
 		442780C51B318A89004D1B3A /* SpotifyModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpotifyModels.swift; path = Models/SpotifyModels.swift; sourceTree = "<group>"; };
 		442780C71B318CF5004D1B3A /* SpotifyController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpotifyController.swift; path = Controllers/SpotifyController.swift; sourceTree = "<group>"; };
 		442780C91B318D98004D1B3A /* OnCueX-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OnCueX-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -61,14 +75,12 @@
 		4428A1B21B317EB400708716 /* ListItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListItem.swift; path = Models/ListItem.swift; sourceTree = "<group>"; };
 		4428A1B41B31804900708716 /* Spotify.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Spotify.framework; sourceTree = "<group>"; };
 		442BF1331B33B9D400392467 /* ListVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListVC.swift; path = ViewControllers/ListVC.swift; sourceTree = "<group>"; };
+		442BF1381B3619D700392467 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
 		446EAA101B33C4420041B8C4 /* SpotifyHomeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpotifyHomeVC.swift; path = ViewControllers/SpotifyHomeVC.swift; sourceTree = "<group>"; };
 		446EAA121B34CADE0041B8C4 /* ListVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListVM.swift; path = ViewControllers/ListVM.swift; sourceTree = "<group>"; };
 		446EAA151B34D3680041B8C4 /* CellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CellFactory.swift; path = Models/CellFactory.swift; sourceTree = "<group>"; };
 		446EAA191B360A060041B8C4 /* MainMenuVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainMenuVC.swift; path = ViewControllers/MainMenuVC.swift; sourceTree = "<group>"; };
 		446EAA1B1B360AA20041B8C4 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
-		446EAA201B360DD40041B8C4 /* Box.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Box.framework; path = Carthage/Build/iOS/Box.framework; sourceTree = "<group>"; };
-		446EAA211B360DD40041B8C4 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/iOS/ReactiveCocoa.framework; sourceTree = "<group>"; };
-		446EAA221B360DD40041B8C4 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		D33C0BE0F17D33A1E54D273A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -77,10 +89,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				446EAA231B360DD40041B8C4 /* Box.framework in Frameworks */,
-				446EAA241B360DD40041B8C4 /* ReactiveCocoa.framework in Frameworks */,
-				446EAA251B360DD40041B8C4 /* Result.framework in Frameworks */,
 				4B6C67CF2C5AEEA6B43C5EEC /* Pods.framework in Frameworks */,
+				442BF13C1B3619D700392467 /* SnapKit.framework in Frameworks */,
 				4428A1B51B31804900708716 /* Spotify.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -99,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				442780D01B31F37F004D1B3A /* ListItemCell.swift */,
+				4400B9181B36996300E9E06D /* QueueCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -126,6 +137,7 @@
 		4428A1871B30CF4900708716 /* OnCueX */ = {
 			isa = PBXGroup;
 			children = (
+				4400B9141B36785900E9E06D /* UIImageHelpers.swift */,
 				446EAA1B1B360AA20041B8C4 /* Helpers.swift */,
 				4428A1AF1B317E7300708716 /* Controllers */,
 				4428A1AE1B317E6A00708716 /* ViewControllers */,
@@ -173,6 +185,7 @@
 				446EAA151B34D3680041B8C4 /* CellFactory.swift */,
 				4428A1B21B317EB400708716 /* ListItem.swift */,
 				442780C51B318A89004D1B3A /* SpotifyModels.swift */,
+				4400B91A1B36997800E9E06D /* Queueable.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -185,6 +198,8 @@
 				442780CF1B31F361004D1B3A /* Cells */,
 				442BF1331B33B9D400392467 /* ListVC.swift */,
 				446EAA121B34CADE0041B8C4 /* ListVM.swift */,
+				4400B9101B362E4E00E9E06D /* NavVC.swift */,
+				4400B9161B36995100E9E06D /* QueueVC.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -193,6 +208,8 @@
 			isa = PBXGroup;
 			children = (
 				442780C71B318CF5004D1B3A /* SpotifyController.swift */,
+				4400B9121B36327400E9E06D /* UIManager.swift */,
+				4400B91C1B377BC700E9E06D /* Queue.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -200,6 +217,7 @@
 		446EAA181B3609000041B8C4 /* Container */ = {
 			isa = PBXGroup;
 			children = (
+				4400B90E1B362E3600E9E06D /* SlideVC.swift */,
 				446EAA191B360A060041B8C4 /* MainMenuVC.swift */,
 			);
 			name = Container;
@@ -217,9 +235,7 @@
 		9F6896E32A760BD6DAFA4138 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				446EAA201B360DD40041B8C4 /* Box.framework */,
-				446EAA211B360DD40041B8C4 /* ReactiveCocoa.framework */,
-				446EAA221B360DD40041B8C4 /* Result.framework */,
+				442BF1381B3619D700392467 /* SnapKit.framework */,
 				4428A1B41B31804900708716 /* Spotify.framework */,
 				0B180B9719C8F2A627B88D5F /* Pods.framework */,
 			);
@@ -240,6 +256,7 @@
 				BC8623E9CA9933587ADF3B30 /* Copy Pods Resources */,
 				5CAFE0154BB3BE3AB66DFEEC /* Embed Pods Frameworks */,
 				446EAA1F1B360D780041B8C4 /* ShellScript */,
+				4400B9201B38BD9F00E9E06D /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -275,7 +292,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Daniel Pourhadi";
 				TargetAttributes = {
 					4428A1841B30CF4900708716 = {
@@ -327,15 +344,26 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4400B9201B38BD9F00E9E06D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Xcode git autocommit script by Andre Arko\n#   This script will automatically commit any changed files to the project's\n#   git repository, in the branch \"builds\"\n\n# If you use this script, you can create more typical commits in the master\n# branch with the commands:\n#   git checkout master\n#   git checkout builds .\n#   git commit -m \"Description of changes since last commit to master\"\n\nif [ -z \"`git branch | grep builds`\" ]; then\ngit co -b builds\nelse\ngit co builds\nfi\n\ngit add .\ngit commit -a -m \"`date +'Build on %F at %r'`\"\ngit push\n# ignore git-commit exiting >0, since nothing to commit is fine\nexit 0";
+		};
 		446EAA1F1B360D780041B8C4 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/ReactiveCocoa.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Box.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SnapKit.framework",
 			);
 			outputPaths = (
 			);
@@ -395,17 +423,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4400B90F1B362E3600E9E06D /* SlideVC.swift in Sources */,
 				4428A1B31B317EB400708716 /* ListItem.swift in Sources */,
+				4400B9171B36995100E9E06D /* QueueVC.swift in Sources */,
 				442780D11B31F37F004D1B3A /* ListItemCell.swift in Sources */,
+				4400B91B1B36997800E9E06D /* Queueable.swift in Sources */,
+				4400B9151B36785900E9E06D /* UIImageHelpers.swift in Sources */,
 				4428A1901B30CF4900708716 /* ViewController.swift in Sources */,
 				446EAA141B34CE770041B8C4 /* ListVC.swift in Sources */,
+				4400B9131B36327400E9E06D /* UIManager.swift in Sources */,
 				446EAA161B34D3680041B8C4 /* CellFactory.swift in Sources */,
+				4400B9191B36996300E9E06D /* QueueCell.swift in Sources */,
 				442780C61B318A89004D1B3A /* SpotifyModels.swift in Sources */,
 				446EAA1A1B360A060041B8C4 /* MainMenuVC.swift in Sources */,
 				446EAA1C1B360AA20041B8C4 /* Helpers.swift in Sources */,
 				442780C81B318CF5004D1B3A /* SpotifyController.swift in Sources */,
+				4400B91D1B377BC700E9E06D /* Queue.swift in Sources */,
 				446EAA131B34CADE0041B8C4 /* ListVM.swift in Sources */,
 				4428A18B1B30CF4900708716 /* AppDelegate.swift in Sources */,
+				4400B9111B362E4E00E9E06D /* NavVC.swift in Sources */,
 				4428A18E1B30CF4900708716 /* OnCueX.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -537,6 +573,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -556,6 +593,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

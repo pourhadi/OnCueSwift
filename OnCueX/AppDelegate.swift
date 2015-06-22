@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ItemManagerDelegate {
 
     var window: UIWindow?
 
+    lazy var uiManager:UIManager = UIManager()
     var spotifyManager:SpotifyManager?
     var navigationController:UINavigationController?
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -26,18 +27,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ItemManagerDelegate {
         auth.sessionUserDefaultsKey = "SpotifyDefaultsKey"
         auth.redirectURL = NSURL(string: "oncue-spotify://callback")
         
-        let nav = UINavigationController(rootViewController: UIViewController(nibName: nil, bundle: nil))
+//        let nav = UINavigationController(rootViewController: UIViewController(nibName: nil, bundle: nil))
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        self.window!.rootViewController = nav
-        self.window!.makeKeyAndVisible()
-        self.navigationController = nav
         
-        self.spotifyManager = SpotifyManager(delegate:self)
-        self.spotifyManager!.getHomeVM { (vm) -> Void in
-            let vc = ListVC(listVM: vm)
-            nav.pushViewController(vc, animated: true)
-        }
+        self.window!.rootViewController = self.uiManager.slideVC
+        self.window!.makeKeyAndVisible()
+//        self.navigationController = nav
+        
+//        self.spotifyManager = SpotifyManager(delegate:self)
+//        self.spotifyManager!.getHomeVM { (vm) -> Void in
+//            let vc = ListVC(listVM: vm)
+//            nav.pushViewController(vc, animated: true)
+//        }
 
+        self.uiManager.configure()
         
         return true
     }
@@ -47,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ItemManagerDelegate {
         self.navigationController!.pushViewController(listVC, animated: true)
     }
     
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
         let auth = SPTAuth.defaultInstance()
         
         let authCallback:SPTAuthCallback = { (error, session) -> Void in
@@ -91,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ItemManagerDelegate {
     lazy var applicationDocumentsDirectory: NSURL = {
         // The directory the application uses to store the Core Data store file. This code uses a directory named "com.pourhadi.OnCueX" in the application's documents Application Support directory.
         let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-        return urls[urls.count-1] as! NSURL
+        return urls[urls.count-1] as NSURL
     }()
 
     lazy var managedObjectModel: NSManagedObjectModel = {
@@ -107,7 +110,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ItemManagerDelegate {
         let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("OnCueX.sqlite")
         var error: NSError? = nil
         var failureReason = "There was an error creating or loading the application's saved data."
-        coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil, error:nil)
+        do {
+            try coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
+        } catch _ {
+        }
 
         
         return coordinator

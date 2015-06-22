@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import ReactiveCocoa
 
 internal class SpotifyTrack: TrackItem {
     var source:ItemSource { return .Spotify }
@@ -22,11 +21,11 @@ internal class SpotifyTrack: TrackItem {
     var title:String? { return self.partialTrack.name }
     
     var subtitle:String? {
-        var artists:[String] = self.partialTrack.artists.map { (artist) -> String in
+        let artists:[String] = self.partialTrack.artists.map { (artist) -> String in
             let artist = artist as! SPTPartialArtist
             return artist.name
         }
-        return subtitleString(artists, self.partialTrack.album.name)
+        return subtitleString(artists, album: self.partialTrack.album.name)
     }
     
     var identifier:String { return self.partialTrack.identifier }
@@ -45,13 +44,7 @@ internal class SpotifyTrack: TrackItem {
     
 }
 
-internal class SpotifyTrackCollection : TrackCollection {
-    func getTracks(page: Int, complete: (list: List<TrackItem>?) -> Void) {
-        
-    }
-}
-
-internal class SpotifyAlbum : SpotifyTrackCollection, AlbumItem {
+internal class SpotifyAlbum : AlbumItem {
     var itemType:ItemType { return .Album }
     var source:ItemSource { return .Spotify }
     
@@ -68,16 +61,15 @@ internal class SpotifyAlbum : SpotifyTrackCollection, AlbumItem {
     var identifier:String { return self.partialAlbum.identifier }
     var cellReuseID:String { return "textCell" }
     
-    typealias T = SpotifyTrack
-    func getTracks(page: Int, complete: (list: List<SpotifyTrack>?) -> Void) {
+    func getTracks(page: Int, complete: (list: List<TrackItem>?) -> Void) {
         SPTAlbum.albumWithURI(self.partialAlbum.uri, accessToken: _spotifyController.token!, market: nil) { (error, album) -> Void in
             if error == nil {
-                var items = album.firstTrackPage!.items as! [SPTPartialTrack]
-                var listItems:[SpotifyTrack] = []
+                let items = album.firstTrackPage!.items as! [SPTPartialTrack]
+                var listItems:[TrackItem] = []
                 for track in items {
                     listItems.append(SpotifyTrack(partialTrack: track))
                 }
-                var itemList = List(items: listItems, totalCount:album.firstTrackPage!.totalListLength, pageNumber:page)
+                let itemList = List(items: listItems, totalCount:album.firstTrackPage!.totalListLength, pageNumber:page)
                 complete(list: itemList)
             }
         }
@@ -88,7 +80,7 @@ internal class SpotifyAlbum : SpotifyTrackCollection, AlbumItem {
     }
 }
 
-internal class SpotifyArtist : SpotifyTrackCollection, ArtistItem {
+internal class SpotifyArtist : ArtistItem {
     var itemType:ItemType { return .Artist }
     var source:ItemSource { return .Spotify }
     
@@ -106,15 +98,15 @@ internal class SpotifyArtist : SpotifyTrackCollection, ArtistItem {
     var cellReuseID:String { return "textCell" }
     
     typealias T = SpotifyTrack
-    func getTracks(page: Int, complete: (list: List<SpotifyTrack>?) -> Void) {
+    func getTracks(page: Int, complete: (list: List<TrackItem>?) -> Void) {
         SPTArtist.artistWithURI(self.partialArtist.uri, accessToken: _spotifyController.token!) { (error, artist) -> Void in
             if error == nil {
-                var items = artist.firstTrackPage!.items as! [SPTPartialTrack]
-                var listItems:[SpotifyTrack] = []
+                let items = artist.firstTrackPage!.items as! [SPTPartialTrack]
+                var listItems:[TrackItem] = []
                 for track in items {
                     listItems.append(SpotifyTrack(partialTrack: track))
                 }
-                var itemList = List(items: listItems, totalCount:artist.firstTrackPage!.totalListLength, pageNumber:page)
+                let itemList = List(items: listItems, totalCount:artist.firstTrackPage!.totalListLength, pageNumber:page)
                 complete(list: itemList)
             }
         }
@@ -130,7 +122,7 @@ internal class SpotifyArtist : SpotifyTrackCollection, ArtistItem {
     
 }
 
-internal class SpotifyPlaylist : SpotifyTrackCollection, PlaylistItem {
+internal class SpotifyPlaylist : PlaylistItem {
     var itemType:ItemType { return .Playlist }
     var source:ItemSource { return .Spotify }
     
@@ -144,19 +136,18 @@ internal class SpotifyPlaylist : SpotifyTrackCollection, PlaylistItem {
     var title:String? { return self.partialPlaylist.name }
     var subtitle:String? { return nil }
     
-    var identifier:String { return self.partialPlaylist.uri.absoluteString! }
+    var identifier:String { return self.partialPlaylist.uri.absoluteString }
     var cellReuseID:String { return "textCell" }
     
-    typealias T = SpotifyTrack
-    override func getTracks(page: Int, complete: (list: List<TrackItem>?) -> Void) {
+    func getTracks(page: Int, complete: (list: List<TrackItem>?) -> Void) {
         SPTPlaylistSnapshot.playlistWithURI(self.partialPlaylist.uri, accessToken: _spotifyController.token!) { (error, album) -> Void in
             if error == nil {
-                var items = album.firstTrackPage!.items as! [SPTPartialTrack]
+                let items = album.firstTrackPage!.items as! [SPTPartialTrack]
                 var listItems:[TrackItem] = []
                 for track in items {
                     listItems.append(SpotifyTrack(partialTrack: track))
                 }
-                var itemList = List(items: listItems, totalCount:album.firstTrackPage!.totalListLength, pageNumber:page)
+                let itemList = List(items: listItems, totalCount:album.firstTrackPage!.totalListLength, pageNumber:page)
                 complete(list: itemList)
             }
         }
@@ -181,7 +172,8 @@ class SpotifyManager: ItemManager {
                     
                     let itemList = List<TrackCollection>(items:playlists, totalCount:UInt(playlists.count), pageNumber:0)
                     let collectionList = TrackCollectionList(list: itemList)
-                    let listVM = ListVM(list: collectionList, grouped: false, delegate:self)
+                    let displayContext = CustomDisplayContext("Playlists")
+                    let listVM = ListVM(list: collectionList, displayContext:displayContext, grouped: false, delegate:self)
                     self.homeVM = listVM
                     complete(vm:listVM)
                 }

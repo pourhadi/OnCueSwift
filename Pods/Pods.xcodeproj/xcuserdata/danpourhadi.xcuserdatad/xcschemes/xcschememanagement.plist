@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-Snap.xcscheme</key>
+		<key>Pods-ReactiveCocoa.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -22,17 +22,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>41D67ABF8C6D0E631D430433</key>
+		<key>4642A44F4FD238678CE7FCD8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7A1040E2FE3F528D1424C1CD</key>
+		<key>7D89FD737F9280D024FF80BF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E7710779B8E36C295E75154C</key>
+		<key>7EB7429CAF5AFB0639B1641D</key>
 		<dict>
 			<key>primary</key>
 			<true/>

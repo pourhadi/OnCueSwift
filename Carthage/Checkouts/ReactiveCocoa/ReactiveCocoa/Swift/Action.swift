@@ -50,7 +50,7 @@ public final class Action<Input, Output, Error: ErrorType> {
 
 	/// Whether the action should be enabled for the given combination of user
 	/// enabledness and executing status.
-	private static func shouldBeEnabled(#userEnabled: Bool, executing: Bool) -> Bool {
+	private static func shouldBeEnabled(userEnabled userEnabled: Bool, executing: Bool) -> Bool {
 		return userEnabled && !executing
 	}
 
@@ -105,10 +105,10 @@ public final class Action<Input, Output, Error: ErrorType> {
 			self.executeClosure(input).startWithSignal { signal, signalDisposable in
 				disposable.addDisposable(signalDisposable)
 
-				signal.observe(Signal.Observer { event in
-					observer.put(event.mapError { .ProducerError($0) })
+				signal.observe { event in
+					observer(event.mapError { .ProducerError($0) })
 					sendNext(self.eventsObserver, event)
-				})
+				}
 			}
 
 			disposable.addDisposable {
@@ -226,14 +226,14 @@ extension ActionError: ErrorType {
 	}
 }
 
-extension ActionError: Printable {
+extension ActionError: CustomStringConvertible {
 	public var description: String {
 		switch self {
 		case .NotEnabled:
 			return "Action executed while disabled"
 
 		case let .ProducerError(error):
-			return toString(error)
+			return String(error)
 		}
 	}
 }

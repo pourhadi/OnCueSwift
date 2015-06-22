@@ -48,17 +48,17 @@ extension SpotifyController: SPTAuthViewDelegate {
         } else {
             self.loginCompletionBlock = complete
             
-            if let rootVC = _delegate.window?.rootViewController {
+             let rootVC = _uiManager.slideVC
                 rootVC.modalPresentationStyle = .CurrentContext
                 rootVC.definesPresentationContext = true
                 rootVC.presentViewController(self.authVC, animated: true, completion: nil)
-            }
+            
         }
     }
     
     func authenticationViewController(authenticationViewController: SPTAuthViewController!, didFailToLogin error: NSError!) {
         if let complete = self.loginCompletionBlock {
-            print(error)
+            print(error, appendNewline: false)
             complete(token: nil, error: error)
         }
     }

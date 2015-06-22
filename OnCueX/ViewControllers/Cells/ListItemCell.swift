@@ -7,13 +7,27 @@
 //
 
 import UIKit
-import Snap
+import SnapKit
 
-protocol ListItemCell {
-    var item:Item? { get set }
+class ListItemCell : UICollectionViewCell {
+    var item:Item?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        let selectedView = UIView(frame: self.bounds)
+        selectedView.backgroundColor = UIColor.blackColor()
+        self.selectedBackgroundView = selectedView
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
 }
 
-class ListItemTextCell: UICollectionViewCell, ListItemCell {
+class ListItemTextCell: ListItemCell {
     
     lazy var titleLabel:UILabel = UILabel()
     lazy var subtitleLabel:UILabel = UILabel()
@@ -23,9 +37,9 @@ class ListItemTextCell: UICollectionViewCell, ListItemCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = UIColor(white: 0.2, alpha: 1)
+        self.backgroundColor = UIColor(white: 0.1, alpha: 1)
         
-        self.titleLabel.font = UIFont.boldSystemFontOfSize(12)
+        self.titleLabel.font = UIFont.boldSystemFontOfSize(14)
         self.titleLabel.textColor = UIColor.whiteColor()
         
         self.subtitleLabel.font = UIFont.systemFontOfSize(11)
@@ -35,18 +49,21 @@ class ListItemTextCell: UICollectionViewCell, ListItemCell {
         self.labelContainer.addSubview(self.titleLabel)
         self.labelContainer.addSubview(self.subtitleLabel)
         
-        var padding:CGFloat = 10.0
+        let padding:CGFloat = 10.0
         self.labelContainer.snp_makeConstraints { (make) -> Void in
-            make.edges.equalTo(self.contentView).insets(UIEdgeInsetsMake(padding, padding, padding, padding))
+            make.left.right.equalTo(self.contentView).insets(UIEdgeInsetsMake(0, padding, 0, padding))
+            make.centerY.equalTo(self.contentView)
+            make.top.equalTo(self.titleLabel)
+            make.bottom.equalTo(self.subtitleLabel)
         }
         
         self.titleLabel.snp_makeConstraints { (make) -> Void in
-            make.left.top.and.right.equalTo(self.labelContainer)
-            make.bottom.equalTo(self.subtitleLabel.snp_top)
+            make.left.top.right.equalTo(self.labelContainer)
+            make.bottom.equalTo(self.subtitleLabel.snp_top).offset(-2)
         }
         
         self.subtitleLabel.snp_makeConstraints { (make) -> Void in
-            make.bottom.left.and.right.equalTo(self.labelContainer)
+            make.bottom.left.right.equalTo(self.labelContainer)
         }
     }
 
@@ -54,7 +71,7 @@ class ListItemTextCell: UICollectionViewCell, ListItemCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var item:Item? {
+    override var item:Item? {
         didSet {
             self.titleLabel.text = ""
             self.subtitleLabel.text = ""

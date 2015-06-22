@@ -16,20 +16,22 @@ protocol ListVMDelegate: class {
 struct ListVM {
     
     unowned var delegate:ListVMDelegate
-    let updatedSignal:RACSignal = RACSubject()
-    let pushVCSignal:RACSignal = RACSubject()
-    let itemSelectedSignal:RACSignal = RACSubject()
-    
-    internal var pushSubject:RACSubject { return self.pushVCSignal as! RACSubject }
-    
-    init(list:ItemList, grouped:Bool, delegate:ListVMDelegate) {
+//    let updatedSignal:RACSignal = RACSubject()
+//    let pushVCSignal:RACSignal = RACSubject()
+//    let itemSelectedSignal:RACSignal = RACSubject()
+//    
+//    internal var pushSubject:RACSubject { return self.pushVCSignal as! RACSubject }
+//    
+    init(list:ItemList, displayContext:DisplayContext, grouped:Bool, delegate:ListVMDelegate) {
         self.delegate = delegate
         self.list = list
         self.grouped = grouped
+        self.displayContext = displayContext
         self.paginated = Int(list.totalCount) > list.items.count
 //        super.init()
     }
     
+    var displayContext:DisplayContext
     var groups:[[Item]] = []
     var list:ItemList
     var grouped:Bool

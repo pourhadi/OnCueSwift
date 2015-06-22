@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import ReactiveCocoa
 
 class ListVCDataSource:NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
     private var listVC:ListVC
@@ -23,7 +22,7 @@ class ListVCDataSource:NSObject, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(self.listVC.listVM.reuseIDForItem(indexPath), forIndexPath: indexPath) as! UICollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(self.listVC.listVM.reuseIDForItem(indexPath), forIndexPath: indexPath) as UICollectionViewCell
         self.listVC.listVM.configureCell(cell, forItemAtIndexPath: indexPath)
         return cell
     }
@@ -33,7 +32,7 @@ class ListVCDataSource:NSObject, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSizeMake(self.listVC.view.bounds.size.width, 60)
+        return CGSizeMake(self.listVC.view.bounds.size.width, 70)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -57,26 +56,26 @@ class ListVC: UIViewController {
     
     init(listVM:ListVM) {
         self.listVM = listVM
-        
         super.init(nibName: nil, bundle: nil)
         self.setupBindings()
+        self.navigationItem.title = listVM.displayContext.title
     }
     
     func setupBindings() {
-        self.listVM.updatedSignal.subscribeNext { [weak self] (val) -> Void in
-            if let this = self {
-                this.collectionView.reloadData()
-            }
-        }
-        
-        self.listVM.pushVCSignal.subscribeNext { [weak self] (val) -> Void in
-            if let this = self {
-//                if let vm = val as? ListVM<Item> {
-                    let vc = ListVC(listVM: val as! ListVM)
-                    this.navigationController!.pushViewController(vc, animated: true)
-//                }
-            }
-        }
+//        self.listVM.updatedSignal.subscribeNext { [weak self] (val) -> Void in
+//            if let this = self {
+//                this.collectionView.reloadData()
+//            }
+//        }
+//        
+//        self.listVM.pushVCSignal.subscribeNext { [weak self] (val) -> Void in
+//            if let this = self {
+////                if let vm = val as? ListVM<Item> {
+//                    let vc = ListVC(listVM: val as! ListVM)
+//                    this.navigationController!.pushViewController(vc, animated: true)
+////                }
+//            }
+//        }
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -88,6 +87,8 @@ class ListVC: UIViewController {
         var view = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
         view.delegate = self.dataSource
         view.dataSource = self.dataSource
+        view.alwaysBounceVertical = true
+        view.indicatorStyle = .White
         return view
         }()
 
@@ -106,5 +107,13 @@ class ListVC: UIViewController {
         self.collectionView.reloadData()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if let indexPaths = self.collectionView.indexPathsForSelectedItems() {
+            for indexPath in indexPaths {
+                self.collectionView.deselectItemAtIndexPath(indexPath, animated: animated)
+            }
+        }
+    }
 
   }

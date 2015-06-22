@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import ReactiveCocoa
+//import ReactiveCocoa
 
 enum ItemSource {
     case Library
@@ -21,18 +21,18 @@ enum ItemType {
     case Track
 }
 
-
-protocol Item {
-    var source:ItemSource { get }
-    var title:String? { get }
-    var subtitle:String? { get }
-    var identifier:String { get }
+protocol ImageSource {
     func getImage(forSize:CGSize, complete:(image:UIImage)->Void)
+}
+
+protocol Item:ImageSource, DisplayContext {
+    var source:ItemSource { get }
+    var identifier:String { get }
     var cellReuseID:String { get }
     var itemType:ItemType { get }
 }
 
-protocol TrackCollection {
+protocol TrackCollection: DisplayContext {
     func getTracks(page:Int, complete:(list:List<protocol<TrackItem>>?)->Void)
 }
 
@@ -49,6 +49,24 @@ protocol Track {
 }
 
 protocol TrackItem : Track, Item { }
+
+protocol DisplayContext:ImageSource {
+    var title:String? { get }
+    var subtitle:String? { get }
+}
+
+struct CustomDisplayContext: DisplayContext {
+    var title:String?
+    var subtitle:String?
+    func getImage(forSize: CGSize, complete: (image: UIImage) -> Void) {}
+    
+     init(_ title:String) {
+        self.init()
+        self.title = title
+    }
+    
+    init() {}
+}
 
 struct List<T> {
     var items:[T]
@@ -74,7 +92,7 @@ public func subtitleString(artists:[String]?, album:String?) -> String {
         }
     }
     if let album = album {
-        if count(string) > 0 {
+        if string.characters.count > 0 {
             string += " - \(album)"
         } else {
             string += " \(album)"
@@ -149,19 +167,19 @@ class ItemManager: ListVMDelegate {
     var homeVM:ListVM? {
         didSet {
             if let vm = self.homeVM {
-                vm.itemSelectedSignal.subscribeNext { [weak self] (val) -> Void in
-                    if let this = self {
-                        var playlist = val as! SpotifyPlaylist
-                            playlist.getTracks(0, complete: { (list) -> Void in
-                                if let list = list {
-                                    let trackList = TrackList(list: list)
-                                    let itemVM = ListVM(list: trackList, grouped: false, delegate:this)
-                                    this.delegate.itemManager(this, pushVCForVM: itemVM)
-                                }
-                            })
-                        
-                    }
-                }
+//                vm.itemSelectedSignal.subscribeNext { [weak self] (val) -> Void in
+//                    if let this = self {
+//                        var playlist = val as! SpotifyPlaylist
+//                            playlist.getTracks(0, complete: { (list) -> Void in
+//                                if let list = list {
+//                                    let trackList = TrackList(list: list)
+//                                    let itemVM = ListVM(list: trackList, grouped: false, delegate:this)
+//                                    this.delegate.itemManager(this, pushVCForVM: itemVM)
+//                                }
+//                            })
+//                        
+//                    }
+//                }
             }
         }
     }
@@ -171,7 +189,7 @@ class ItemManager: ListVMDelegate {
             item.getTracks(0, complete: { (list) -> Void in
                 if let list = list {
                     let trackList = TrackList(list: list)
-                    let itemVM = ListVM(list: trackList, grouped: false, delegate:self)
+                    let itemVM = ListVM(list: trackList, displayContext:item, grouped: false, delegate:self)
                     self.delegate.itemManager(self, pushVCForVM: itemVM)
                 }
             })
