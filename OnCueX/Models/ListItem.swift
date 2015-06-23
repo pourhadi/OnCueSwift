@@ -194,7 +194,7 @@ class ItemManager: ListVMDelegate {
                 }
             })
         } else if let item = selectedItem as? Queueable {
-            
+            _queue.insert(item)
         }
     }
 }
