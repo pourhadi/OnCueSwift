@@ -30,7 +30,7 @@ class SlideVC: UIViewController, UIScrollViewDelegate {
     var libraryContainerWidthConstraint:NSLayoutConstraint?
     var navContainerWidthConstraint:NSLayoutConstraint?
     
-    lazy var containers:[UIView] = [self.queueContainer, self.libraryContainer, self.navContainer]
+    lazy var containers:[UIView] = [self.navContainer, self.libraryContainer, self.queueContainer]
     var viewControllers:[Int:UIViewController] = [:]
     
     func setViewController(viewController:UIViewController, forSlotIndex:Int) {
