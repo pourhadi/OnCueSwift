@@ -44,11 +44,7 @@ protocol ArtistItem : TrackCollection, Item {
 
 protocol PlaylistItem : TrackCollection, Item {}
 
-protocol Track {
-    var duration:NSTimeInterval { get }
-}
-
-protocol TrackItem : Track, Item { }
+protocol TrackItem : Item { var duration:NSTimeInterval { get } }
 
 protocol DisplayContext:ImageSource {
     var title:String? { get }
