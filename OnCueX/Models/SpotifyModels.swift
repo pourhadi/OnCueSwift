@@ -8,7 +8,7 @@
 
 import UIKit
 
-internal class SpotifyTrack: TrackItem {
+internal class SpotifyTrack: TrackItem, Queueable {
     var source:ItemSource { return .Spotify }
     
     private var partialTrack:SPTPartialTrack
@@ -43,8 +43,20 @@ internal class SpotifyTrack: TrackItem {
     }
     
     var itemType:ItemType { return .Track }
+ 
+    var queueIndex:QueueIndex? = nil {
+        didSet {
+            if let observer = self.observer {
+                observer.queueIndexUpdated(self, queueIndex:self.queueIndex)
+            }
+        }
+    }
+    var childItems:[Queueable]? = nil
+    func queueUpdated(queue:Queue) {}
     
+    weak var observer:QueueableItemObserver?
 }
+
 
 internal class SpotifyAlbum : AlbumItem {
     var itemType:ItemType { return .Album }

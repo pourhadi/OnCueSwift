@@ -8,11 +8,16 @@
 
 import UIKit
 
-class QueueCell: UICollectionViewCell {
+class QueueCell: UICollectionViewCell, QueueableItemObserver {
+    
+    func queueIndexUpdated(forItem:Queueable, queueIndex:QueueIndex?) {
+        
+    }
     
     weak var item:Queueable? {
         didSet {
             if let item = self.item {
+                item.observer = self
                 self.itemLabelsView.titleLabel.text = item.title
                 self.itemLabelsView.subtitleLabel.text = item.subtitle
                 item.getImage(self.imageView.frame.size, complete: { (image) -> Void in

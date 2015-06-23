@@ -21,13 +21,16 @@ enum ItemType {
     case Track
 }
 
+protocol Identifiable {
+    var identifier:String { get }
+}
+
 protocol ImageSource {
     func getImage(forSize:CGSize, complete:(image:UIImage?)->Void)
 }
 
-protocol Item:ImageSource, DisplayContext {
+protocol Item:ImageSource, DisplayContext, Identifiable {
     var source:ItemSource { get }
-    var identifier:String { get }
     var cellReuseID:String { get }
     var itemType:ItemType { get }
 }

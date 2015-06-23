@@ -8,14 +8,14 @@
 
 import UIKit
 
-protocol Queueable: class, DisplayContext, QueueObserver {
-    var identifier:String { get }
+protocol Queueable: class, DisplayContext, QueueObserver, Identifiable {
     var queueIndex:QueueIndex? { get set }
     var childItems:[Queueable]? { get }
+    
+    var observer:QueueableItemObserver? { get set }
 }
 
-protocol QueueObserver {
-    var identifier:String { get }
+protocol QueueObserver : Identifiable {
     func queueUpdated(queue:Queue)
 }
 
@@ -23,4 +23,8 @@ extension Queueable {
     func equals(other:Queueable) -> Bool {
         return self.identifier == other.identifier
     }
+}
+
+protocol QueueableItemObserver: class {
+    func queueIndexUpdated(forItem:Queueable, queueIndex:QueueIndex?)
 }
