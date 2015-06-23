@@ -14,7 +14,7 @@ extension QueueVC: QueueObserver {
     }
     
     func queueUpdated(queue:Queue) {
-        var addedOps = _queue.operations.filter { (operation) -> Bool in
+        let addedOps = _queue.operations.filter { (operation) -> Bool in
             if (operation.type == .Added) {
                 return true
             }
