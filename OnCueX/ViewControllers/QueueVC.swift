@@ -24,12 +24,13 @@ extension QueueVC: QueueObserver {
                 return NSIndexPath(forItem: operation.queueIndex!.index, inSection: 0)
         }
         
-        let removed = _queue.operations.filter { operation in
+        let removedOps = _queue.operations.filter { operation in
             if operation.type == .Removed {
                 return true
             }
             return false
-            }.map { (operation) -> NSIndexPath in
+        }
+        let removed = removedOps.map { (operation) -> NSIndexPath in
                 return NSIndexPath(forItem: operation.queueIndex!.index, inSection: 0)
         }
         
