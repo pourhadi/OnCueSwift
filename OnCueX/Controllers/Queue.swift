@@ -142,11 +142,10 @@ class Queue {
     
     func processChanges() {
         
-        for theOperation in self.operations {
-            if let item = theOperation.item {
-                item.queueIndex = theOperation.queueIndex
-            } else {
-                continue
+        for x in 0..<self.operations.count {
+            let operation = self.operations[x]
+            if let item = operation.item {
+                item.queueIndex = operation.queueIndex
             }
         }
         
