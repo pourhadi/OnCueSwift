@@ -10,7 +10,17 @@ import UIKit
 
 class QueueCell: UICollectionViewCell {
     
-    var item:Queueable?
+    weak var item:Queueable? {
+        didSet {
+            if let item = self.item {
+                self.itemLabelsView.titleLabel.text = item.title
+                self.itemLabelsView.subtitleLabel.text = item.subtitle
+                item.getImage(self.imageView.frame.size, complete: { (image) -> Void in
+                    self.imageView.image = image
+                })
+            }
+        }
+    }
     
     let itemLabelsView = ItemLabelsView(frame: CGRectZero)
     var imageView = UIImageView()

@@ -8,6 +8,8 @@
 
 import UIKit
 
+let _queue:Queue = Queue()
+
 struct QueueIndex: Equatable {
     let index:Int
     let playhead:Int

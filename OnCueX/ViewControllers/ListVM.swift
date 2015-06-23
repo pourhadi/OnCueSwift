@@ -65,7 +65,7 @@ struct ListVM {
     func configureCell(cell:UICollectionViewCell, forItemAtIndexPath:NSIndexPath) {
         let item = self.item(forItemAtIndexPath)
         if cell is ListItemCell {
-            var listCell = cell as! ListItemCell
+            let listCell = cell as! ListItemCell
             listCell.item = item
         }
     }

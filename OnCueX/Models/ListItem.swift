@@ -22,7 +22,7 @@ enum ItemType {
 }
 
 protocol ImageSource {
-    func getImage(forSize:CGSize, complete:(image:UIImage)->Void)
+    func getImage(forSize:CGSize, complete:(image:UIImage?)->Void)
 }
 
 protocol Item:ImageSource, DisplayContext {
@@ -58,7 +58,7 @@ protocol DisplayContext:ImageSource {
 struct CustomDisplayContext: DisplayContext {
     var title:String?
     var subtitle:String?
-    func getImage(forSize: CGSize, complete: (image: UIImage) -> Void) {}
+    func getImage(forSize: CGSize, complete: (image: UIImage?) -> Void) {}
     
      init(_ title:String) {
         self.init()

@@ -30,8 +30,10 @@ internal class SpotifyTrack: TrackItem {
     
     var identifier:String { return self.partialTrack.identifier }
     
-    func getImage(forSize:CGSize, complete:(image:UIImage)->Void) {
-        
+    func getImage(forSize:CGSize, complete:(image:UIImage?)->Void) {
+        _imageController.getImage(self.partialTrack.album.smallestCover.imageURL) { (url, image) -> Void in
+            complete(image:image)
+        }
     }
     
     var cellReuseID:String { return "textCell" }
@@ -75,7 +77,7 @@ internal class SpotifyAlbum : AlbumItem {
         }
     }
     
-    func getImage(forSize: CGSize, complete: (image: UIImage) -> Void) {
+    func getImage(forSize: CGSize, complete: (image: UIImage?) -> Void) {
         
     }
 }
@@ -116,7 +118,7 @@ internal class SpotifyArtist : ArtistItem {
         
     }
     
-    func getImage(forSize: CGSize, complete: (image: UIImage) -> Void) {
+    func getImage(forSize: CGSize, complete: (image: UIImage?) -> Void) {
         
     }
     
@@ -153,7 +155,7 @@ internal class SpotifyPlaylist : PlaylistItem {
         }
     }
     
-    func getImage(forSize: CGSize, complete: (image: UIImage) -> Void) {
+    func getImage(forSize: CGSize, complete: (image: UIImage?) -> Void) {
         
     }
 }

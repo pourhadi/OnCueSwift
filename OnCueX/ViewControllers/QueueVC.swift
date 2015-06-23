@@ -44,11 +44,12 @@ class QueueVC: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        _queue.addObserver(self)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Register cell classes
-        self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "queueCell")
+        self.collectionView!.registerClass(QueueCell.self, forCellWithReuseIdentifier: "queueCell")
 
         // Do any additional setup after loading the view.
     }
@@ -72,20 +73,21 @@ class QueueVC: UICollectionViewController {
 
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
 
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 0
+        return _queue.items.count
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("queueCell", forIndexPath: indexPath)
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("queueCell", forIndexPath: indexPath) as! QueueCell
     
-        // Configure the cell
-    
+        let item = _queue.items[indexPath.row]
+        cell.item = item
+        
         return cell
     }
 
