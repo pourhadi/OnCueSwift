@@ -193,6 +193,8 @@ class ItemManager: ListVMDelegate {
                     self.delegate.itemManager(self, pushVCForVM: itemVM)
                 }
             })
+        } else if let item = selectedItem as? Queueable {
+            
         }
     }
 }
