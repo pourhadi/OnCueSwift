@@ -14,6 +14,21 @@ extension QueueVC: QueueObserver {
     }
     
     func queueUpdated(queue:Queue) {
+        let added = queue.operations.filter { (operation) -> Bool in
+            if (operation.type == .Added) {
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        self.collectionView!.performBatchUpdates({ () -> Void in
+            for op in queue.operations {
+                if op.type == .Added {
+                    //                    self.collectionView!.insert
+                }
+            }
+            }, completion: nil)
         
     }
 }

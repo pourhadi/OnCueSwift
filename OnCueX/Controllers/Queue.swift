@@ -8,8 +8,6 @@
 
 import UIKit
 
-//let _queue = Queue()
-
 struct QueueIndex: Equatable {
     let index:Int
     let playhead:Int
@@ -31,13 +29,14 @@ struct QueueOperation {
     enum OperationType {
         case Added
         case Removed
+        case PlayheadChanged
     }
     
-    unowned var item:Queueable
+    weak var item:Queueable?
     let type:OperationType
     var queueIndex:QueueIndex?
     
-    init(item:Queueable, type:OperationType, queueIndex:QueueIndex?) {
+    init(item:Queueable?, type:OperationType, queueIndex:QueueIndex?) {
         self.item = item
         self.type = type
         self.queueIndex = queueIndex
@@ -50,26 +49,31 @@ class Queue {
     func addObserver(observer:QueueObserver) { self.observers[observer.identifier] = observer }
     func removeObserver(observer:QueueObserver) { self.observers.removeValueForKey(observer.identifier) }
     
-    var playhead = 0
+    var playhead = 0 {
+        didSet {
+            self.operation {
+                self.operations.append(QueueOperation(item: nil, type: .PlayheadChanged, queueIndex: nil))
+            }
+        }
+    }
     
     var items:[Queueable] = []
     
     func remove(itemAtIndex:Int) {
-        self.operationStarted()
-        let item = self.items[itemAtIndex]
-        self.items.removeAtIndex(itemAtIndex)
-        self.operations.append(QueueOperation(item: item, type: .Removed, queueIndex: nil))
-        self.needsQueueUpdate = true
-        self.operationEnded()
+        self.operation {
+            let item = self.items[itemAtIndex]
+            self.items.removeAtIndex(itemAtIndex)
+            self.operations.append(QueueOperation(item: item, type: .Removed, queueIndex: nil))
+            if itemAtIndex < self.playhead {
+                self.playhead -= 1
+            }
+        }
     }
     
     func removeIfInQueue(item:Queueable) -> Int? {
         return self.operation {
             if let index = self.items.index(item) {
                 self.remove(index)
-                if index < self.playhead {
-                    self.playhead -= 1
-                }
                 return index
             }
             return nil
@@ -103,8 +107,17 @@ class Queue {
     var needsQueueUpdate = false
     var operationCount = 0
     var operations:[QueueOperation] = []
+    
+    func operation(operation:()->Void) {
+        self.operationStarted()
+        self.needsQueueUpdate = true
+        operation()
+        self.operationEnded()
+    }
+    
     func operation<T>(operation:()->T?) -> T? {
         self.operationStarted()
+        self.needsQueueUpdate = true
         let ret = operation()
         self.operationEnded()
         return ret
@@ -128,7 +141,10 @@ class Queue {
     func processChanges() {
         
         for operation in self.operations {
-            operation.item.queueIndex = operation.queueIndex
+            if let item = operation.item {
+                item.queueIndex = operation.queueIndex
+            }
+            
         }
         
         var x = 0
