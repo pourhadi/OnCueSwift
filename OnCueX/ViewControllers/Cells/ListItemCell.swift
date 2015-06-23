@@ -9,6 +9,43 @@
 import UIKit
 import SnapKit
 
+class ItemLabelsView: UIView {
+    let titleLabel = UILabel()
+    let subtitleLabel = UILabel()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.addSubview(self.titleLabel)
+        self.addSubview(self.subtitleLabel)
+        
+        self.titleLabel.font = UIFont.boldSystemFontOfSize(14)
+        self.titleLabel.textColor = UIColor.whiteColor()
+        
+        self.subtitleLabel.font = UIFont.systemFontOfSize(11)
+        self.subtitleLabel.textColor = UIColor.lightGrayColor()
+        
+        self.titleLabel.snp_makeConstraints { (make) -> Void in
+            make.left.top.right.equalTo(self)
+            make.bottom.equalTo(self.subtitleLabel.snp_top).offset(-2)
+        }
+        
+        self.subtitleLabel.snp_makeConstraints { (make) -> Void in
+            make.bottom.left.right.equalTo(self)
+        }
+        
+        self.snp_updateConstraints { (make) -> Void in
+            make.top.equalTo(self.titleLabel)
+            make.bottom.equalTo(self.subtitleLabel)
+        }
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+}
+
 class ListItemCell : UICollectionViewCell {
     var item:Item?
     
@@ -29,42 +66,21 @@ class ListItemCell : UICollectionViewCell {
 
 class ListItemTextCell: ListItemCell {
     
-    lazy var titleLabel:UILabel = UILabel()
-    lazy var subtitleLabel:UILabel = UILabel()
-    
-    var labelContainer = UIView()
+    let itemLabelsView = ItemLabelsView(frame:CGRectZero)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         self.backgroundColor = UIColor(white: 0.1, alpha: 1)
-        
-        self.titleLabel.font = UIFont.boldSystemFontOfSize(14)
-        self.titleLabel.textColor = UIColor.whiteColor()
-        
-        self.subtitleLabel.font = UIFont.systemFontOfSize(11)
-        self.subtitleLabel.textColor = UIColor.lightGrayColor()
-        
-        contentView.addSubview(self.labelContainer)
-        self.labelContainer.addSubview(self.titleLabel)
-        self.labelContainer.addSubview(self.subtitleLabel)
-        
+        self.contentView.addSubview(self.itemLabelsView)
+
         let padding:CGFloat = 10.0
-        self.labelContainer.snp_makeConstraints { (make) -> Void in
+        self.itemLabelsView.snp_makeConstraints { (make) -> Void in
             make.left.right.equalTo(self.contentView).insets(UIEdgeInsetsMake(0, padding, 0, padding))
             make.centerY.equalTo(self.contentView)
-            make.top.equalTo(self.titleLabel)
-            make.bottom.equalTo(self.subtitleLabel)
         }
         
-        self.titleLabel.snp_makeConstraints { (make) -> Void in
-            make.left.top.right.equalTo(self.labelContainer)
-            make.bottom.equalTo(self.subtitleLabel.snp_top).offset(-2)
-        }
         
-        self.subtitleLabel.snp_makeConstraints { (make) -> Void in
-            make.bottom.left.right.equalTo(self.labelContainer)
-        }
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -73,16 +89,16 @@ class ListItemTextCell: ListItemCell {
     
     override var item:Item? {
         didSet {
-            self.titleLabel.text = ""
-            self.subtitleLabel.text = ""
+            self.itemLabelsView.titleLabel.text = ""
+            self.itemLabelsView.subtitleLabel.text = ""
             
             if let item = self.item {
                 if let title = item.title {
-                    self.titleLabel.text = title
+                    self.itemLabelsView.titleLabel.text = title
                 }
                 
                 if let subtitle = item.subtitle {
-                    self.subtitleLabel.text = subtitle
+                    self.itemLabelsView.subtitleLabel.text = subtitle
                 }
             }
         }
