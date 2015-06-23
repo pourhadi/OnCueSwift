@@ -14,7 +14,7 @@ extension QueueVC: QueueObserver {
     }
     
     func queueUpdated(queue:Queue) {
-        let added = queue.operations.filter { (operation) -> Bool in
+        let added = _queue.operations.filter { (operation) -> Bool in
             if (operation.type == .Added) {
                 return true
             }
@@ -23,7 +23,7 @@ extension QueueVC: QueueObserver {
                 return NSIndexPath(forItem: operation.queueIndex!.index, inSection: 0)
         }
         
-        let removed = queue.operations.filter { operation in
+        let removed = _queue.operations.filter { operation in
             if operation.type == .Removed {
                 return true
             }
