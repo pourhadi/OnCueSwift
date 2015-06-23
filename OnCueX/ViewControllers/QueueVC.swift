@@ -14,12 +14,13 @@ extension QueueVC: QueueObserver {
     }
     
     func queueUpdated(queue:Queue) {
-        let added = _queue.operations.filter { (operation) -> Bool in
+        var addedOps = _queue.operations.filter { (operation) -> Bool in
             if (operation.type == .Added) {
                 return true
             }
             return false
-            }.map { (operation) -> NSIndexPath in
+        }
+        let added = addedOps.map { (operation) -> NSIndexPath in
                 return NSIndexPath(forItem: operation.queueIndex!.index, inSection: 0)
         }
         
