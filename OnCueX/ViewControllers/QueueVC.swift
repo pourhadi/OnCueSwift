@@ -17,17 +17,24 @@ extension QueueVC: QueueObserver {
         let added = queue.operations.filter { (operation) -> Bool in
             if (operation.type == .Added) {
                 return true
-            } else {
-                return false
             }
+            return false
+            }.map { (operation) -> NSIndexPath in
+                return NSIndexPath(forItem: operation.queueIndex!.index, inSection: 0)
+        }
+        
+        let removed = queue.operations.filter { operation in
+            if operation.type == .Removed {
+                return true
+            }
+            return false
+            }.map { (operation) -> NSIndexPath in
+                return NSIndexPath(forItem: operation.queueIndex!.index, inSection: 0)
         }
         
         self.collectionView!.performBatchUpdates({ () -> Void in
-            for op in queue.operations {
-                if op.type == .Added {
-                    //                    self.collectionView!.insert
-                }
-            }
+            self.collectionView!.insertItemsAtIndexPaths(added)
+            self.collectionView!.deleteItemsAtIndexPaths(removed)
             }, completion: nil)
         
     }
