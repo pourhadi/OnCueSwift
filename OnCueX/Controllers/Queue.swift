@@ -145,6 +145,8 @@ class Queue {
         for theOperation in self.operations {
             if let item = theOperation.item {
                 item.queueIndex = theOperation.queueIndex
+            } else {
+                continue
             }
         }
         
