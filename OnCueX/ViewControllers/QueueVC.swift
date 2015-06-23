@@ -43,7 +43,7 @@ extension QueueVC: QueueObserver {
 class QueueVC: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.collectionView!.backgroundColor = UIColor.blackColor()
         _queue.addObserver(self)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false

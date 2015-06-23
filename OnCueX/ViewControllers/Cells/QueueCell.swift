@@ -27,7 +27,8 @@ class QueueCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-     
+        self.backgroundColor = UIColor.clearColor()
+        self.itemLabelsView.backgroundColor = UIColor.clearColor()
         self.contentView.addSubview(self.imageView)
         self.contentView.addSubview(self.itemLabelsView)
         

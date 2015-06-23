@@ -184,7 +184,7 @@ class ItemManager: ListVMDelegate {
         }
     }
     
-    func listVM(listVM:ListVM, selectedItem:protocol<Item>) {
+    func listVM(listVM:ListVM, selectedItem:protocol<Item>, deselect:(deselect:Bool)->Void) {
         if let item = selectedItem as? TrackCollection {
             item.getTracks(0, complete: { (list) -> Void in
                 if let list = list {
@@ -193,8 +193,12 @@ class ItemManager: ListVMDelegate {
                     self.delegate.itemManager(self, pushVCForVM: itemVM)
                 }
             })
+            deselect(deselect: false)
+
         } else if let item = selectedItem as? Queueable {
             _queue.insert(item)
+            deselect(deselect: true)
+
         }
     }
 }

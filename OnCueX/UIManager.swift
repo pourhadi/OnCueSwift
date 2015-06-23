@@ -17,12 +17,14 @@ class UIManager {
     var browserNav:NavVC?
     
     func configure() {
-        self.spotifyManager = SpotifyManager(delegate:self)
         self.spotifyManager.getHomeVM { (vm) -> Void in
             let vc = ListVC(listVM: vm)
             let nav = NavVC(rootViewController: vc)
             self.slideVC.setViewController(nav, forSlotIndex: 1)
             self.browserNav = nav
+            
+            let queue = QueueVC(collectionViewLayout: UICollectionViewFlowLayout())
+            self.slideVC.setViewController(queue, forSlotIndex: 2)
         }
     }
 }

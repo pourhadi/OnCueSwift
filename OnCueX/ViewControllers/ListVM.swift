@@ -10,7 +10,7 @@ import UIKit
 import ReactiveCocoa
 
 protocol ListVMDelegate: class {
-    func listVM(listVM:ListVM, selectedItem:protocol<Item>)
+    func listVM(listVM:ListVM, selectedItem:protocol<Item>, deselect:(deselect:Bool)->Void)
 }
 
 struct ListVM {
@@ -70,7 +70,7 @@ struct ListVM {
         }
     }
     
-    func cellTapped(indexPath:NSIndexPath) {
-        self.delegate.listVM(self, selectedItem: self.item(indexPath))
+    func cellTapped(indexPath:NSIndexPath, deselect:(deselect:Bool)->Void) {
+        self.delegate.listVM(self, selectedItem: self.item(indexPath), deselect:deselect)
     }
 }

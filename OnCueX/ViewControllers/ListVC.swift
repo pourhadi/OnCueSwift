@@ -28,7 +28,11 @@ class ListVCDataSource:NSObject, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        self.listVC.listVM.cellTapped(indexPath)
+        self.listVC.listVM.cellTapped(indexPath) { (deselect) -> Void in
+            if deselect {
+                collectionView.deselectItemAtIndexPath(indexPath, animated: true)
+            }
+        }
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
