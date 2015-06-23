@@ -11,7 +11,11 @@ import UIKit
 class QueueCell: UICollectionViewCell, QueueableItemObserver {
     
     func queueIndexUpdated(forItem:Queueable, queueIndex:QueueIndex?) {
-        
+        if let item = self.item {
+            if item.equals(forItem) {
+                
+            }
+        }
     }
     
     weak var item:Queueable? {
