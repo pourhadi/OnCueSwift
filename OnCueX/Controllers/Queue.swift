@@ -65,7 +65,7 @@ class Queue {
         self.operation {
             let item = self.items[itemAtIndex]
             self.items.removeAtIndex(itemAtIndex)
-            self.operations.append(QueueOperation(item: item, type: .Removed, queueIndex: nil))
+            self.operations.append(QueueOperation(item: item, type: .Removed, queueIndex: QueueIndex(index: itemAtIndex, playhead: self.playhead)))
             if itemAtIndex < self.playhead {
                 self.playhead -= 1
             }
