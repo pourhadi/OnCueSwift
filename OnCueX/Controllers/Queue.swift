@@ -34,7 +34,7 @@ struct QueueOperation {
         case PlayheadChanged
     }
     
-    weak var item:Queueable?
+    var item:Queueable?
     let type:OperationType
     var queueIndex:QueueIndex?
     
