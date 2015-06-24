@@ -24,7 +24,7 @@ extension QueueVC: QueueObserver {
             let index = operation.queueIndex!.index
             return index
         }
-        var addedSet = NSMutableIndexSet()
+        let addedSet = NSMutableIndexSet()
         for index in added {
             addedSet.addIndex(index)
         }
@@ -38,7 +38,7 @@ extension QueueVC: QueueObserver {
             let index = operation.queueIndex!.index
             return index
         }
-        var removedSet = NSMutableIndexSet()
+        let removedSet = NSMutableIndexSet()
         for index in removed {
             removedSet.addIndex(index)
         }
