@@ -64,8 +64,17 @@ final class Queue {
     func remove(itemAtIndex:Int) {
         self.operation {
             let item = self.items[itemAtIndex]
+            let numOfItems = item.childItems != nil ? item.childItems!.count : 1
             self.items.removeAtIndex(itemAtIndex)
             self.operations.append(QueueOperation(item: item, type: .Removed, queueIndex: QueueIndex(index: itemAtIndex, playhead: self.playhead)))
+            
+            if numOfItems > 1 {
+                for x in itemAtIndex..<(itemAtIndex+numOfItems) {
+                    if x < self.playhead {
+                        self.playhead -= 1
+                    }
+                }
+            }
             if itemAtIndex < self.playhead {
                 self.playhead -= 1
             }
