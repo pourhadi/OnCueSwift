@@ -20,51 +20,33 @@ extension QueueVC: QueueObserver {
             }
             return false
         }
-        let added = addedOps.map { (operation) -> [NSIndexPath] in
+        let added = addedOps.map { (operation) -> Int in
             let index = operation.queueIndex!.index
-            if let item = operation.item {
-                var array:[NSIndexPath] = []
-                for x in index..<(index+item.numberOfItems) {
-                    array.append(NSIndexPath(forItem: x, inSection: 0))
-                }
-                return array
-            }
-            return []
+            return index
         }
-        var finalAdded:[NSIndexPath] = []
-        for paths in added {
-            for path in paths {
-                finalAdded.append(path)
-            }
+        var addedSet = NSMutableIndexSet()
+        for index in added {
+            addedSet.addIndex(index)
         }
-        
         let removedOps = _queue.operations.filter { operation in
             if operation.type == .Removed {
                 return true
             }
             return false
         }
-        let removed = removedOps.map { (operation) -> [NSIndexPath] in
+        let removed = removedOps.map { (operation) -> Int in
             let index = operation.queueIndex!.index
-            if let item = operation.item {
-                var array:[NSIndexPath] = []
-                for x in index..<(index+item.numberOfItems) {
-                    array.append(NSIndexPath(forItem: x, inSection: 0))
-                }
-                return array
-            }
-            return []
+            return index
         }
-        var finalRemoved:[NSIndexPath] = []
-        for paths in removed {
-            for path in paths {
-                finalRemoved.append(path)
-            }
+        var removedSet = NSMutableIndexSet()
+        for index in removed {
+            removedSet.addIndex(index)
         }
+        
         self.collectionView!.performBatchUpdates({ () -> Void in
-            self.collectionView!.insertItemsAtIndexPaths(finalAdded)
-            self.collectionView!.deleteItemsAtIndexPaths(finalRemoved)
-            }, completion: nil)
+            self.collectionView!.insertSections(addedSet)
+            self.collectionView!.deleteSections(removedSet)
+        }, completion:nil)
     }
  
 }
