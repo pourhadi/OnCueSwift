@@ -168,13 +168,15 @@ internal class SpotifyPlaylist : PlaylistItem {
     func getTracks(page: Int, complete: (list: List<TrackItem>?) -> Void) {
         SPTPlaylistSnapshot.playlistWithURI(self.partialPlaylist.uri, accessToken: _spotifyController.token!) { (error, album) -> Void in
             if error == nil {
-                let items = album.firstTrackPage!.items as! [SPTPartialTrack]
-                var listItems:[TrackItem] = []
-                for track in items {
-                    listItems.append(SpotifyTrack(partialTrack: track))
-                }
-                let itemList = List(items: listItems, totalCount:album.firstTrackPage!.totalListLength, pageNumber:page)
-                complete(list: itemList)
+                autoreleasepool({ () -> () in
+                    let items = album.firstTrackPage!.items as! [SPTPartialTrack]
+                    var listItems:[TrackItem] = []
+                    for track in items {
+                        listItems.append(SpotifyTrack(partialTrack: track))
+                    }
+                    let itemList = List(items: listItems, totalCount:album.firstTrackPage!.totalListLength, pageNumber:page)
+                    complete(list: itemList)
+                })
             }
         }
     }

@@ -67,7 +67,7 @@ struct CustomDisplayContext: DisplayContext {
     init() {}
 }
 
-struct List<T> {
+class List<T> {
     var items:[T]
     var totalCount:UInt
     var pageNumber:Int
