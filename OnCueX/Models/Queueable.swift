@@ -10,6 +10,7 @@ import UIKit
 import ReactiveCocoa
 
 protocol Queueable: DisplayContext, Identifiable {
+    var isContainer:Bool { get }
     func getTracks(complete:(tracks:[TrackItem])->Void)
 }
 
@@ -27,22 +28,32 @@ protocol QueuedItemObserver: class {
     func queueIndexUpdated(forItem:QueuedItem, queueIndex:QueueIndex?)
 }
 
-protocol Queued: Identifiable {
+protocol Queued: class, Identifiable {
     var queueIndex:QueueIndex? { get set }
     var displayInfo:DisplayContext { get }
+    var numberOfItems:Int { get }
+    weak var observer:QueuedItemObserver? { get set }
+    var tracks:[QueuedTrack] { get }
+    
 }
 
 class QueuedTrack:Queued {
     let track:TrackItem
+    var tracks:[QueuedTrack] {
+        return [self]
+    }
+    
     var queueIndex:QueueIndex?
     var displayInfo:DisplayContext {
         return self.track
     }
-    
+    weak var observer:QueuedItemObserver?
     var identifier:String { return self.track.identifier }
     init(track:TrackItem) {
         self.track = track
     }
+    
+    var numberOfItems:Int { return 1 }
 }
 
 class QueuedItem:Equatable, Queued  {
@@ -53,10 +64,10 @@ class QueuedItem:Equatable, Queued  {
         }
     }
     
+    weak var observer:QueuedItemObserver?
     var queueIndex:QueueIndex?
     var tracks:[QueuedTrack]
     
-    weak var observer:QueuedItemObserver?
     
     var numberOfItems:Int {
         return self.tracks.count
@@ -69,6 +80,7 @@ class QueuedItem:Equatable, Queued  {
     private let queueable:Queueable
     
     var displayInfo:DisplayContext { return self.queueable }
+    var isContainer:Bool { return self.queueable.isContainer }
     
     init(queueable:Queueable, tracks:[TrackItem]) {
         self.queueable = queueable;

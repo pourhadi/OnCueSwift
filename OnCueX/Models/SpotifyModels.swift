@@ -44,6 +44,7 @@ internal struct SpotifyTrack: TrackItem, Queueable {
     
     var itemType:ItemType { return .Track }
 
+    var isContainer:Bool { return false }
     func getTracks(complete: (tracks: [TrackItem]) -> Void) {
         complete(tracks:[self])
     }

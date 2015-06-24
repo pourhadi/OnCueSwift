@@ -18,13 +18,13 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
         }
     }
     
-    weak var item:QueuedItem? {
+    weak var item:Queued? {
         didSet {
             if let item = self.item {
                 item.observer = self
-                self.itemLabelsView.titleLabel.text = item.title
-                self.itemLabelsView.subtitleLabel.text = item.subtitle
-                item.getImage(self.imageView.frame.size, complete: { (image) -> Void in
+                self.itemLabelsView.titleLabel.text = item.displayInfo.title
+                self.itemLabelsView.subtitleLabel.text = item.displayInfo.subtitle
+                item.displayInfo.getImage(self.imageView.frame.size, complete: { (image) -> Void in
                     self.imageView.image = image
                 })
             }
