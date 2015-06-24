@@ -83,7 +83,7 @@ class Queue {
     }
     
     func insert(item:Queueable) -> Int {
-        return self.insert(item, atIndex: self.items.count)
+        return self.insert(item, atIndex: item.queueIndex != nil ? 0 : self.items.count)
     }
     
     func insert(item:Queueable, var atIndex:Int) -> Int {

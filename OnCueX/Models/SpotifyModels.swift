@@ -55,6 +55,10 @@ internal class SpotifyTrack: TrackItem, Queueable {
     func queueUpdated(queue:Queue) {}
     
     weak var observer:QueueableItemObserver?
+    
+    deinit {
+        print("spotify track deinit")
+    }
 }
 
 
@@ -91,6 +95,10 @@ internal class SpotifyAlbum : AlbumItem {
     
     func getImage(forSize: CGSize, complete: (image: UIImage?) -> Void) {
         
+    }
+    
+    deinit {
+        print("spotify album deinit")
     }
 }
 
@@ -134,6 +142,10 @@ internal class SpotifyArtist : ArtistItem {
         
     }
     
+    deinit {
+        print("spotify artist deinit")
+    }
+    
 }
 
 internal class SpotifyPlaylist : PlaylistItem {
@@ -169,6 +181,10 @@ internal class SpotifyPlaylist : PlaylistItem {
     
     func getImage(forSize: CGSize, complete: (image: UIImage?) -> Void) {
         
+    }
+    
+    deinit {
+        print("spotify playlist deinit")
     }
 }
 
