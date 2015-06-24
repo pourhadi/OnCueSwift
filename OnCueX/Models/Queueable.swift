@@ -23,6 +23,10 @@ extension Queueable {
     func equals(other:Queueable) -> Bool {
         return self.identifier == other.identifier
     }
+    
+    var numberOfItems:Int {
+        return self.childItems == nil ? 1 : self.childItems!.count
+    }
 }
 
 protocol QueueableItemObserver: class {
