@@ -73,4 +73,8 @@ class ListVM {
     func cellTapped(indexPath:NSIndexPath, deselect:(deselect:Bool)->Void) {
         self.delegate.listVM(self, selectedItem: self.item(indexPath), deselect:deselect)
     }
+    
+    deinit {
+        print("ListVM deinit")
+    }
 }
