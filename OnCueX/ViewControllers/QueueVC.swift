@@ -79,8 +79,9 @@ class QueueVC: UICollectionViewController {
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("queueCell", forIndexPath: indexPath) as! QueueCell
     
-        let item = _queue.items[indexPath.row]
-        cell.item = item
+        let item = _queue.items[indexPath.section]
+        let track = item.tracks[indexPath.row]
+        cell.item = track
         
         return cell
     }
