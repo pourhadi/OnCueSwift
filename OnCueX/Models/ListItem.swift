@@ -111,7 +111,7 @@ protocol ItemList {
     
 }
 
-struct TrackList : ItemList {
+class TrackList : ItemList {
     
     let list:List<TrackItem>
     init(list:List<TrackItem>) {
@@ -134,7 +134,7 @@ struct TrackList : ItemList {
     }
 }
 
-struct TrackCollectionList : ItemList {
+class TrackCollectionList : ItemList {
     let list:List<TrackCollection>
     init(list:List<TrackCollection>) {
         self.list = list
