@@ -45,7 +45,7 @@ struct QueueOperation {
     }
 }
 
-class Queue {
+final class Queue {
 
     var observers:[String:QueueObserver] = [:]
     func addObserver(observer:QueueObserver) { self.observers[observer.identifier] = observer }
