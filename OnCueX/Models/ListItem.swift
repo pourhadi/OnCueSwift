@@ -117,6 +117,34 @@ protocol ItemList {
     
 }
 
+class ItemViewModel: DisplayContext, QueueObserver {
+    
+    var identifier:String {
+        return "\(self.item.identifier)_vm"
+    }
+    
+    let item:Item
+    
+    init(item:Item) {
+        self.item = item
+        _queue.addObserver(self)
+    }
+    
+    deinit {
+        _queue.removeObserver(self)
+    }
+    
+    var title:String? { return self.item.title }
+    var subtitle:String? { return self.item.subtitle }
+    func getImage(forSize: CGSize, complete: (image: UIImage?) -> Void) {
+        self.item.getImage(forSize, complete: complete)
+    }
+    
+    func queueUpdated(queue:Queue) {
+        
+    }
+}
+
 class TrackList : ItemList {
     
     let list:List<TrackItem>

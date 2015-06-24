@@ -27,7 +27,25 @@ protocol QueuedItemObserver: class {
     func queueIndexUpdated(forItem:QueuedItem, queueIndex:QueueIndex?)
 }
 
-class QueuedItem:Equatable, Identifiable {
+protocol Queued: Identifiable {
+    var queueIndex:QueueIndex? { get set }
+    var displayInfo:DisplayContext { get }
+}
+
+class QueuedTrack:Queued {
+    let track:TrackItem
+    var queueIndex:QueueIndex?
+    var displayInfo:DisplayContext {
+        return self.track
+    }
+    
+    var identifier:String { return self.track.identifier }
+    init(track:TrackItem) {
+        self.track = track
+    }
+}
+
+class QueuedItem:Equatable, Queued  {
     
     class func newQueuedItem(fromQueueable:Queueable, complete:(item:QueuedItem)->Void) {
         fromQueueable.getTracks { (tracks) -> Void in
@@ -36,7 +54,7 @@ class QueuedItem:Equatable, Identifiable {
     }
     
     var queueIndex:QueueIndex?
-    var tracks:[TrackItem]
+    var tracks:[QueuedTrack]
     
     weak var observer:QueuedItemObserver?
     
@@ -48,11 +66,15 @@ class QueuedItem:Equatable, Identifiable {
         return self.queueable.identifier
     }
     
-    private var queueable:Queueable
+    private let queueable:Queueable
+    
+    var displayInfo:DisplayContext { return self.queueable }
     
     init(queueable:Queueable, tracks:[TrackItem]) {
         self.queueable = queueable;
-        self.tracks = tracks
+        self.tracks = tracks.map({ (track) -> QueuedTrack in
+            return QueuedTrack(track: track)
+        })
     }
 }
 

@@ -206,7 +206,7 @@ final class Queue {
             if item.queueIndex != index {
                 item.queueIndex = index
             }
-            x += 1
+            x += item.numberOfItems
         }
         
         for (_, observer) in self.observers {
