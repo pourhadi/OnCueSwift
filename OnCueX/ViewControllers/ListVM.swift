@@ -13,7 +13,7 @@ protocol ListVMDelegate: class {
     func listVM(listVM:ListVM, selectedItem:protocol<Item>, deselect:(deselect:Bool)->Void)
 }
 
-struct ListVM {
+class ListVM {
     
     unowned var delegate:ListVMDelegate
 //    let updatedSignal:RACSignal = RACSubject()

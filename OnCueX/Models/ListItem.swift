@@ -132,6 +132,10 @@ class TrackList : ItemList {
     var currentOffset:Int {
         return self.list.pageNumber
     }
+    
+    deinit {
+        print("TrackCollectionList deinit")
+    }
 }
 
 class TrackCollectionList : ItemList {
@@ -153,6 +157,10 @@ class TrackCollectionList : ItemList {
     
     var currentOffset:Int {
         return self.list.pageNumber
+    }
+    
+    deinit {
+        print("TrackCollectionList deinit")
     }
 }
 
