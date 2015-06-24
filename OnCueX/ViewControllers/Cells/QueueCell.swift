@@ -8,17 +8,17 @@
 
 import UIKit
 
-class QueueCell: UICollectionViewCell, QueueableItemObserver {
+class QueueCell: UICollectionViewCell, QueuedItemObserver {
     
-    func queueIndexUpdated(forItem:Queueable, queueIndex:QueueIndex?) {
+    func queueIndexUpdated(forItem:QueuedItem, queueIndex:QueueIndex?) {
         if let item = self.item {
-            if item.equals(forItem) {
+            if item.isEqual(forItem) {
                 
             }
         }
     }
     
-    weak var item:Queueable? {
+    weak var item:QueuedItem? {
         didSet {
             if let item = self.item {
                 item.observer = self

@@ -8,7 +8,7 @@
 
 import UIKit
 
-internal class SpotifyTrack: TrackItem, Queueable {
+internal struct SpotifyTrack: TrackItem, Queueable {
     var source:ItemSource { return .Spotify }
     
     private var partialTrack:SPTPartialTrack
@@ -43,26 +43,14 @@ internal class SpotifyTrack: TrackItem, Queueable {
     }
     
     var itemType:ItemType { return .Track }
- 
-    var queueIndex:QueueIndex? = nil {
-        didSet {
-            if let observer = self.observer {
-                observer.queueIndexUpdated(self, queueIndex:self.queueIndex)
-            }
-        }
-    }
-    var childItems:[Queueable]? = nil
-    func queueUpdated(queue:Queue) {}
-    
-    weak var observer:QueueableItemObserver?
-    
-    deinit {
-        print("spotify track deinit")
+
+    func getTracks(complete: (tracks: [TrackItem]) -> Void) {
+        complete(tracks:[self])
     }
 }
 
 
-internal class SpotifyAlbum : AlbumItem {
+internal struct SpotifyAlbum : AlbumItem {
     var itemType:ItemType { return .Album }
     var source:ItemSource { return .Spotify }
     
@@ -96,13 +84,10 @@ internal class SpotifyAlbum : AlbumItem {
     func getImage(forSize: CGSize, complete: (image: UIImage?) -> Void) {
         
     }
-    
-    deinit {
-        print("spotify album deinit")
-    }
+
 }
 
-internal class SpotifyArtist : ArtistItem {
+internal struct SpotifyArtist : ArtistItem {
     var itemType:ItemType { return .Artist }
     var source:ItemSource { return .Spotify }
     
@@ -141,14 +126,9 @@ internal class SpotifyArtist : ArtistItem {
     func getImage(forSize: CGSize, complete: (image: UIImage?) -> Void) {
         
     }
-    
-    deinit {
-        print("spotify artist deinit")
-    }
-    
 }
 
-internal class SpotifyPlaylist : PlaylistItem {
+internal struct SpotifyPlaylist : PlaylistItem {
     var itemType:ItemType { return .Playlist }
     var source:ItemSource { return .Spotify }
     
@@ -183,10 +163,6 @@ internal class SpotifyPlaylist : PlaylistItem {
     
     func getImage(forSize: CGSize, complete: (image: UIImage?) -> Void) {
         
-    }
-    
-    deinit {
-        print("spotify playlist deinit")
     }
 }
 

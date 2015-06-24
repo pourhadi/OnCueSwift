@@ -7,12 +7,10 @@
 //
 
 import UIKit
+import ReactiveCocoa
 
-protocol Queueable: class, DisplayContext, QueueObserver, Identifiable {
-    var queueIndex:QueueIndex? { get set }
-    var childItems:[Queueable]? { get }
-    
-    var observer:QueueableItemObserver? { get set }
+protocol Queueable: DisplayContext, Identifiable {
+    func getTracks(complete:(tracks:[TrackItem])->Void)
 }
 
 protocol QueueObserver : Identifiable {
@@ -23,12 +21,53 @@ extension Queueable {
     func equals(other:Queueable) -> Bool {
         return self.identifier == other.identifier
     }
+}
+
+protocol QueuedItemObserver: class {
+    func queueIndexUpdated(forItem:QueuedItem, queueIndex:QueueIndex?)
+}
+
+class QueuedItem:Equatable, Identifiable {
+    
+    class func newQueuedItem(fromQueueable:Queueable, complete:(item:QueuedItem)->Void) {
+        fromQueueable.getTracks { (tracks) -> Void in
+            complete(item: QueuedItem(queueable: fromQueueable, tracks: tracks))
+        }
+    }
+    
+    var queueIndex:QueueIndex?
+    var tracks:[TrackItem]
+    
+    weak var observer:QueuedItemObserver?
     
     var numberOfItems:Int {
-        return self.childItems == nil ? 1 : self.childItems!.count
+        return self.tracks.count
+    }
+    
+    var identifier:String {
+        return self.queueable.identifier
+    }
+    
+    private var queueable:Queueable
+    
+    init(queueable:Queueable, tracks:[TrackItem]) {
+        self.queueable = queueable;
+        self.tracks = tracks
     }
 }
 
-protocol QueueableItemObserver: class {
-    func queueIndexUpdated(forItem:Queueable, queueIndex:QueueIndex?)
+func == (lh:QueuedItem, rh:QueuedItem) -> Bool {
+    return lh.identifier == rh.identifier
+}
+
+extension QueuedItem:DisplayContext, ImageSource {
+    var title:String? {
+        return self.queueable.title
+    }
+    var subtitle:String? {
+        return self.queueable.subtitle
+    }
+    func getImage(forSize: CGSize, complete: (image: UIImage?) -> Void) {
+        self.queueable.getImage(forSize, complete: complete)
+    }
 }

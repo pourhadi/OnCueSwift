@@ -34,11 +34,11 @@ struct QueueOperation {
         case PlayheadChanged
     }
     
-    var item:Queueable?
+    var item:QueuedItem?
     let type:OperationType
     var queueIndex:QueueIndex?
     
-    init(item:Queueable?, type:OperationType, queueIndex:QueueIndex?) {
+    init(item:QueuedItem?, type:OperationType, queueIndex:QueueIndex?) {
         self.item = item
         self.type = type
         self.queueIndex = queueIndex
@@ -59,12 +59,12 @@ final class Queue {
         }
     }
     
-    var items:[Queueable] = []
+    var items:[QueuedItem] = []
     
     func remove(itemAtIndex:Int) {
         self.operation {
             let item = self.items[itemAtIndex]
-            let numOfItems = item.childItems != nil ? item.childItems!.count : 1
+            let numOfItems = item.numberOfItems
             self.items.removeAtIndex(itemAtIndex)
             self.operations.append(QueueOperation(item: item, type: .Removed, queueIndex: QueueIndex(index: itemAtIndex, playhead: self.playhead)))
             
@@ -74,14 +74,24 @@ final class Queue {
                         self.playhead -= 1
                     }
                 }
-            }
-            if itemAtIndex < self.playhead {
-                self.playhead -= 1
+            } else {
+                if itemAtIndex < self.playhead {
+                    self.playhead -= 1
+                }
             }
         }
     }
     
-    func removeIfInQueue(item:Queueable) -> Int? {
+    func queuedItemForQueueable(queueable:Queueable) -> QueuedItem? {
+        for item in self.items {
+            if item.isEqual(queueable) {
+                return item
+            }
+        }
+        return nil
+    }
+    
+    func removeIfInQueue(item:Identifiable) -> Int? {
         return self.operation {
             if let index = self.items.index(item) {
                 self.remove(index)
@@ -91,29 +101,50 @@ final class Queue {
         }
     }
     
-    func insert(item:Queueable) -> Int {
+    func insert(item:QueuedItem) -> QueueIndex {
         return self.insert(item, atIndex: item.queueIndex != nil ? 0 : self.items.count)
     }
     
-    func insert(item:Queueable, var atIndex:Int) -> Int {
+    func insert(item:Queueable, complete:((index:QueueIndex)->Void)?) {
+        QueuedItem.newQueuedItem(item) { (item) -> Void in
+            if let complete = complete {
+                complete(index: self.insert(item))
+            }
+        }
+    }
+    
+    func insert(item:Queueable, atIndex:Int, complete:((insertedIndex:QueueIndex)->Void)?) {
+        QueuedItem.newQueuedItem(item) { (item) -> Void in
+            if let complete = complete {
+                complete(insertedIndex: self.insert(item, atIndex: atIndex))
+            }
+        }
+    }
+    
+    func insert(item:QueuedItem, var atIndex:Int) -> QueueIndex {
         return self.operation {
             if let foundIndex = self.removeIfInQueue(item) {
-                if foundIndex < atIndex {
-                    atIndex -= 1
+                for x in foundIndex..<(foundIndex+item.numberOfItems) {
+                    if x < atIndex {
+                        atIndex -= 1
+                    }
                 }
             }
             
-            if atIndex < self.playhead {
-                self.playhead += 1
+            for x in atIndex..<(atIndex+item.numberOfItems)
+            {
+                if x < self.playhead {
+                    self.playhead += 1
+                }
             }
             
             self.needsQueueUpdate = true
             self.items.insert(item, atIndex: atIndex)
-            self.operations.append(QueueOperation(item: item, type: .Added, queueIndex: QueueIndex(index: atIndex, playhead: self.playhead)))
-            return atIndex
-        }!
+            let index = QueueIndex(index: atIndex, playhead: self.playhead)
+            self.operations.append(QueueOperation(item: item, type: .Added, queueIndex: index))
+            return index
+            }!
     }
-    
     
     var needsQueueUpdate = false
     var operationCount = 0
@@ -176,6 +207,19 @@ final class Queue {
 }
 
 extension Array {
+    
+    func index(ofIdentifiable:Identifiable) -> Int? {
+        var x = 0
+        for item in self {
+            if let item = item as? Identifiable {
+                if item.isEqual(ofIdentifiable) {
+                    return x
+                }
+            }
+            x += 1
+        }
+        return nil
+    }
     
     func index(ofQueueable:Queueable) -> Int? {
         var x = 0

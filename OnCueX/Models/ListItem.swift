@@ -25,6 +25,12 @@ protocol Identifiable {
     var identifier:String { get }
 }
 
+extension Identifiable {
+    func isEqual(other:Identifiable) -> Bool {
+        return self.identifier == other.identifier
+    }
+}
+
 protocol ImageSource {
     func getImage(forSize:CGSize, complete:(image:UIImage?)->Void)
 }
@@ -203,7 +209,7 @@ class ItemManager: ListVMDelegate {
             deselect(deselect: false)
 
         } else if let item = selectedItem as? Queueable {
-            _queue.insert(item)
+            _queue.insert(item, complete: nil)
             deselect(deselect: true)
 
         }

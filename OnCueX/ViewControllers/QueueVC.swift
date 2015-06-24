@@ -20,8 +20,22 @@ extension QueueVC: QueueObserver {
             }
             return false
         }
-        let added = addedOps.map { (operation) -> NSIndexPath in
-                return NSIndexPath(forItem: operation.queueIndex!.index, inSection: 0)
+        let added = addedOps.map { (operation) -> [NSIndexPath] in
+            let index = operation.queueIndex!.index
+            if let item = operation.item {
+                var array:[NSIndexPath] = []
+                for x in index..<(index+item.numberOfItems) {
+                    array.append(NSIndexPath(forItem: x, inSection: 0))
+                }
+                return array
+            }
+            return []
+        }
+        var finalAdded:[NSIndexPath] = []
+        for paths in added {
+            for path in paths {
+                finalAdded.append(path)
+            }
         }
         
         let removedOps = _queue.operations.filter { operation in
@@ -30,16 +44,29 @@ extension QueueVC: QueueObserver {
             }
             return false
         }
-        let removed = removedOps.map { (operation) -> NSIndexPath in
-                return NSIndexPath(forItem: operation.queueIndex!.index, inSection: 0)
+        let removed = removedOps.map { (operation) -> [NSIndexPath] in
+            let index = operation.queueIndex!.index
+            if let item = operation.item {
+                var array:[NSIndexPath] = []
+                for x in index..<(index+item.numberOfItems) {
+                    array.append(NSIndexPath(forItem: x, inSection: 0))
+                }
+                return array
+            }
+            return []
         }
-        
+        var finalRemoved:[NSIndexPath] = []
+        for paths in removed {
+            for path in paths {
+                finalRemoved.append(path)
+            }
+        }
         self.collectionView!.performBatchUpdates({ () -> Void in
-            self.collectionView!.insertItemsAtIndexPaths(added)
-            self.collectionView!.deleteItemsAtIndexPaths(removed)
+            self.collectionView!.insertItemsAtIndexPaths(finalAdded)
+            self.collectionView!.deleteItemsAtIndexPaths(finalRemoved)
             }, completion: nil)
-        
     }
+ 
 }
 
 class QueueVC: UICollectionViewController {
@@ -47,13 +74,7 @@ class QueueVC: UICollectionViewController {
         super.viewDidLoad()
         self.collectionView!.backgroundColor = UIColor.blackColor()
         _queue.addObserver(self)
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
         self.collectionView!.registerClass(QueueCell.self, forCellWithReuseIdentifier: "queueCell")
-
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
