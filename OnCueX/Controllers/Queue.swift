@@ -82,13 +82,22 @@ final class Queue {
         }
     }
     
-    func queuedItemForQueueable(queueable:Queueable) -> QueuedItem? {
+    func queuedItemForQueueable(queueable:Queueable, create:Bool, complete:(item:QueuedItem?)->Void) {
+        var found:QueuedItem? = nil
         for item in self.items {
             if item.isEqual(queueable) {
-                return item
+                found = item
+                break
             }
         }
-        return nil
+        
+        if found == nil && create {
+            QueuedItem.newQueuedItem(queueable, complete: { (item) -> Void in
+                complete(item:item)
+            })
+        } else {
+            complete(item:found!)
+        }
     }
     
     func removeIfInQueue(item:Identifiable) -> Int? {
@@ -106,8 +115,8 @@ final class Queue {
     }
     
     func insert(item:Queueable, complete:((index:QueueIndex)->Void)?) {
-        QueuedItem.newQueuedItem(item) { (item) -> Void in
-            let qIndex = self.insert(item)
+        self.queuedItemForQueueable(item, create: true) { (item) -> Void in
+            let qIndex = self.insert(item!)
             if let complete = complete {
                 complete(index: qIndex)
             }
@@ -115,8 +124,8 @@ final class Queue {
     }
     
     func insert(item:Queueable, atIndex:Int, complete:((insertedIndex:QueueIndex)->Void)?) {
-        QueuedItem.newQueuedItem(item) { (item) -> Void in
-            let qIndex = self.insert(item, atIndex: atIndex)
+        self.queuedItemForQueueable(item, create: true) { (item) -> Void in
+            let qIndex = self.insert(item!, atIndex: atIndex)
             if let complete = complete {
                 complete(insertedIndex: qIndex)
             }
