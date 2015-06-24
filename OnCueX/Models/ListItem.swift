@@ -127,6 +127,7 @@ class ItemViewModel: DisplayContext, QueueObserver {
     
     deinit {
         _queue.removeObserver(self)
+        print("item view model deinit")
     }
     
     var title:String? { return self.item.title }
