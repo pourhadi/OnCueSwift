@@ -206,7 +206,13 @@ final class Queue {
             if item.queueIndex != index {
                 item.queueIndex = index
             }
-            x += item.numberOfItems
+            for track in item.tracks {
+                let index = QueueIndex(index: x, playhead: self.playhead)
+                if track.queueIndex != index {
+                    track.queueIndex = index
+                }
+                x += 1
+            }
         }
         
         for (_, observer) in self.observers {
@@ -214,6 +220,23 @@ final class Queue {
         }
         
         self.operations.removeAll()
+    }
+}
+
+extension Queue {
+    func indexOfItem(item:Item) -> QueueIndex? {
+        for queueItem in self.items {
+            if queueItem.isEqual(item) {
+                return queueItem.queueIndex
+            } else {
+                for track in queueItem.tracks {
+                    if track.isEqual(item) {
+                        return track.queueIndex
+                    }
+                }
+            }
+        }
+        return nil
     }
 }
 

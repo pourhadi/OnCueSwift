@@ -32,12 +32,12 @@ class ListVM {
     }
     
     var displayContext:DisplayContext
-    var groups:[[Item]] = []
+    var groups:[[ItemViewModel]] = []
     var list:ItemList
     var grouped:Bool
     var paginated:Bool
     
-    func item(atIndexPath:NSIndexPath) -> Item {
+    func item(atIndexPath:NSIndexPath) -> ItemViewModel {
         if self.grouped {
             return self.groups[atIndexPath.section][atIndexPath.row]
         }
@@ -59,7 +59,7 @@ class ListVM {
     }
     
     func reuseIDForItem(indexPath:NSIndexPath) -> String {
-        return self.item(indexPath).cellReuseID
+        return self.item(indexPath).item.cellReuseID
     }
     
     func configureCell(cell:UICollectionViewCell, forItemAtIndexPath:NSIndexPath) {
@@ -71,7 +71,7 @@ class ListVM {
     }
     
     func cellTapped(indexPath:NSIndexPath, deselect:(deselect:Bool)->Void) {
-        self.delegate.listVM(self, selectedItem: self.item(indexPath), deselect:deselect)
+        self.delegate.listVM(self, selectedItem: self.item(indexPath).item, deselect:deselect)
     }
     
     deinit {

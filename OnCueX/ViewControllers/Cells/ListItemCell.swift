@@ -47,7 +47,7 @@ class ItemLabelsView: UIView {
 }
 
 class ListItemCell : UICollectionViewCell {
-    var item:Item?
+    var item:ItemViewModel?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -87,7 +87,7 @@ class ListItemTextCell: ListItemCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override var item:Item? {
+    override var item:ItemViewModel? {
         didSet {
             self.itemLabelsView.titleLabel.text = ""
             self.itemLabelsView.subtitleLabel.text = ""

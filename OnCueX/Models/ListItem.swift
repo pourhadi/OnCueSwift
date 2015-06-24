@@ -110,14 +110,9 @@ protocol ItemManagerDelegate: class {
     func itemManager(itemManager:ItemManager, pushVCForVM:ListVM)
 }
 
-protocol ItemList {
-    var items:[Item] { get }
-    var totalCount:UInt { get }
-    var currentOffset:Int { get }
-    
-}
-
 class ItemViewModel: DisplayContext, QueueObserver {
+    
+    var queueIndex:QueueIndex?
     
     var identifier:String {
         return "\(self.item.identifier)_vm"
@@ -141,8 +136,15 @@ class ItemViewModel: DisplayContext, QueueObserver {
     }
     
     func queueUpdated(queue:Queue) {
-        
+        self.queueIndex = _queue.indexOfItem(self.item)
     }
+}
+
+
+protocol ItemList {
+    var items:[ItemViewModel] { get }
+    var totalCount:UInt { get }
+    var currentOffset:Int { get }
 }
 
 class TrackList : ItemList {
@@ -150,14 +152,14 @@ class TrackList : ItemList {
     let list:List<TrackItem>
     init(list:List<TrackItem>) {
         self.list = list
-        var newItems:[Item] = []
+        var newItems:[ItemViewModel] = []
         for trackItem in self.list.items {
-            newItems.append(trackItem)
+            newItems.append(ItemViewModel(item: trackItem))
         }
         self.items = newItems
     }
     
-    var items:[Item]
+    var items:[ItemViewModel]
     
     var totalCount:UInt {
         return self.list.totalCount
@@ -168,7 +170,7 @@ class TrackList : ItemList {
     }
     
     deinit {
-        print("TrackCollectionList deinit")
+        print("tracklist deinit")
     }
 }
 
@@ -176,14 +178,14 @@ class TrackCollectionList : ItemList {
     let list:List<TrackCollection>
     init(list:List<TrackCollection>) {
         self.list = list
-        var newItems:[Item] = []
+        var newItems:[ItemViewModel] = []
         for trackItem in self.list.items {
-            newItems.append(trackItem as! Item)
+            newItems.append(ItemViewModel(item:trackItem as! Item))
         }
         self.items = newItems
     }
     
-    var items:[Item]
+    var items:[ItemViewModel]
     
     var totalCount:UInt {
         return self.list.totalCount
