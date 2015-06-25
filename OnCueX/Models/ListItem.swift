@@ -110,9 +110,20 @@ protocol ItemManagerDelegate: class {
     func itemManager(itemManager:ItemManager, pushVCForVM:ListVM)
 }
 
+protocol ItemViewModelObserver: class {
+    func queueIndexUpdate(viewModel:ItemViewModel, queueIndex:QueueIndex?)
+}
+
 class ItemViewModel: DisplayContext, QueueObserver {
     
-    var queueIndex:QueueIndex?
+    weak var observer:ItemViewModelObserver?
+    var queueIndex:QueueIndex? {
+        didSet {
+            if let observer = self.observer {
+                observer.queueIndexUpdate(self, queueIndex: self.queueIndex)
+            }
+        }
+    }
     
     var identifier:String {
         return "\(self.item.identifier)_vm"
