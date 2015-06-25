@@ -27,7 +27,7 @@ class QueueCellIndexView : UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
+//        self.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
         self.addSubview(self.label)
         self.label.snp_makeConstraints { (make) -> Void in
             make.edges.equalTo(self)
@@ -40,10 +40,19 @@ class QueueCellIndexView : UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let maskLayer = CAShapeLayer()
-        maskLayer.path = UIBezierPath(ovalInRect: self.bounds).CGPath
-        maskLayer.frame = self.layer.bounds
-        self.layer.mask = maskLayer
+        let image = UIImage.draw(self.bounds.size) { (rect) -> Void in
+            
+            let locations:[CGFloat] = [1.0, 0.0]
+            let gradient = CGGradientCreateWithColors(CGColorSpaceCreateDeviceRGB(), [UIColor.blackColor().CGColor, UIColor(white: 0, alpha: 0)], locations)
+            CGContextDrawRadialGradient(UIGraphicsGetCurrentContext(), gradient, self.center, 20, self.center, self.bounds.size.width, CGGradientDrawingOptions(kCGGradientDrawsAfterEndLocation))
+            
+        }
+        
+        self.layer.contents = image.CGImage
+//        let maskLayer = CAShapeLayer()
+//        maskLayer.path = UIBezierPath(ovalInRect: self.bounds).CGPath
+//        maskLayer.frame = self.layer.bounds
+//        self.layer.mask = maskLayer
     }
     
     required init(coder aDecoder: NSCoder) {
