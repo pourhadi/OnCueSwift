@@ -133,7 +133,7 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
         }
         
         self.itemLabelsView.snp_makeConstraints { (make) -> Void in
-            make.left.equalTo(self.imageView.snp_right).offset(10)
+            make.left.equalTo(self.imageView.snp_right).offset(20)
             make.centerY.equalTo(self.contentView)
             make.right.equalTo(self.contentView).offset(-10)
         }
