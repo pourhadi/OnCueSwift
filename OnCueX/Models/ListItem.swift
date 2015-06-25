@@ -31,8 +31,8 @@ extension Identifiable {
     }
 }
 
-protocol ImageSource {
-    func getImage(forSize:CGSize, complete:(image:UIImage?)->Void)
+protocol ImageSource:Identifiable {
+    func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void)
 }
 
 protocol Item:ImageSource, DisplayContext, Identifiable {
@@ -63,7 +63,7 @@ protocol DisplayContext:ImageSource {
 struct CustomDisplayContext: DisplayContext {
     var title:String?
     var subtitle:String?
-    func getImage(forSize: CGSize, complete: (image: UIImage?) -> Void) {}
+    func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {}
     
      init(_ title:String) {
         self.init()
@@ -71,6 +71,10 @@ struct CustomDisplayContext: DisplayContext {
     }
     
     init() {}
+    
+    var identifier:String = {
+       return NSUUID().UUIDString
+    }()
 }
 
 class List<T> {
@@ -143,7 +147,7 @@ class ItemViewModel: DisplayContext, QueueObserver {
     
     var title:String? { return self.item.title }
     var subtitle:String? { return self.item.subtitle }
-    func getImage(forSize: CGSize, complete: (image: UIImage?) -> Void) {
+    func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {
         self.item.getImage(forSize, complete: complete)
     }
     

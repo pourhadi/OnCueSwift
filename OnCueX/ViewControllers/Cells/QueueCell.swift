@@ -103,7 +103,7 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
                 item.observer = self
                 self.itemLabelsView.titleLabel.text = item.displayInfo.title
                 self.itemLabelsView.subtitleLabel.text = item.displayInfo.subtitle
-                item.displayInfo.getImage(self.imageView.frame.size, complete: { (image) -> Void in
+                item.displayInfo.getImage(self.imageView.frame.size, complete: { (context, image) -> Void in
                     self.imageView.image = image
                 })
                 if let index = item.queueIndex {

@@ -103,14 +103,14 @@ func == (lh:QueuedItem, rh:QueuedItem) -> Bool {
     return lh.identifier == rh.identifier
 }
 
-extension QueuedItem:DisplayContext, ImageSource {
+extension QueuedItem:DisplayContext, Identifiable, ImageSource {
     var title:String? {
         return self.queueable.title
     }
     var subtitle:String? {
         return self.queueable.subtitle
     }
-    func getImage(forSize: CGSize, complete: (image: UIImage?) -> Void) {
+    func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {
         self.queueable.getImage(forSize, complete: complete)
     }
 }

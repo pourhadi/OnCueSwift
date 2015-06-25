@@ -47,10 +47,10 @@ internal struct SpotifyTrack: TrackItem, Queueable {
     
     var identifier:String { return self.partialTrack.identifier }
     
-    func getImage(forSize:CGSize, complete:(image:UIImage?)->Void) {
+    func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {
         let cover = self.partialTrack.album.getClosestCoverImage(forSize)
         _imageController.getImage(cover.imageURL) { (url, image) -> Void in
-            complete(image:image)
+            complete(context:self, image:image)
         }
     }
     
@@ -100,7 +100,7 @@ internal struct SpotifyAlbum : AlbumItem {
         }
     }
     
-    func getImage(forSize: CGSize, complete: (image: UIImage?) -> Void) {
+    func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {
         
     }
 
@@ -142,7 +142,7 @@ internal struct SpotifyArtist : ArtistItem {
         
     }
     
-    func getImage(forSize: CGSize, complete: (image: UIImage?) -> Void) {
+    func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {
         
     }
 }
@@ -180,7 +180,7 @@ internal struct SpotifyPlaylist : PlaylistItem {
         }
     }
     
-    func getImage(forSize: CGSize, complete: (image: UIImage?) -> Void) {
+    func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {
         
     }
 }
