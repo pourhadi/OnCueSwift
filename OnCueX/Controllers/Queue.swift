@@ -49,7 +49,7 @@ struct QueueIndex: Equatable {
         } else if diff == 1 {
             return "NEXT"
         }
-        return ""
+        return "\(diff)"
     }
 
     init(index:Int, playhead:Int) {

@@ -13,7 +13,7 @@ class QueueCellIndexView : UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        self.backgroundColor = UIColor.blackColor()
         self.addSubview(self.label)
         self.label.snp_makeConstraints { (make) -> Void in
             make.edges.equalTo(self)
@@ -96,7 +96,7 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
             make.centerY.equalTo(self.contentView)
             make.right.equalTo(self.contentView).offset(-10)
         }
-        let padding:CGFloat = 10
+        let padding:CGFloat = 5
         self.indexView.snp_makeConstraints { (make) -> Void in
             make.edges.equalTo(self.imageView).insets(UIEdgeInsetsMake(padding, padding, padding, padding))
         }
