@@ -27,11 +27,28 @@ struct QueueObserverWrapper:Identifiable {
     }
 }
 
+/*
+
+index: 5
+playhead:3
+
+index: 5
+playhead:8
+
+
+*/
+
 struct QueueIndex: Equatable {
     let index:Int
     let playhead:Int
     
     var displayIndex:String {
+        let diff:UInt = UInt(index) - UInt(playhead)
+        if diff == 0 {
+            return ""
+        } else if diff == 1 {
+            return "NEXT"
+        }
         return ""
     }
 

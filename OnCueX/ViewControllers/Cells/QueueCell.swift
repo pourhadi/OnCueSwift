@@ -8,12 +8,53 @@
 
 import UIKit
 
+class QueueCellIndexView : UIView {
+    let label = UILabel()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.addSubview(self.label)
+        self.label.snp_makeConstraints { (make) -> Void in
+            make.edges.equalTo(self)
+        }
+        
+        self.label.textColor = UIColor.whiteColor()
+        self.label.textAlignment = .Center
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        if let maskLayer = self.layer.mask as? CAShapeLayer {
+            maskLayer.frame = self.layer.bounds
+            maskLayer.path = UIBezierPath(ovalInRect: self.frame).CGPath
+        } else {
+            let maskLayer = CAShapeLayer()
+            maskLayer.path = UIBezierPath(ovalInRect: self.frame).CGPath
+            maskLayer.frame = self.layer.bounds
+            self.layer.mask = maskLayer
+        }
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 class QueueCell: UICollectionViewCell, QueuedItemObserver {
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.imageView.image = nil
+    }
     
     func queueIndexUpdated(forItem:QueuedItem, queueIndex:QueueIndex?) {
         if let item = self.item {
             if item.isEqual(forItem) {
-                
+                if let index = queueIndex {
+                    self.indexView.label.text = index.displayIndex
+                }
             }
         }
     }
@@ -33,6 +74,7 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
     
     let itemLabelsView = ItemLabelsView(frame: CGRectZero)
     var imageView = UIImageView()
+    let indexView = QueueCellIndexView(frame: CGRectZero)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -41,6 +83,8 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
         self.contentView.addSubview(self.imageView)
         self.contentView.addSubview(self.itemLabelsView)
         
+        self.contentView.addSubview(self.indexView)
+
         self.imageView.snp_makeConstraints { (make) -> Void in
             make.size.equalTo(CGSizeMake(80, 80))
             make.left.equalTo(self.contentView).offset(10)
@@ -51,6 +95,10 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
             make.left.equalTo(self.imageView.snp_right).offset(10)
             make.centerY.equalTo(self.contentView)
             make.right.equalTo(self.contentView).offset(-10)
+        }
+        let padding:CGFloat = 10
+        self.indexView.snp_makeConstraints { (make) -> Void in
+            make.edges.equalTo(self.imageView).insets(UIEdgeInsetsMake(padding, padding, padding, padding))
         }
     }
 
