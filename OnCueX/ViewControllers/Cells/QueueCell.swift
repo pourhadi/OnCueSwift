@@ -11,9 +11,22 @@ import UIKit
 class QueueCellIndexView : UIView {
     let label = UILabel()
     
+    func setText(text:String) {
+        let shadow = NSShadow()
+        shadow.shadowBlurRadius = 10;
+        shadow.shadowColor = UIColor.blackColor()
+        shadow.shadowOffset = CGSizeZero
+        
+        let par = NSMutableParagraphStyle()
+        par.alignment = .Center
+        
+        let attr:[String:AnyObject] = [NSShadowAttributeName:shadow, NSFontAttributeName:self.label.font, NSParagraphStyleAttributeName:par, NSForegroundColorAttributeName:UIColor.whiteColor()]
+        self.label.attributedText = NSAttributedString(string: text, attributes: attr)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
+        self.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0)
         self.addSubview(self.label)
         self.label.snp_makeConstraints { (make) -> Void in
             make.edges.equalTo(self)
@@ -55,7 +68,7 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
         if let item = self.item {
             if item.isEqual(forItem) {
                 if let index = queueIndex {
-                    self.indexView.label.text = index.displayIndex
+                    self.indexView.setText(index.displayIndex)
                 }
             }
         }
@@ -71,7 +84,7 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
                     self.imageView.image = image
                 })
                 if let index = item.queueIndex {
-                    self.indexView.label.text = index.displayIndex
+                    self.indexView.setText(index.displayIndex)
                 }
             }
         }
