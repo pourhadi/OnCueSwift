@@ -42,6 +42,7 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.imageView.image = nil
+        self.indexView.label.text = nil
     }
     
     deinit {
@@ -69,6 +70,9 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
                 item.displayInfo.getImage(self.imageView.frame.size, complete: { (image) -> Void in
                     self.imageView.image = image
                 })
+                if let index = item.queueIndex {
+                    self.indexView.label.text = index.displayIndex
+                }
             }
         }
     }
