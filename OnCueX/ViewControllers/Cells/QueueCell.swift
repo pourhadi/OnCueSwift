@@ -12,17 +12,19 @@ class QueueCellIndexView : UIView {
     let label = UILabel()
     let imageView = UIImageView()
     func setText(text:String) {
-        let shadow = NSShadow()
-        shadow.shadowBlurRadius = 3;
-        shadow.shadowColor = UIColor.blackColor()
-        shadow.shadowOffset = CGSizeZero
         
-        let par = NSMutableParagraphStyle()
-        par.alignment = .Center
-        
-        let fontSize:CGFloat = (text as NSString).length > 2 ? 16 : 24
-        let attr:[String:AnyObject] = [NSShadowAttributeName:shadow, NSFontAttributeName:UIFont.boldSystemFontOfSize(fontSize), NSParagraphStyleAttributeName:par, NSForegroundColorAttributeName:UIColor.whiteColor()]
-        self.label.attributedText = NSAttributedString(string: text, attributes: attr)
+        self.label.text = text
+//        let shadow = NSShadow()
+//        shadow.shadowBlurRadius = 3;
+//        shadow.shadowColor = UIColor.blackColor()
+//        shadow.shadowOffset = CGSizeZero
+//        
+//        let par = NSMutableParagraphStyle()
+//        par.alignment = .Center
+//        
+//        let fontSize:CGFloat = (text as NSString).length > 2 ? 16 : 24
+//        let attr:[String:AnyObject] = [NSShadowAttributeName:shadow, NSFontAttributeName:UIFont.boldSystemFontOfSize(fontSize), NSParagraphStyleAttributeName:par, NSForegroundColorAttributeName:UIColor.whiteColor()]
+//        self.label.attributedText = NSAttributedString(string: text, attributes: attr)
     }
     
     override init(frame: CGRect) {
@@ -41,6 +43,9 @@ class QueueCellIndexView : UIView {
         
         self.label.textColor = UIColor.whiteColor()
         self.label.textAlignment = .Center
+        self.label.font = UIFont.boldSystemFontOfSize(24)
+        self.label.minimumScaleFactor = 0.6
+        self.label.adjustsFontSizeToFitWidth = true
     }
 
     override func layoutSubviews() {
@@ -55,10 +60,6 @@ class QueueCellIndexView : UIView {
         }
         
         self.imageView.image = image
-//        let maskLayer = CAShapeLayer()
-//        maskLayer.path = UIBezierPath(ovalInRect: self.bounds).CGPath
-//        maskLayer.frame = self.layer.bounds
-//        self.layer.mask = maskLayer
     }
     
     required init(coder aDecoder: NSCoder) {
