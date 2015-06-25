@@ -49,12 +49,22 @@ class ItemLabelsView: UIView {
 class ListItemCell : UICollectionViewCell {
     weak var item:ItemViewModel?
     
+    let border = UIView()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         let selectedView = UIView(frame: self.bounds)
-        selectedView.backgroundColor = UIColor(white:0.1, alpha:1)
+        selectedView.backgroundColor = UIColor(white:0.3, alpha:1)
         self.selectedBackgroundView = selectedView
+        
+        self.border.backgroundColor = UIColor(white: 0.2, alpha: 1)
+        self.addSubview(self.border)
+        self.border.snp_makeConstraints { (make) -> Void in
+            make.height.equalTo(0.5)
+            make.bottom.equalTo(self)
+            make.left.right.equalTo(self)
+        }
     }
 
     required init(coder aDecoder: NSCoder) {
