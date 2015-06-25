@@ -131,6 +131,8 @@ class ListItemTextCell: ListItemCell {
             make.top.equalTo(self.contentView).offset(4)
             make.bottom.equalTo(self.contentView).offset(4)
         }
+        
+        self.indexView.alpha = 0
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -151,6 +153,13 @@ class ListItemTextCell: ListItemCell {
                 
                 if let subtitle = item.subtitle {
                     self.itemLabelsView.subtitleLabel.text = subtitle
+                }
+                
+                if let index = item.queueIndex {
+                    self.indexView.label.text = index.displayIndex
+                    self.setIndexViewVisible(true, animated: false)
+                } else {
+                    self.setIndexViewVisible(false, animated: false)
                 }
             }
         }
@@ -174,6 +183,9 @@ class ListItemTextCell: ListItemCell {
                     self.indexView.alpha = toAlpha
                     self.contentView.layoutIfNeeded()
                 }
+            } else {
+                self.indexView.alpha = toAlpha
+                self.contentView.layoutIfNeeded()
             }
             
         }
