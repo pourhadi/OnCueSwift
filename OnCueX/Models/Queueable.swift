@@ -50,7 +50,11 @@ class QueuedTrack:Queued {
     var displayInfo:DisplayContext {
         return self.track
     }
-    weak var observer:QueuedItemObserver?
+    weak var observer:QueuedItemObserver? {
+        didSet {
+            print("set observer")
+        }
+    }
     var identifier:String { return self.track.identifier }
     init(track:TrackItem) {
         self.track = track
