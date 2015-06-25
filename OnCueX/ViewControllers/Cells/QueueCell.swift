@@ -99,9 +99,9 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
         super.init(frame: frame)
         self.backgroundColor = UIColor.clearColor()
         self.itemLabelsView.backgroundColor = UIColor.clearColor()
+        self.imageView.contentMode = .ScaleAspectFill
         self.contentView.addSubview(self.imageView)
         self.contentView.addSubview(self.itemLabelsView)
-        
         self.contentView.addSubview(self.indexView)
 
         self.imageView.snp_makeConstraints { (make) -> Void in
