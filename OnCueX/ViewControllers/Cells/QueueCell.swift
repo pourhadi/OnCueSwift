@@ -104,7 +104,7 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
                 item.observer = self
                 self.itemLabelsView.titleLabel.text = item.displayInfo.title
                 self.itemLabelsView.subtitleLabel.text = item.displayInfo.subtitle
-                item.displayInfo.getImage(self.imageView.frame.size, complete: { [unowned self] (context, image) -> Void in
+                item.displayInfo.getImage(self.imageView.frame.size, complete: {  (context, image) -> Void in
                     if let localItem = self.item {
                         guard localItem.isEqual(context) || localItem.displayInfo.isEqual(context) else { return }
                         self.imageView.image = image

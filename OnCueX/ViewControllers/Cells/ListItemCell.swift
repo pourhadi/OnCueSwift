@@ -51,16 +51,16 @@ class ItemLabelsView: UIView {
         self.subtitleLabel.font = UIFont.boldSystemFontOfSize(12)
         self.subtitleLabel.textColor = UIColor.lightGrayColor()
         
-        self.titleLabel.snp_makeConstraints { [unowned self] (make) -> Void in
+        self.titleLabel.snp_makeConstraints {  (make) -> Void in
             make.left.top.right.equalTo(self)
             make.bottom.equalTo(self.subtitleLabel.snp_top).offset(-2)
         }
         
-        self.subtitleLabel.snp_makeConstraints { [unowned self] (make) -> Void in
+        self.subtitleLabel.snp_makeConstraints {  (make) -> Void in
             make.bottom.left.right.equalTo(self)
         }
         
-        self.snp_updateConstraints { [unowned self] (make) -> Void in
+        self.snp_updateConstraints {  (make) -> Void in
             make.top.equalTo(self.titleLabel)
             make.bottom.equalTo(self.subtitleLabel)
         }
@@ -94,7 +94,7 @@ class ListItemCell : UICollectionViewCell {
         
         self.border.backgroundColor = UIColor(white: 0.1, alpha: 1)
         self.addSubview(self.border)
-        self.border.snp_makeConstraints { [unowned self] (make) -> Void in
+        self.border.snp_makeConstraints {  (make) -> Void in
             make.height.equalTo(0.5)
             make.bottom.equalTo(self)
             make.left.right.equalTo(self)
@@ -121,14 +121,14 @@ class ListItemTextCell: ListItemCell {
         self.contentView.addSubview(self.itemLabelsView)
 
         let padding:CGFloat = 10.0
-        self.itemLabelsView.snp_makeConstraints { [unowned self] (make) -> Void in
+        self.itemLabelsView.snp_makeConstraints {  (make) -> Void in
             make.right.equalTo(self.contentView).insets(UIEdgeInsetsMake(0, 0, 0, padding))
             make.centerY.equalTo(self.contentView)
             self.leftConstraint = make.left.equalTo(self.contentView).offset(padding).constraint
         }
         
         self.contentView.addSubview(self.indexView)
-        self.indexView.snp_makeConstraints { [unowned self] (make) -> Void in
+        self.indexView.snp_makeConstraints {  (make) -> Void in
             make.left.equalTo(self.contentView).offset(10)
             make.top.equalTo(self.contentView).offset(5)
             make.bottom.equalTo(self.contentView).offset(-5)
@@ -176,7 +176,7 @@ class ListItemTextCell: ListItemCell {
             if let left = self.leftConstraint {
                 left.uninstall()
             }
-            self.itemLabelsView.snp_updateConstraints { [unowned self] (make) -> Void in
+            self.itemLabelsView.snp_updateConstraints {  (make) -> Void in
                 if self.indexViewVisible {
                     self.leftConstraint = make.left.equalTo(self.indexView.snp_right).offset(10).constraint
                 } else {
@@ -185,7 +185,7 @@ class ListItemTextCell: ListItemCell {
             }
             
             if animated {
-                UIView.animateWithDuration(0.2) { [unowned self] () -> Void in
+                UIView.animateWithDuration(0.2) {  () -> Void in
                     self.indexView.alpha = toAlpha
                     self.contentView.layoutIfNeeded()
                 }
