@@ -99,12 +99,13 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
     
     weak var item:Queued? {
         didSet {
+            self.imageView.image = nil
             if let item = self.item {
                 item.observer = self
                 self.itemLabelsView.titleLabel.text = item.displayInfo.title
                 self.itemLabelsView.subtitleLabel.text = item.displayInfo.subtitle
                 item.displayInfo.getImage(self.imageView.frame.size, complete: { (context, image) -> Void in
-                    guard item.isEqual(context) else { return }
+                    guard item.isEqual(context) || item.displayInfo.isEqual(context) else { return }
                     self.imageView.image = image
                 })
                 if let index = item.queueIndex {
