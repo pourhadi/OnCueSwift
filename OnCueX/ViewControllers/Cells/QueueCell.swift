@@ -20,7 +20,7 @@ class QueueCellIndexView : UIView {
         let par = NSMutableParagraphStyle()
         par.alignment = .Center
         
-        let attr:[String:AnyObject] = [NSShadowAttributeName:shadow, NSFontAttributeName:UIFont.boldSystemFontOfSize(14), NSParagraphStyleAttributeName:par, NSForegroundColorAttributeName:UIColor.whiteColor()]
+        let attr:[String:AnyObject] = [NSShadowAttributeName:shadow, NSFontAttributeName:UIFont.boldSystemFontOfSize(20), NSParagraphStyleAttributeName:par, NSForegroundColorAttributeName:UIColor.whiteColor()]
         self.label.attributedText = NSAttributedString(string: text, attributes: attr)
     }
     
