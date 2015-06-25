@@ -156,8 +156,10 @@ class ListItemTextCell: ListItemCell {
         }
     }
     
-    var indexViewVisible:Bool = false {
-        didSet {
+    var indexViewVisible:Bool = false
+    func setIndexViewVisible(visible:Bool, animated:Bool) {
+        if visible != self.indexViewVisible {
+            self.indexViewVisible = visible
             let toAlpha:CGFloat = self.indexViewVisible ? 1.0 : 0
             self.itemLabelsView.snp_updateConstraints { (make) -> Void in
                 if self.indexViewVisible {
@@ -166,10 +168,14 @@ class ListItemTextCell: ListItemCell {
                     make.left.equalTo(self.contentView).offset(10)
                 }
             }
-            UIView.animateWithDuration(0.2) { () -> Void in
-                self.indexView.alpha = toAlpha
-                self.contentView.layoutIfNeeded()
+            
+            if animated {
+                UIView.animateWithDuration(0.2) { () -> Void in
+                    self.indexView.alpha = toAlpha
+                    self.contentView.layoutIfNeeded()
+                }
             }
+            
         }
     }
     
