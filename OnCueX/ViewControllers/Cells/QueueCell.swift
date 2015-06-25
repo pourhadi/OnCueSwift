@@ -38,7 +38,8 @@ class QueueCellIndexView : UIView {
         }
         self.addSubview(self.label)
         self.label.snp_makeConstraints { (make) -> Void in
-            make.edges.equalTo(self)
+            let padding:CGFloat = 10
+            make.edges.equalTo(self).insets(UIEdgeInsetsMake(padding, padding, padding, padding))
         }
         
         self.label.textColor = UIColor.whiteColor()
