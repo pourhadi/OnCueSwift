@@ -10,7 +10,7 @@ import UIKit
 
 class QueueCellIndexView : UIView {
     let label = UILabel()
-    
+    let imageView = UIImageView()
     func setText(text:String) {
         let shadow = NSShadow()
         shadow.shadowBlurRadius = 3;
@@ -28,6 +28,12 @@ class QueueCellIndexView : UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 //        self.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
+        
+        self.imageView.contentMode = .ScaleAspectFill
+        self.addSubview(self.imageView)
+        self.imageView.snp_makeConstraints { (make) -> Void in
+            make.edges.equalTo(self)
+        }
         self.addSubview(self.label)
         self.label.snp_makeConstraints { (make) -> Void in
             make.edges.equalTo(self)
@@ -44,11 +50,11 @@ class QueueCellIndexView : UIView {
             
             let locations:[CGFloat] = [0.0, 1.0]
             let gradient = CGGradientCreateWithColors(CGColorSpaceCreateDeviceRGB(), [UIColor.blackColor().CGColor, UIColor(white: 0, alpha: 0).CGColor], locations)
-            CGContextDrawRadialGradient(UIGraphicsGetCurrentContext(), gradient, self.center, 20, self.center, self.bounds.size.width, CGGradientDrawingOptions(kCGGradientDrawsBeforeStartLocation))
+            CGContextDrawRadialGradient(UIGraphicsGetCurrentContext(), gradient, self.center, 10, self.center, self.bounds.size.width, CGGradientDrawingOptions(kCGGradientDrawsBeforeStartLocation))
             
         }
         
-        self.layer.contents = image.CGImage
+        self.imageView.image = image
 //        let maskLayer = CAShapeLayer()
 //        maskLayer.path = UIBezierPath(ovalInRect: self.bounds).CGPath
 //        maskLayer.frame = self.layer.bounds
