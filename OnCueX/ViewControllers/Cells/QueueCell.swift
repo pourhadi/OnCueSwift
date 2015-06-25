@@ -128,5 +128,6 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
     override func layoutSubviews() {
         super.layoutSubviews()
         self.imageView.layer.cornerRadius = self.imageView.frame.size.width / 2
+        self.imageView.clipsToBounds = true
     }
 }
