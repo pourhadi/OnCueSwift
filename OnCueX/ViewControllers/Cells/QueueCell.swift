@@ -27,7 +27,7 @@ class QueueCellIndexView : UIView {
         super.layoutSubviews()
         
         let maskLayer = CAShapeLayer()
-        maskLayer.path = UIBezierPath(ovalInRect: self.frame).CGPath
+        maskLayer.path = UIBezierPath(ovalInRect: self.bounds).CGPath
         maskLayer.frame = self.layer.bounds
         self.layer.mask = maskLayer
     }
@@ -42,9 +42,6 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.imageView.image = nil
-        if let item = self.item {
-            item.observer = nil
-        }
     }
     
     deinit {
