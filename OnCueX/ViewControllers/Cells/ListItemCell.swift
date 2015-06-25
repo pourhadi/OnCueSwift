@@ -58,7 +58,7 @@ class ListItemCell : UICollectionViewCell {
         selectedView.backgroundColor = UIColor(white:0.3, alpha:1)
         self.selectedBackgroundView = selectedView
         
-        self.border.backgroundColor = UIColor(white: 0.2, alpha: 1)
+        self.border.backgroundColor = UIColor(white: 0.1, alpha: 1)
         self.addSubview(self.border)
         self.border.snp_makeConstraints { (make) -> Void in
             make.height.equalTo(0.5)
