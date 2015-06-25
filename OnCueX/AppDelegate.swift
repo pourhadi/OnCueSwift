@@ -32,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ItemManagerDelegate {
         
         self.window!.rootViewController = self.uiManager.slideVC
         self.window!.makeKeyAndVisible()
+        self.window!.tintColor = UIColor.whiteColor()
 //        self.navigationController = nav
         
 //        self.spotifyManager = SpotifyManager(delegate:self)
