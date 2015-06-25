@@ -29,6 +29,10 @@ class ListCellIndexView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func intrinsicContentSize() -> CGSize {
+        return CGSizeMake(60, UIViewNoIntrinsicMetric)
+    }
+    
 }
 
 class ItemLabelsView: UIView {
@@ -72,9 +76,7 @@ class ItemLabelsView: UIView {
 //        }
 //    }
 //    
-    override func intrinsicContentSize() -> CGSize {
-        return CGSizeMake(60, UIViewNoIntrinsicMetric)
-    }
+
     
 }
 
@@ -169,6 +171,10 @@ class ListItemTextCell: ListItemCell {
                 self.contentView.layoutIfNeeded()
             }
         }
+    }
+    
+    deinit {
+        print("list cell dealloc")
     }
 }
 
