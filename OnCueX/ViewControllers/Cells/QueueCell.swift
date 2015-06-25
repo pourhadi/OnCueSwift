@@ -13,14 +13,14 @@ class QueueCellIndexView : UIView {
     
     func setText(text:String) {
         let shadow = NSShadow()
-        shadow.shadowBlurRadius = 10;
+        shadow.shadowBlurRadius = 20;
         shadow.shadowColor = UIColor.blackColor()
         shadow.shadowOffset = CGSizeZero
         
         let par = NSMutableParagraphStyle()
         par.alignment = .Center
         
-        let attr:[String:AnyObject] = [NSShadowAttributeName:shadow, NSFontAttributeName:self.label.font, NSParagraphStyleAttributeName:par, NSForegroundColorAttributeName:UIColor.whiteColor()]
+        let attr:[String:AnyObject] = [NSShadowAttributeName:shadow, NSFontAttributeName:UIFont.boldSystemFontOfSize(14), NSParagraphStyleAttributeName:par, NSForegroundColorAttributeName:UIColor.whiteColor()]
         self.label.attributedText = NSAttributedString(string: text, attributes: attr)
     }
     
