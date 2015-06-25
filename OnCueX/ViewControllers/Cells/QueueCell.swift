@@ -13,7 +13,7 @@ class QueueCellIndexView : UIView {
     
     func setText(text:String) {
         let shadow = NSShadow()
-        shadow.shadowBlurRadius = 2;
+        shadow.shadowBlurRadius = 3;
         shadow.shadowColor = UIColor.blackColor()
         shadow.shadowOffset = CGSizeZero
         
@@ -27,7 +27,7 @@ class QueueCellIndexView : UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
+        self.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
         self.addSubview(self.label)
         self.label.snp_makeConstraints { (make) -> Void in
             make.edges.equalTo(self)
