@@ -26,15 +26,10 @@ class QueueCellIndexView : UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        if let maskLayer = self.layer.mask as? CAShapeLayer {
-            maskLayer.frame = self.layer.bounds
-            maskLayer.path = UIBezierPath(ovalInRect: self.frame).CGPath
-        } else {
-            let maskLayer = CAShapeLayer()
-            maskLayer.path = UIBezierPath(ovalInRect: self.frame).CGPath
-            maskLayer.frame = self.layer.bounds
-            self.layer.mask = maskLayer
-        }
+        let maskLayer = CAShapeLayer()
+        maskLayer.path = UIBezierPath(ovalInRect: self.frame).CGPath
+        maskLayer.frame = self.layer.bounds
+        self.layer.mask = maskLayer
     }
     
     required init(coder aDecoder: NSCoder) {
