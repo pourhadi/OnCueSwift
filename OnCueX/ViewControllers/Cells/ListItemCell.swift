@@ -202,9 +202,9 @@ extension ListItemTextCell: ItemViewModelObserver {
             if viewModel.isEqual(item) {
                 if let index = queueIndex {
                     self.indexView.label.text = index.displayIndex
-                    self.indexViewVisible = true
+                    self.setIndexViewVisible(true, animated: true)
                 } else {
-                    self.indexViewVisible = false
+                    self.setIndexViewVisible(false, animated: true)
                 }
             }
         }
