@@ -8,6 +8,23 @@
 
 import UIKit
 
+extension SPTPartialAlbum {
+    func getClosestCoverImage(forSize:CGSize) -> SPTImage {
+        var smallestDiff:CGFloat = CGFloat.max
+        var indexOfSmallest = 0
+        for x in 0..<self.covers.count {
+            if let cover = self.covers[x] as? SPTImage {
+                let diff = forSize.width - cover.size.width
+                if diff < smallestDiff {
+                    smallestDiff = diff
+                    indexOfSmallest = x
+                }
+            }
+        }
+        return self.covers[indexOfSmallest] as! SPTImage
+    }
+}
+
 internal struct SpotifyTrack: TrackItem, Queueable {
     var source:ItemSource { return .Spotify }
     
@@ -31,7 +48,8 @@ internal struct SpotifyTrack: TrackItem, Queueable {
     var identifier:String { return self.partialTrack.identifier }
     
     func getImage(forSize:CGSize, complete:(image:UIImage?)->Void) {
-        _imageController.getImage(self.partialTrack.album.smallestCover.imageURL) { (url, image) -> Void in
+        let cover = self.partialTrack.album.getClosestCoverImage(forSize)
+        _imageController.getImage(cover.imageURL) { (url, image) -> Void in
             complete(image:image)
         }
     }
