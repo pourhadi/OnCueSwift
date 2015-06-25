@@ -50,7 +50,7 @@ class QueueCellIndexView : UIView {
             
             let locations:[CGFloat] = [0.0, 1.0]
             let gradient = CGGradientCreateWithColors(CGColorSpaceCreateDeviceRGB(), [UIColor.blackColor().CGColor, UIColor(white: 0, alpha: 0).CGColor], locations)
-            CGContextDrawRadialGradient(UIGraphicsGetCurrentContext(), gradient, self.imageView.center, 2, self.imageView.center, self.bounds.size.width, CGGradientDrawingOptions(kCGGradientDrawsBeforeStartLocation))
+            CGContextDrawRadialGradient(UIGraphicsGetCurrentContext(), gradient, self.imageView.center, 1, self.imageView.center, self.bounds.size.width, CGGradientDrawingOptions(kCGGradientDrawsAfterEndLocation))
             
         }
         
