@@ -53,7 +53,7 @@ class ListItemCell : UICollectionViewCell {
         super.init(frame: frame)
         
         let selectedView = UIView(frame: self.bounds)
-        selectedView.backgroundColor = UIColor.blackColor()
+        selectedView.backgroundColor = UIColor(white:0.1, alpha:1)
         self.selectedBackgroundView = selectedView
     }
 
@@ -71,7 +71,7 @@ class ListItemTextCell: ListItemCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = UIColor(white: 0.1, alpha: 1)
+        self.backgroundColor = UIColor(white: 0, alpha: 1)
         self.contentView.addSubview(self.itemLabelsView)
 
         let padding:CGFloat = 10.0
