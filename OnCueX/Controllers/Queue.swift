@@ -152,7 +152,7 @@ final class Queue {
     }
     
     func insert(item:QueuedItem) -> QueueIndex {
-        return self.insert(item, atIndex: item.queueIndex != nil ? 0 : self.items.count)
+        return self.insert(item, atIndex: item.queueIndex != nil ? item.queueIndex!.index != self.playhead ? 1 : item.queueIndex!.index : self.items.count)
     }
     
     func insert(item:Queueable, complete:((index:QueueIndex)->Void)?) {
