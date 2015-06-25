@@ -70,7 +70,7 @@ class NavVC: UIViewController, UINavigationBarDelegate, UINavigationControllerDe
         self.navBar.barStyle = .Black
         
         let black = UIImage.draw(CGSizeMake(4, 4)) { (rect) -> Void in
-            UIColor.blackColor().setFill()
+            UIColor(white:0.2, alpha:1).setFill()
             UIRectFill(rect)
         }.resizable()
         self.navBar.setBackgroundImage(black, forBarMetrics: .Default)
