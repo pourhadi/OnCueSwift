@@ -61,7 +61,13 @@ class QueuedItem:Equatable, Queued  {
     }
     
     weak var observer:QueuedItemObserver?
-    var queueIndex:QueueIndex?
+    var queueIndex:QueueIndex? {
+        didSet {
+            if let observer = self.observer {
+                observer.queueIndexUpdated(self, queueIndex: self.queueIndex)
+            }
+        }
+    }
     var tracks:[QueuedTrack]
     
     
