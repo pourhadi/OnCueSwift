@@ -124,7 +124,7 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
             make.centerY.equalTo(self.contentView)
             make.right.equalTo(self.contentView).offset(-10)
         }
-        let padding:CGFloat = 10
+        let padding:CGFloat = 0
         self.indexView.snp_makeConstraints { (make) -> Void in
             make.edges.equalTo(self.imageView).insets(UIEdgeInsetsMake(padding, padding, padding, padding))
         }
