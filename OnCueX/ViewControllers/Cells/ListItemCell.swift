@@ -130,8 +130,9 @@ class ListItemTextCell: ListItemCell {
         self.contentView.addSubview(self.indexView)
         self.indexView.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(self.contentView).offset(10)
-            make.top.equalTo(self.contentView).offset(4)
-            make.bottom.equalTo(self.contentView).offset(4)
+            make.top.equalTo(self.contentView).offset(5)
+            make.bottom.equalTo(self.contentView).offset(-5)
+            make.width.equalTo(60)
         }
         
         self.indexView.alpha = 0
