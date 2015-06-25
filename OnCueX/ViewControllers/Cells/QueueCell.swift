@@ -12,6 +12,11 @@ class QueueCellIndexView : UIView {
     let label = UILabel()
     let imageView = UIImageView()
     func setText(text:String) {
+        if (text == "") {
+            self.alpha = 0
+        } else {
+            self.alpha = 1
+        }
         
         self.label.text = text
 //        let shadow = NSShadow()
