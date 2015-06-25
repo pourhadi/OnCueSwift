@@ -47,9 +47,18 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.imageView.image = nil
+        if let item = self.item {
+            item.observer = nil
+        }
     }
     
-    func queueIndexUpdated(forItem:QueuedItem, queueIndex:QueueIndex?) {
+    deinit {
+        if let item = self.item {
+            item.observer = nil
+        }
+    }
+    
+    func queueIndexUpdated(forItem:Queued, queueIndex:QueueIndex?) {
         if let item = self.item {
             if item.isEqual(forItem) {
                 if let index = queueIndex {

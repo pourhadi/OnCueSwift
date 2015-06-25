@@ -21,7 +21,7 @@ extension Queueable {
 }
 
 protocol QueuedItemObserver: class {
-    func queueIndexUpdated(forItem:QueuedItem, queueIndex:QueueIndex?)
+    func queueIndexUpdated(forItem:Queued, queueIndex:QueueIndex?)
 }
 
 protocol Queued: class, Identifiable {
@@ -39,7 +39,14 @@ class QueuedTrack:Queued {
         return [self]
     }
     
-    var queueIndex:QueueIndex?
+    var queueIndex:QueueIndex? {
+        didSet {
+            if let observer = self.observer {
+                observer.queueIndexUpdated(self, queueIndex: self.queueIndex)
+            }
+        }
+    }
+    
     var displayInfo:DisplayContext {
         return self.track
     }
