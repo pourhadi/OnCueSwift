@@ -124,4 +124,9 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.imageView.layer.cornerRadius = self.imageView.frame.size.width / 2
+    }
 }
