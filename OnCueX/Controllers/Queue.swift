@@ -68,6 +68,7 @@ final class Queue {
     func addObserver(observer:QueueObserver) {
         self.observers.append(QueueObserverWrapper(observer: observer))
     }
+    
     func removeObserver(observer:QueueObserver) {
         if let index = self.observers.index(observer) {
             self.observers.removeAtIndex(index)
@@ -244,10 +245,6 @@ final class Queue {
                 observerItem.queueUpdated(self)
             }
         }
-        
-        self.observers = self.observers.filter({ (observer) -> Bool in
-            return observer.identifier != ""
-        })
         
         self.operations.removeAll()
     }
