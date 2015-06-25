@@ -112,7 +112,8 @@ class ListItemTextCell: ListItemCell {
     
     let indexView = ListCellIndexView()
     let itemLabelsView = ItemLabelsView(frame:CGRectZero)
-    
+    var leftConstraint:Constraint?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -121,8 +122,9 @@ class ListItemTextCell: ListItemCell {
 
         let padding:CGFloat = 10.0
         self.itemLabelsView.snp_makeConstraints { (make) -> Void in
-            make.left.right.equalTo(self.contentView).insets(UIEdgeInsetsMake(0, padding, 0, padding))
+            make.right.equalTo(self.contentView).insets(UIEdgeInsetsMake(0, 0, 0, padding))
             make.centerY.equalTo(self.contentView)
+            self.leftConstraint = make.left.equalTo(self.contentView).offset(padding).constraint
         }
         
         self.contentView.addSubview(self.indexView)
@@ -170,11 +172,14 @@ class ListItemTextCell: ListItemCell {
         if visible != self.indexViewVisible {
             self.indexViewVisible = visible
             let toAlpha:CGFloat = self.indexViewVisible ? 1.0 : 0
+            if let left = self.leftConstraint {
+                left.uninstall()
+            }
             self.itemLabelsView.snp_updateConstraints { (make) -> Void in
                 if self.indexViewVisible {
-                    make.left.equalTo(self.indexView.snp_right).offset(10)
+                    self.leftConstraint = make.left.equalTo(self.indexView.snp_right).offset(10).constraint
                 } else {
-                    make.left.equalTo(self.contentView).offset(10)
+                    self.leftConstraint = make.left.equalTo(self.contentView).offset(10).constraint
                 }
             }
             
