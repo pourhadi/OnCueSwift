@@ -14,10 +14,6 @@ protocol Queueable: DisplayContext, Identifiable {
     func getTracks(complete:(tracks:[TrackItem])->Void)
 }
 
-protocol QueueObserver : Identifiable {
-    func queueUpdated(queue:Queue)
-}
-
 extension Queueable {
     func equals(other:Queueable) -> Bool {
         return self.identifier == other.identifier

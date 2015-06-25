@@ -10,6 +10,23 @@ import UIKit
 
 let _queue:Queue = Queue()
 
+protocol QueueObserver : class, Identifiable {
+    func queueUpdated(queue:Queue)
+}
+
+struct QueueObserverWrapper:Identifiable {
+    var identifier:String {
+        if let observer = self.observer {
+            return observer.identifier
+        }
+        return ""
+    }
+    weak var observer:QueueObserver?
+    init(observer:QueueObserver) {
+        self.observer = observer;
+    }
+}
+
 struct QueueIndex: Equatable {
     let index:Int
     let playhead:Int
@@ -47,9 +64,15 @@ struct QueueOperation {
 
 final class Queue {
 
-    var observers:[String:QueueObserver] = [:]
-    func addObserver(observer:QueueObserver) { self.observers[observer.identifier] = observer }
-    func removeObserver(observer:QueueObserver) { self.observers.removeValueForKey(observer.identifier) }
+    var observers:[QueueObserverWrapper] = []
+    func addObserver(observer:QueueObserver) {
+        self.observers.append(QueueObserverWrapper(observer: observer))
+    }
+    func removeObserver(observer:QueueObserver) {
+        if let index = self.observers.index(observer) {
+            self.observers.removeAtIndex(index)
+        }
+    }
     
     var playhead = 0 {
         didSet {
@@ -215,9 +238,16 @@ final class Queue {
             }
         }
         
-        for (_, observer) in self.observers {
-            observer.queueUpdated(self)
+        for x in 0..<self.observers.count {
+            let observer = self.observers[x]
+            if let observerItem = observer.observer {
+                observerItem.queueUpdated(self)
+            }
         }
+        
+        self.observers = self.observers.filter({ (observer) -> Bool in
+            return observer.identifier != ""
+        })
         
         self.operations.removeAll()
     }
