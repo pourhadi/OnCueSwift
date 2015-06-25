@@ -13,7 +13,7 @@ class QueueCellIndexView : UIView {
     
     func setText(text:String) {
         let shadow = NSShadow()
-        shadow.shadowBlurRadius = 5;
+        shadow.shadowBlurRadius = 3;
         shadow.shadowColor = UIColor.blackColor()
         shadow.shadowOffset = CGSizeZero
         
