@@ -17,8 +17,8 @@ class ListCellIndexView: UIView {
         self.backgroundColor = UIColor(white:0.1, alpha:1)
         
         self.addSubview(self.label)
-        self.label.snp_makeConstraints { (make) -> Void in
-            make.edges.equalTo(self)
+        self.label.snp_makeConstraints { [weak self] (make) -> Void in
+            make.edges.equalTo(self!)
         }
         
         self.label.textAlignment = .Center
@@ -51,18 +51,18 @@ class ItemLabelsView: UIView {
         self.subtitleLabel.font = UIFont.boldSystemFontOfSize(12)
         self.subtitleLabel.textColor = UIColor.lightGrayColor()
         
-        self.titleLabel.snp_makeConstraints {  (make) -> Void in
-            make.left.top.right.equalTo(self)
-            make.bottom.equalTo(self.subtitleLabel.snp_top).offset(-2)
+        self.titleLabel.snp_makeConstraints { [weak self] (make) -> Void in
+            make.left.top.right.equalTo(self!)
+            make.bottom.equalTo(self!.subtitleLabel.snp_top).offset(-2)
         }
         
-        self.subtitleLabel.snp_makeConstraints {  (make) -> Void in
-            make.bottom.left.right.equalTo(self)
+        self.subtitleLabel.snp_makeConstraints { [weak self] (make) -> Void in
+            make.bottom.left.right.equalTo(self!)
         }
         
-        self.snp_updateConstraints {  (make) -> Void in
-            make.top.equalTo(self.titleLabel)
-            make.bottom.equalTo(self.subtitleLabel)
+        self.snp_updateConstraints { [weak self] (make) -> Void in
+            make.top.equalTo(self!.titleLabel)
+            make.bottom.equalTo(self!.subtitleLabel)
         }
     }
 
@@ -94,10 +94,10 @@ class ListItemCell : UICollectionViewCell {
         
         self.border.backgroundColor = UIColor(white: 0.1, alpha: 1)
         self.addSubview(self.border)
-        self.border.snp_makeConstraints {  (make) -> Void in
+        self.border.snp_makeConstraints { [weak self] (make) -> Void in
             make.height.equalTo(0.5)
-            make.bottom.equalTo(self)
-            make.left.right.equalTo(self)
+            make.bottom.equalTo(self!)
+            make.left.right.equalTo(self!)
         }
     }
 
@@ -121,17 +121,17 @@ class ListItemTextCell: ListItemCell {
         self.contentView.addSubview(self.itemLabelsView)
 
         let padding:CGFloat = 10.0
-        self.itemLabelsView.snp_makeConstraints {  (make) -> Void in
-            make.right.equalTo(self.contentView).insets(UIEdgeInsetsMake(0, 0, 0, padding))
-            make.centerY.equalTo(self.contentView)
-            self.leftConstraint = make.left.equalTo(self.contentView).offset(padding).constraint
+        self.itemLabelsView.snp_makeConstraints { [weak self] (make) -> Void in
+            make.right.equalTo(self!.contentView).insets(UIEdgeInsetsMake(0, 0, 0, padding))
+            make.centerY.equalTo(self!.contentView)
+            self!.leftConstraint = make.left.equalTo(self!.contentView).offset(padding).constraint
         }
         
         self.contentView.addSubview(self.indexView)
-        self.indexView.snp_makeConstraints {  (make) -> Void in
-            make.left.equalTo(self.contentView).offset(10)
-            make.top.equalTo(self.contentView).offset(5)
-            make.bottom.equalTo(self.contentView).offset(-5)
+        self.indexView.snp_makeConstraints { [weak self] (make) -> Void in
+            make.left.equalTo(self!.contentView).offset(10)
+            make.top.equalTo(self!.contentView).offset(5)
+            make.bottom.equalTo(self!.contentView).offset(-5)
             make.width.equalTo(60)
         }
         
@@ -176,11 +176,11 @@ class ListItemTextCell: ListItemCell {
             if let left = self.leftConstraint {
                 left.uninstall()
             }
-            self.itemLabelsView.snp_updateConstraints {  (make) -> Void in
-                if self.indexViewVisible {
-                    self.leftConstraint = make.left.equalTo(self.indexView.snp_right).offset(10).constraint
+            self.itemLabelsView.snp_updateConstraints { [weak self] (make) -> Void in
+                if self!.indexViewVisible {
+                    self!.leftConstraint = make.left.equalTo(self!.indexView.snp_right).offset(10).constraint
                 } else {
-                    self.leftConstraint = make.left.equalTo(self.contentView).offset(10).constraint
+                    self!.leftConstraint = make.left.equalTo(self!.contentView).offset(10).constraint
                 }
             }
             
