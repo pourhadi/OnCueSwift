@@ -7,11 +7,27 @@
 //
 
 import UIKit
-
+import SnapKit
 let reuseIdentifier = "Cell"
 
 class MainMenuCell : UICollectionViewCell {
     let label = UILabel()
+    
+    override init(frame: CGRect) {
+        super.init(frame:frame)
+        
+        self.contentView.addSubview(self.label)
+        self.label.snp_makeConstraints { (make) -> Void in
+            make.edges.equalTo(self.contentView).insets(UIEdgeInsetsMake(0, 20, 0, 20))
+        }
+        
+        self.label.textColor = UIColor.whiteColor()
+        self.label.font = UIFont.boldSystemFontOfSize(30)
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 class MainMenuVC: UICollectionViewController {

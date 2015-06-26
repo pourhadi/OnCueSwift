@@ -33,6 +33,9 @@
 		446EAA161B34D3680041B8C4 /* CellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446EAA151B34D3680041B8C4 /* CellFactory.swift */; };
 		446EAA1A1B360A060041B8C4 /* MainMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446EAA191B360A060041B8C4 /* MainMenuVC.swift */; };
 		446EAA1C1B360AA20041B8C4 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446EAA1B1B360AA20041B8C4 /* Helpers.swift */; };
+		44A53D301B3E02E000C54160 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A53D2F1B3E02E000C54160 /* Player.swift */; };
+		44A53D361B3E03DB00C54160 /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A53D351B3E03DB00C54160 /* LibraryController.swift */; };
+		44A53D381B3E043700C54160 /* PlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A53D371B3E043700C54160 /* PlayerVC.swift */; };
 		44E5644E1B3D3079004CC5E3 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44E564471B3D301D004CC5E3 /* SnapKit.framework */; };
 		44E564501B3D308A004CC5E3 /* SnapKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 44E564471B3D301D004CC5E3 /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4B6C67CF2C5AEEA6B43C5EEC /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B180B9719C8F2A627B88D5F /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -124,6 +127,9 @@
 		446EAA151B34D3680041B8C4 /* CellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CellFactory.swift; path = Models/CellFactory.swift; sourceTree = "<group>"; };
 		446EAA191B360A060041B8C4 /* MainMenuVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainMenuVC.swift; path = ViewControllers/MainMenuVC.swift; sourceTree = "<group>"; };
 		446EAA1B1B360AA20041B8C4 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		44A53D2F1B3E02E000C54160 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Player.swift; path = Controllers/Player.swift; sourceTree = "<group>"; };
+		44A53D351B3E03DB00C54160 /* LibraryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryController.swift; path = Controllers/LibraryController.swift; sourceTree = "<group>"; };
+		44A53D371B3E043700C54160 /* PlayerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlayerVC.swift; path = ViewControllers/PlayerVC.swift; sourceTree = "<group>"; };
 		44E5643F1B3D301C004CC5E3 /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
 		D33C0BE0F17D33A1E54D273A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -244,6 +250,7 @@
 				446EAA121B34CADE0041B8C4 /* ListVM.swift */,
 				4400B9101B362E4E00E9E06D /* NavVC.swift */,
 				4400B9161B36995100E9E06D /* QueueVC.swift */,
+				44A53D371B3E043700C54160 /* PlayerVC.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -255,6 +262,8 @@
 				4400B9121B36327400E9E06D /* UIManager.swift */,
 				4400B91C1B377BC700E9E06D /* Queue.swift */,
 				440602F21B39F76300B9E531 /* ImageController.swift */,
+				44A53D2F1B3E02E000C54160 /* Player.swift */,
+				44A53D351B3E03DB00C54160 /* LibraryController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -504,6 +513,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44A53D301B3E02E000C54160 /* Player.swift in Sources */,
 				4400B90F1B362E3600E9E06D /* SlideVC.swift in Sources */,
 				4428A1B31B317EB400708716 /* ListItem.swift in Sources */,
 				4400B9171B36995100E9E06D /* QueueVC.swift in Sources */,
@@ -518,11 +528,13 @@
 				442780C61B318A89004D1B3A /* SpotifyModels.swift in Sources */,
 				446EAA1A1B360A060041B8C4 /* MainMenuVC.swift in Sources */,
 				446EAA1C1B360AA20041B8C4 /* Helpers.swift in Sources */,
+				44A53D381B3E043700C54160 /* PlayerVC.swift in Sources */,
 				440602F31B39F76300B9E531 /* ImageController.swift in Sources */,
 				442780C81B318CF5004D1B3A /* SpotifyController.swift in Sources */,
 				4400B91D1B377BC700E9E06D /* Queue.swift in Sources */,
 				446EAA131B34CADE0041B8C4 /* ListVM.swift in Sources */,
 				4428A18B1B30CF4900708716 /* AppDelegate.swift in Sources */,
+				44A53D361B3E03DB00C54160 /* LibraryController.swift in Sources */,
 				4400B9111B362E4E00E9E06D /* NavVC.swift in Sources */,
 				4428A18E1B30CF4900708716 /* OnCueX.xcdatamodeld in Sources */,
 			);
