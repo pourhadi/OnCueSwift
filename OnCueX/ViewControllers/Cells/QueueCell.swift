@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import QuartzCore
+import CoreGraphics
 
 class QueueCellIndexView : UIView {
     let label = UILabel()
@@ -61,7 +63,7 @@ class QueueCellIndexView : UIView {
             
             let locations:[CGFloat] = [0.0, 1.0]
             let gradient = CGGradientCreateWithColors(CGColorSpaceCreateDeviceRGB(), [UIColor(white:0, alpha:0.7).CGColor, UIColor(white: 0, alpha: 0).CGColor], locations)
-            CGContextDrawRadialGradient(UIGraphicsGetCurrentContext(), gradient, self.imageView.center, 0, self.imageView.center, self.bounds.size.width/2, CGGradientDrawingOptions(kCGGradientDrawsAfterEndLocation))
+            CGContextDrawRadialGradient(UIGraphicsGetCurrentContext(), gradient, self.imageView.center, 0, self.imageView.center, self.bounds.size.width/2, .DrawsAfterEndLocation)
             
         }
         

@@ -28,12 +28,14 @@
 		4428A1A41B30CF4900708716 /* OnCueXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4428A1A31B30CF4900708716 /* OnCueXTests.swift */; };
 		4428A1B31B317EB400708716 /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4428A1B21B317EB400708716 /* ListItem.swift */; };
 		4428A1B51B31804900708716 /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4428A1B41B31804900708716 /* Spotify.framework */; };
-		442BF13C1B3619D700392467 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 442BF1381B3619D700392467 /* SnapKit.framework */; };
 		446EAA131B34CADE0041B8C4 /* ListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446EAA121B34CADE0041B8C4 /* ListVM.swift */; };
 		446EAA141B34CE770041B8C4 /* ListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442BF1331B33B9D400392467 /* ListVC.swift */; };
 		446EAA161B34D3680041B8C4 /* CellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446EAA151B34D3680041B8C4 /* CellFactory.swift */; };
 		446EAA1A1B360A060041B8C4 /* MainMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446EAA191B360A060041B8C4 /* MainMenuVC.swift */; };
 		446EAA1C1B360AA20041B8C4 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446EAA1B1B360AA20041B8C4 /* Helpers.swift */; };
+		44E5644E1B3D3079004CC5E3 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44E564471B3D301D004CC5E3 /* SnapKit.framework */; };
+		44E564501B3D308A004CC5E3 /* SnapKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 44E564471B3D301D004CC5E3 /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		44E564511B3D308A004CC5E3 /* SnapKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 44E564491B3D301D004CC5E3 /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4B6C67CF2C5AEEA6B43C5EEC /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B180B9719C8F2A627B88D5F /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -45,7 +47,49 @@
 			remoteGlobalIDString = 4428A1841B30CF4900708716;
 			remoteInfo = OnCueX;
 		};
+		44E564461B3D301D004CC5E3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 44E5643F1B3D301C004CC5E3 /* SnapKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EEBCC9D819CC627D0083B827;
+			remoteInfo = "SnapKit iOS";
+		};
+		44E564481B3D301D004CC5E3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 44E5643F1B3D301C004CC5E3 /* SnapKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EECDB37A1AC0C9D4006BBC11;
+			remoteInfo = "SnapKit OSX";
+		};
+		44E5644A1B3D301D004CC5E3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 44E5643F1B3D301C004CC5E3 /* SnapKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EEBCC9E219CC627E0083B827;
+			remoteInfo = "SnapKit iOS Tests";
+		};
+		44E5644C1B3D301D004CC5E3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 44E5643F1B3D301C004CC5E3 /* SnapKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EECDB3841AC0C9D4006BBC11;
+			remoteInfo = "SnapKit OSX Tests";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		44E5644F1B3D3081004CC5E3 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				44E564501B3D308A004CC5E3 /* SnapKit.framework in CopyFiles */,
+				44E564511B3D308A004CC5E3 /* SnapKit.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0B180B9719C8F2A627B88D5F /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,12 +121,12 @@
 		4428A1B21B317EB400708716 /* ListItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListItem.swift; path = Models/ListItem.swift; sourceTree = "<group>"; };
 		4428A1B41B31804900708716 /* Spotify.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Spotify.framework; sourceTree = "<group>"; };
 		442BF1331B33B9D400392467 /* ListVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListVC.swift; path = ViewControllers/ListVC.swift; sourceTree = "<group>"; };
-		442BF1381B3619D700392467 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
 		446EAA101B33C4420041B8C4 /* SpotifyHomeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpotifyHomeVC.swift; path = ViewControllers/SpotifyHomeVC.swift; sourceTree = "<group>"; };
 		446EAA121B34CADE0041B8C4 /* ListVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListVM.swift; path = ViewControllers/ListVM.swift; sourceTree = "<group>"; };
 		446EAA151B34D3680041B8C4 /* CellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CellFactory.swift; path = Models/CellFactory.swift; sourceTree = "<group>"; };
 		446EAA191B360A060041B8C4 /* MainMenuVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainMenuVC.swift; path = ViewControllers/MainMenuVC.swift; sourceTree = "<group>"; };
 		446EAA1B1B360AA20041B8C4 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		44E5643F1B3D301C004CC5E3 /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
 		D33C0BE0F17D33A1E54D273A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,8 +135,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44E5644E1B3D3079004CC5E3 /* SnapKit.framework in Frameworks */,
 				4B6C67CF2C5AEEA6B43C5EEC /* Pods.framework in Frameworks */,
-				442BF13C1B3619D700392467 /* SnapKit.framework in Frameworks */,
 				4428A1B51B31804900708716 /* Spotify.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -226,6 +270,17 @@
 			name = Container;
 			sourceTree = "<group>";
 		};
+		44E564401B3D301C004CC5E3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				44E564471B3D301D004CC5E3 /* SnapKit.framework */,
+				44E564491B3D301D004CC5E3 /* SnapKit.framework */,
+				44E5644B1B3D301D004CC5E3 /* SnapKit iOS Tests.xctest */,
+				44E5644D1B3D301D004CC5E3 /* SnapKit OSX Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		4BA45B6F58DF1F9C97577416 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -238,7 +293,7 @@
 		9F6896E32A760BD6DAFA4138 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				442BF1381B3619D700392467 /* SnapKit.framework */,
+				44E5643F1B3D301C004CC5E3 /* SnapKit.xcodeproj */,
 				4428A1B41B31804900708716 /* Spotify.framework */,
 				0B180B9719C8F2A627B88D5F /* Pods.framework */,
 			);
@@ -258,8 +313,8 @@
 				4428A1831B30CF4900708716 /* Resources */,
 				BC8623E9CA9933587ADF3B30 /* Copy Pods Resources */,
 				5CAFE0154BB3BE3AB66DFEEC /* Embed Pods Frameworks */,
-				446EAA1F1B360D780041B8C4 /* Run Script */,
-				4400B9201B38BD9F00E9E06D /* ShellScript */,
+				4400B9201B38BD9F00E9E06D /* Run Script */,
+				44E5644F1B3D3081004CC5E3 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -319,6 +374,12 @@
 			mainGroup = 4428A17C1B30CF4900708716;
 			productRefGroup = 4428A1861B30CF4900708716 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 44E564401B3D301C004CC5E3 /* Products */;
+					ProjectRef = 44E5643F1B3D301C004CC5E3 /* SnapKit.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				4428A1841B30CF4900708716 /* OnCueX */,
@@ -326,6 +387,37 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		44E564471B3D301D004CC5E3 /* SnapKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SnapKit.framework;
+			remoteRef = 44E564461B3D301D004CC5E3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		44E564491B3D301D004CC5E3 /* SnapKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SnapKit.framework;
+			remoteRef = 44E564481B3D301D004CC5E3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		44E5644B1B3D301D004CC5E3 /* SnapKit iOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SnapKit iOS Tests.xctest";
+			remoteRef = 44E5644A1B3D301D004CC5E3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		44E5644D1B3D301D004CC5E3 /* SnapKit OSX Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SnapKit OSX Tests.xctest";
+			remoteRef = 44E5644C1B3D301D004CC5E3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		4428A1831B30CF4900708716 /* Resources */ = {
@@ -348,33 +440,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4400B9201B38BD9F00E9E06D /* ShellScript */ = {
+		4400B9201B38BD9F00E9E06D /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Xcode git autocommit script by Andre Arko\n#   This script will automatically commit any changed files to the project's\n#   git repository, in the branch \"builds\"\n\n# If you use this script, you can create more typical commits in the master\n# branch with the commands:\n#   git checkout master\n#   git checkout builds .\n#   git commit -m \"Description of changes since last commit to master\"\n\nif [ -z \"`git branch | grep builds`\" ]; then\ngit co -b builds\nelse\ngit co builds\nfi\n\ngit add .\ngit commit -a -m \"`date +'Build on %F at %r'`\"\n# ignore git-commit exiting >0, since nothing to commit is fine\nexit 0";
-		};
-		446EAA1F1B360D780041B8C4 /* Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/SnapKit.framework",
 			);
 			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+			shellScript = "# Xcode git autocommit script by Andre Arko\n#   This script will automatically commit any changed files to the project's\n#   git repository, in the branch \"builds\"\n\n# If you use this script, you can create more typical commits in the master\n# branch with the commands:\n#   git checkout master\n#   git checkout builds .\n#   git commit -m \"Description of changes since last commit to master\"\n\nif [ -z \"`git branch | grep builds`\" ]; then\ngit co -b builds\nelse\ngit co builds\nfi\n\ngit add .\ngit commit -a -m \"`date +'Build on %F at %r'`\"\n# ignore git-commit exiting >0, since nothing to commit is fine\nexit 0";
 		};
 		5CAFE0154BB3BE3AB66DFEEC /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -418,7 +496,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

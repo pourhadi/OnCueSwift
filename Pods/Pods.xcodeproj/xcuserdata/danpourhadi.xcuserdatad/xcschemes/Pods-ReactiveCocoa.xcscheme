@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1F9E2D8CB0B0071BB982A947"
+               BlueprintIdentifier = "D533E5D499216186110E4EA6"
                BuildableName = "ReactiveCocoa.framework"
                BlueprintName = "Pods-ReactiveCocoa"
                ReferencedContainer = "container:Pods.xcodeproj">

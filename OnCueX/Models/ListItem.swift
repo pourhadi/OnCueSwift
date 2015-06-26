@@ -14,16 +14,17 @@ enum ItemSource {
     case Spotify
 }
 
-enum ItemType {
-    case Artist
-    case Album
-    case Playlist
-    case Track
+enum ItemType:String {
+    case Artist = "Artist"
+    case Album = "Album"
+    case Playlist = "Playlist"
+    case Track = "Track"
 }
 
 protocol Identifiable {
     var identifier:String { get }
 }
+
 
 extension Identifiable {
     func isEqual(other:Identifiable) -> Bool {

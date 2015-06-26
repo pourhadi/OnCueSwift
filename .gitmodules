@@ -1,0 +1,4 @@
+[submodule "SnapKit"]
+	path = SnapKit
+	url = https://github.com/SnapKit/SnapKit
+	branch = swift-2.0
