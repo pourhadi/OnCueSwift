@@ -35,7 +35,6 @@
 		446EAA1C1B360AA20041B8C4 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446EAA1B1B360AA20041B8C4 /* Helpers.swift */; };
 		44E5644E1B3D3079004CC5E3 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44E564471B3D301D004CC5E3 /* SnapKit.framework */; };
 		44E564501B3D308A004CC5E3 /* SnapKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 44E564471B3D301D004CC5E3 /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		44E564511B3D308A004CC5E3 /* SnapKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 44E564491B3D301D004CC5E3 /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4B6C67CF2C5AEEA6B43C5EEC /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B180B9719C8F2A627B88D5F /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -85,7 +84,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				44E564501B3D308A004CC5E3 /* SnapKit.framework in CopyFiles */,
-				44E564511B3D308A004CC5E3 /* SnapKit.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
