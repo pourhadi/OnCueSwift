@@ -40,6 +40,7 @@ enum MainMenuCellTitle:String {
 
 class MainMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
+    let cellHeight:CGFloat = 80.0
     let collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
 
     let cellTitles:[MainMenuCellTitle] = [.Search, .Artists, .Albums, .Playlists]
@@ -62,6 +63,7 @@ class MainMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         self.collectionView.snp_makeConstraints { (make) -> Void in
             make.left.right.equalTo(self.view)
             make.centerY.equalTo(self.view)
+            make.height.equalTo(CGFloat(self.cellTitles.count) * self.cellHeight)
         }
         
         self.collectionView.backgroundColor = UIColor.blackColor()
@@ -113,7 +115,7 @@ class MainMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
 
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSizeMake(self.view.bounds.size.width, 80)
+        return CGSizeMake(self.view.bounds.size.width, cellHeight)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
