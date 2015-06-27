@@ -38,20 +38,36 @@ enum MainMenuCellTitle:String {
 }
 
 
-class MainMenuVC: UICollectionViewController {
+class MainMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
+    let collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
 
     let cellTitles:[MainMenuCellTitle] = [.Search, .Artists, .Albums, .Playlists]
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.collectionView!.backgroundColor = UIColor.blackColor()
+        self.view.addSubview(self.collectionView)
+        self.collectionView.snp_makeConstraints { (make) -> Void in
+            make.left.right.equalTo(self.view)
+            make.centerY.equalTo(self.view)
+        }
+        
+        self.collectionView.backgroundColor = UIColor.blackColor()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Register cell classes
-        self.collectionView!.registerClass(MainMenuCell.self, forCellWithReuseIdentifier: "menuCell")
+        self.collectionView.registerClass(MainMenuCell.self, forCellWithReuseIdentifier: "menuCell")
 
         // Do any additional setup after loading the view.
     }
@@ -73,18 +89,18 @@ class MainMenuVC: UICollectionViewController {
 
     // MARK: UICollectionViewDataSource
 
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         //#warning Incomplete method implementation -- Return the number of sections
         return 1
     }
 
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //#warning Incomplete method implementation -- Return the number of items in the section
         return self.cellTitles.count
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("menuCell", forIndexPath: indexPath) as UICollectionViewCell as! MainMenuCell
     
         cell.label.text = self.cellTitles[indexPath.row].rawValue
