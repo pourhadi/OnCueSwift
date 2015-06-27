@@ -53,6 +53,19 @@ func MakeUpSwing(percent:CGFloat) -> CATransform3D {
     return transform;
 }
 
+extension UICollectionViewLayoutAttributes {
+    
+    var animationPercent:CGFloat {
+        get {
+            return objc_getAssociatedObject(self, "animationPercent") as! CGFloat
+        }
+        set {
+            objc_setAssociatedObject(self, "animationPercent", newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
+}
+
 class ListLayout: UICollectionViewFlowLayout {
 
     var attributes:[[UICollectionViewLayoutAttributes]] = []
@@ -76,6 +89,7 @@ class ListLayout: UICollectionViewFlowLayout {
                 if attr.frame.origin.y > topArea && attr.frame.origin.y < offset {
                     let percent = CalculatePercentComplete(offset, end: topArea, current: attr.frame.origin.y)
                     attr.transform3D = MakeUpSwing(percent)
+                    attr.animationPercent = percent
                     
                 }
                 section.append(attr)
