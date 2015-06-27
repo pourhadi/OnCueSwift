@@ -67,15 +67,16 @@ struct CustomDisplayContext: DisplayContext {
     func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {}
     
      init(_ title:String) {
-        self.init()
         self.title = title
     }
-    
-    init() {}
-    
+
     var identifier:String = {
        return NSUUID().UUIDString
     }()
+    
+    mutating func setSubtitle(subtitle:String?) {
+        self.subtitle = subtitle
+    }
 }
 
 class List<T> {

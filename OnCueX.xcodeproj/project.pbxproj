@@ -36,6 +36,7 @@
 		44A53D301B3E02E000C54160 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A53D2F1B3E02E000C54160 /* Player.swift */; };
 		44A53D361B3E03DB00C54160 /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A53D351B3E03DB00C54160 /* LibraryController.swift */; };
 		44A53D381B3E043700C54160 /* PlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A53D371B3E043700C54160 /* PlayerVC.swift */; };
+		44A53D3A1B3E948200C54160 /* ListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A53D391B3E948200C54160 /* ListLayout.swift */; };
 		44E5644E1B3D3079004CC5E3 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44E564471B3D301D004CC5E3 /* SnapKit.framework */; };
 		44E564501B3D308A004CC5E3 /* SnapKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 44E564471B3D301D004CC5E3 /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4B6C67CF2C5AEEA6B43C5EEC /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B180B9719C8F2A627B88D5F /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -130,6 +131,7 @@
 		44A53D2F1B3E02E000C54160 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Player.swift; path = Controllers/Player.swift; sourceTree = "<group>"; };
 		44A53D351B3E03DB00C54160 /* LibraryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryController.swift; path = Controllers/LibraryController.swift; sourceTree = "<group>"; };
 		44A53D371B3E043700C54160 /* PlayerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlayerVC.swift; path = ViewControllers/PlayerVC.swift; sourceTree = "<group>"; };
+		44A53D391B3E948200C54160 /* ListLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListLayout.swift; path = ViewControllers/ListLayout.swift; sourceTree = "<group>"; };
 		44E5643F1B3D301C004CC5E3 /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
 		D33C0BE0F17D33A1E54D273A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -251,6 +253,7 @@
 				4400B9101B362E4E00E9E06D /* NavVC.swift */,
 				4400B9161B36995100E9E06D /* QueueVC.swift */,
 				44A53D371B3E043700C54160 /* PlayerVC.swift */,
+				44A53D391B3E948200C54160 /* ListLayout.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -516,6 +519,7 @@
 				44A53D301B3E02E000C54160 /* Player.swift in Sources */,
 				4400B90F1B362E3600E9E06D /* SlideVC.swift in Sources */,
 				4428A1B31B317EB400708716 /* ListItem.swift in Sources */,
+				44A53D3A1B3E948200C54160 /* ListLayout.swift in Sources */,
 				4400B9171B36995100E9E06D /* QueueVC.swift in Sources */,
 				442780D11B31F37F004D1B3A /* ListItemCell.swift in Sources */,
 				4400B91B1B36997800E9E06D /* Queueable.swift in Sources */,
