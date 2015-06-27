@@ -57,13 +57,13 @@ extension UICollectionViewLayoutAttributes {
     
     var animationPercent:CGFloat {
         get {
-            if let percent = objc_getAssociatedObject(self, "animationPercent") as? CGFloat {
-                return percent
+            if let percent = objc_getAssociatedObject(self, "animationPercent") as? NSNumber {
+                return CGFloat(percent.floatValue)
             }
             return 0.0
         }
         set {
-            objc_setAssociatedObject(newValue, "animationPercent", self, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, "animationPercent", NSNumber(float:Float(newValue)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     
@@ -91,7 +91,7 @@ class ListLayout: UICollectionViewFlowLayout {
                 let topArea = offset - height
                 if attr.frame.origin.y > topArea && attr.frame.origin.y < offset {
                     let percent = CalculatePercentComplete(offset, end: topArea, current: attr.frame.origin.y)
-                    attr.transform3D = MakeUpSwing(percent)
+                    attr.transform3D = MakeUpSwing(-percent)
                     attr.animationPercent = percent
                     
                 }
