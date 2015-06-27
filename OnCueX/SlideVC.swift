@@ -150,6 +150,7 @@ class SlideVC: UIViewController, UIScrollViewDelegate {
             animation.easingFunction = easingFunctions[kEaseOutQuint]
             animation.duration = 0.4
             animation.completionBlock = complete
+            animation.view = self.scrollView
             animatorObject.beginAnimations(animation)
         }
     }
