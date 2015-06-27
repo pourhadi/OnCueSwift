@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OnCueX/ViewControllers/Cells/ListItemCell.swift"
-            timestampString = "457089488.837634"
+            timestampString = "457090133.019453"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "112"
-            endingLineNumber = "112"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
             landmarkName = "applyLayoutAttributes(_:)"
             landmarkType = "5">
          </BreakpointContent>
