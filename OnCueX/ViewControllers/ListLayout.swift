@@ -103,6 +103,7 @@ class ListLayout: UICollectionViewFlowLayout {
                     attr.alpha = ExtrapolateValue(1, 0, percent)
                     attr.zIndex = Int(ExtrapolateValue(10, 0, percent))
                 } else {
+                    attr.alpha = 1
                     attr.zIndex = 10
                     attr.transform3D = CATransform3DMakeTranslation(0, height / 2, 0)
                 }
