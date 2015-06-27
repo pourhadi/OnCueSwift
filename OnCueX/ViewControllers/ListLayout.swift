@@ -61,7 +61,7 @@ class ListLayout: UICollectionViewFlowLayout {
         super.prepareLayout()
         
         self.attributes.removeAll()
-        let offset = self.collectionView!.contentOffset.y  - self.collectionView!.contentInset.top
+        let offset = self.collectionView!.contentOffset.y  + self.collectionView!.contentInset.top
         
         let numOfSections = self.collectionView!.numberOfSections()
         for x in 0..<numOfSections {
@@ -75,7 +75,7 @@ class ListLayout: UICollectionViewFlowLayout {
                 let topArea = offset + height
                 if attr.frame.origin.y > offset && attr.frame.origin.y < topArea {
                     let percent = CalculatePercentComplete(topArea, end: offset, current: attr.frame.origin.y)
-                    attr.transform3D = MakeUpSwing(percent)
+                    attr.transform3D = MakeUpSwing(-percent)
                     
                 }
                 section.append(attr)
