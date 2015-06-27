@@ -32,9 +32,19 @@ class MainMenuCell : UICollectionViewCell {
 
 class MainMenuVC: UICollectionViewController {
 
+    enum MainMenuCellTitle:String {
+        case Search = "Search"
+        case Artists = "Artists"
+        case Albums = "Albums"
+        case Playlists = "Playlists"
+    }
+    
+    let cellTitles:[MainMenuCellTitle] = [.Search, .Artists, .Albums, .Playlists]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.collectionView!.backgroundColor = UIColor.blackColor()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -69,15 +79,33 @@ class MainMenuVC: UICollectionViewController {
 
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //#warning Incomplete method implementation -- Return the number of items in the section
-        return 1
+        return self.cellTitles.count
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as UICollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("menuCell", forIndexPath: indexPath) as UICollectionViewCell as! MainMenuCell
     
+        cell.label.text = self.cellTitles[indexPath.row].rawValue
         // Configure the cell
     
         return cell
+    }
+
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return CGSizeMake(self.view.bounds.size.width, 80)
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        return UIEdgeInsetsZero
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 0
     }
 
     // MARK: UICollectionViewDelegate

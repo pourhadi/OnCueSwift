@@ -49,7 +49,7 @@ protocol TrackCollection: DisplayContext {
 protocol AlbumItem: TrackCollection, Item {}
 
 protocol ArtistItem : TrackCollection, Item {
-    func getAlbums<T:AlbumItem>(page:Int, complete:(albums:List<T>?)->Void)
+    func getAlbums(page:Int, complete:(albums:List<AlbumItem>?)->Void)
 }
 
 protocol PlaylistItem : TrackCollection, Item {}
@@ -218,48 +218,3 @@ class TrackCollectionList : ItemList {
     }
 }
 
-class ItemManager: ListVMDelegate {
-    unowned var delegate:ItemManagerDelegate
-    
-    init(delegate:ItemManagerDelegate) {
-        self.delegate = delegate
-    }
-    
-    var homeVM:ListVM? {
-        didSet {
-            if let vm = self.homeVM {
-//                vm.itemSelectedSignal.subscribeNext { [weak self] (val) -> Void in
-//                    if let this = self {
-//                        var playlist = val as! SpotifyPlaylist
-//                            playlist.getTracks(0, complete: { (list) -> Void in
-//                                if let list = list {
-//                                    let trackList = TrackList(list: list)
-//                                    let itemVM = ListVM(list: trackList, grouped: false, delegate:this)
-//                                    this.delegate.itemManager(this, pushVCForVM: itemVM)
-//                                }
-//                            })
-//                        
-//                    }
-//                }
-            }
-        }
-    }
-    
-    func listVM(listVM:ListVM, selectedItem:protocol<Item>, deselect:(deselect:Bool)->Void) {
-        if let item = selectedItem as? TrackCollection {
-            item.getTracks(0, complete: { (list) -> Void in
-                if let list = list {
-                    let trackList = TrackList(list: list)
-                    let itemVM = ListVM(list: trackList, displayContext:item, grouped: false, delegate:self)
-                    self.delegate.itemManager(self, pushVCForVM: itemVM)
-                }
-            })
-            deselect(deselect: false)
-
-        } else if let item = selectedItem as? Queueable {
-            _queue.insert(item, complete: nil)
-            deselect(deselect: true)
-
-        }
-    }
-}

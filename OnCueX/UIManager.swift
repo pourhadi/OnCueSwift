@@ -26,6 +26,9 @@ class UIManager {
             let queue = QueueVC(collectionViewLayout: ListLayout())
             let qNav = NavVC(rootViewController: queue)
             self.slideVC.setViewController(qNav, forSlotIndex: 2)
+            
+            let menu = MainMenuVC()
+            
         }
     }
 }

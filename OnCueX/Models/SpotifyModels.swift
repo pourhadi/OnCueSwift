@@ -138,7 +138,7 @@ internal struct SpotifyArtist : ArtistItem {
         }
     }
     
-    func getAlbums<T:AlbumItem>(page: Int, complete: (albums: List<T>?) -> Void) {
+    func getAlbums(page: Int, complete: (albums: List<AlbumItem>?) -> Void) {
         
     }
     
@@ -185,27 +185,4 @@ internal struct SpotifyPlaylist : PlaylistItem {
     }
 }
 
-class SpotifyManager: ItemManager {
-    
-    func getHomeVM(complete:(vm:ListVM)->Void) {
-        spotify { (token) -> Void in
-            SPTPlaylistList.playlistsForUserWithSession(_spotifyController.session!, callback: { (error, list) -> Void in
-                if let list = list as? SPTPlaylistList {
-                    let items = list.items as! [SPTPartialPlaylist]
-                    var playlists:[TrackCollection] = []
-                    for item in items {
-                        playlists.append(SpotifyPlaylist(partialPlaylist: item))
-                    }
-                    
-                    let itemList = List<TrackCollection>(items:playlists, totalCount:UInt(playlists.count), pageNumber:0)
-                    let collectionList = TrackCollectionList(list: itemList)
-                    let displayContext = CustomDisplayContext("Playlists")
-                    let listVM = ListVM(list: collectionList, displayContext:displayContext, grouped: false, delegate:self)
-                    self.homeVM = listVM
-                    complete(vm:listVM)
-                }
-            })
-        }
-    }
-    
-}
+

@@ -8,6 +8,23 @@
 
 import UIKit
 
+class TrackSlider : UIScrollView, UIScrollViewDelegate {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.delegate = self
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        
+    }
+    
+}
+
 class PlayerVC: UIViewController {
 
     override func viewDidLoad() {

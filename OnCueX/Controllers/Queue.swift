@@ -79,6 +79,20 @@ struct QueueOperation {
     }
 }
 
+extension Queue {
+    func next() {
+        self.operation {
+            self.playhead += 1
+        }
+    }
+    
+    func back() {
+        self.operation {
+            self.playhead -= 1
+        }
+    }
+}
+
 final class Queue {
 
     var observers:[QueueObserverWrapper] = []
