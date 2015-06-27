@@ -110,11 +110,7 @@ class SlideVC: UIViewController, UIScrollViewDelegate {
         animator!.addBehavior(navContainerAttachment!)
         animator!.addBehavior(libraryContainerAttachment!)
         animator!.addBehavior(queueContainerAttachment!)
-        
-        self.view.backgroundColor = UIColor.blackColor()
-        navContainer.backgroundColor = UIColor.blueColor()
-        libraryContainer.backgroundColor = UIColor.yellowColor()
-        queueContainer.backgroundColor = UIColor.redColor()
+
         
     //    self.addChildViewController(globalLibraryVC)
      //   globalLibraryVC.view.frame = libraryContainer.bounds
