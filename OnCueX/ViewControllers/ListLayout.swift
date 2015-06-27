@@ -31,6 +31,11 @@ func CATransform3DMake(m11:CGFloat, _ m12:CGFloat, _ m13:CGFloat, _ m14:CGFloat,
     return t
 }
 
+func CATransform3DPerspective(t:CATransform3D,_ x:CGFloat,_ y:CGFloat) -> CATransform3D { return (CATransform3DConcat(t, CATransform3DMake(1, 0, 0, x, 0, 1, 0, y, 0, 0, 1, 0, 0, 0, 0, 1))) }
+func CATransform3DMakePerspective(x:CGFloat,_ y:CGFloat) -> CATransform3D { return (CATransform3DPerspective(CATransform3DIdentity, x, y)) }
+func CATransform3DSkewLeft(x:CGFloat) -> CATransform3D {  return CATransform3DConcat(CATransform3DIdentity, CATransform3DMake(1,0,0,x,0,1,0,0,0,0,1,0,0,0,0,1)) }
+func CATransform3DSkewTop(a:CGFloat,_ b:CGFloat) -> CATransform3D { return CATransform3DConcat(CATransform3DIdentity, CATransform3DMake(1,0,0,0,0,a,0,b,0,0,1,0,0,0,0,1)) }
+
 func MakeUpSwing(percent:CGFloat) -> CATransform3D {
     let m22End:CGFloat = 0;
     let m22Start:CGFloat = 1.0;
@@ -91,7 +96,8 @@ class ListLayout: UICollectionViewFlowLayout {
                 let topArea = offset - height
                 if attr.frame.origin.y > topArea && attr.frame.origin.y < offset {
                     let percent = CalculatePercentComplete(offset, end: topArea, current: attr.frame.origin.y)
-                    var transform = MakeUpSwing(-percent)
+//                    var transform = MakeUpSwing(-percent)
+                    var transform = CATransform3DMakePerspective(0, ExtrapolateValue(0, 0.0018, percent))
                     transform = CATransform3DTranslate(transform, 0, ExtrapolateValue(-height / 2, 0, percent), 0)
                     attr.transform3D = transform
                     attr.alpha = ExtrapolateValue(1, 0, percent)
