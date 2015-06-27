@@ -99,6 +99,8 @@ class ListItemCell : UICollectionViewCell {
             make.bottom.equalTo(self)
             make.left.right.equalTo(self)
         }
+        
+        self.layer.anchorPoint = CGPointMake(0.5, 0)
     }
 
     required init(coder aDecoder: NSCoder) {
