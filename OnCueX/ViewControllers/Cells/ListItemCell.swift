@@ -110,7 +110,7 @@ class ListItemCell : UICollectionViewCell {
         super.applyLayoutAttributes(layoutAttributes)
         let percent = layoutAttributes.animationPercent
 //        let yAnchor = ExtrapolateValue(0.5, 1, percent)
-        self.layer.anchorPoint = CGPointMake(0.5, 1)
+        self.layer.anchorPoint = CGPointMake(0.5, 0)
 
     }
     
