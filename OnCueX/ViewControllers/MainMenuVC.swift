@@ -37,9 +37,15 @@ enum MainMenuCellTitle:String {
     case Playlists = "Playlists"
 }
 
+protocol MainMenuVCDelegate {
+    func mainMenuCellSelected(cell:MainMenuCell)
+}
+
 
 class MainMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
+    var delegate:MainMenuVCDelegate?
+    
     let cellHeight:CGFloat = 80.0
     let collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
 
@@ -130,6 +136,12 @@ class MainMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         return 0
     }
 
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if let del = self.delegate {
+            del.mainMenuCellSelected(collectionView.cellForItemAtIndexPath(indexPath) as! MainMenuCell)
+        }
+    }
+    
     // MARK: UICollectionViewDelegate
 
     /*

@@ -9,6 +9,15 @@
 import UIKit
 
 let _uiManager = _delegate.uiManager
+
+extension UIManager: MainMenuVCDelegate {
+    func mainMenuCellSelected(cell:MainMenuCell) {
+        self.slideVC.scrollTo(self.slideVC.view.frame.size.width, animated: true) { () -> Void in
+            print("animation complete")
+        }
+    }
+}
+
 class UIManager {
 
     lazy var spotifyManager:SpotifyManager = SpotifyManager(delegate:self)
@@ -28,6 +37,7 @@ class UIManager {
             self.slideVC.setViewController(qNav, forSlotIndex: 2)
             
             let menu = MainMenuVC()
+            menu.delegate = self
             self.slideVC.setViewController(menu, forSlotIndex: 0)
         }
     }

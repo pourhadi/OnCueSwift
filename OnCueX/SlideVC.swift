@@ -10,14 +10,31 @@ import Foundation
 import UIKit
 import SnapKit
 
+class CustomScrollView:UIScrollView {
+    
+    @objc
+    dynamic var xOffset:CGFloat {
+        get {
+            return self.contentOffset.x
+        }
+        set {
+            var offset = self.contentOffset
+            offset.x = newValue
+            self.contentOffset = offset
+        }
+    }
+    
+}
+
 class SlideVC: UIViewController, UIScrollViewDelegate {
     
+    let animatorObject = Animator()
     var currentPage = 0
     
     var queueContainer:UIView = UIView(frame: UIScreen.mainScreen().bounds)
     var libraryContainer:UIView = UIView(frame: UIScreen.mainScreen().bounds)
     var navContainer:UIView = UIView(frame: UIScreen.mainScreen().bounds)
-    var scrollView:UIScrollView = UIScrollView(frame: UIScreen.mainScreen().bounds)
+    var scrollView:CustomScrollView = CustomScrollView(frame: UIScreen.mainScreen().bounds)
     
     let navVC:NavVC = NavVC(rootViewController: UIViewController(nibName: nil, bundle: nil))
     
@@ -124,6 +141,17 @@ class SlideVC: UIViewController, UIScrollViewDelegate {
         
         
 
+    }
+    
+    func scrollTo(offset:CGFloat, animated:Bool, complete:()->Void) {
+        if animated {
+            let animation = Animation(keyPath: "xOffset")
+            animation.toValue = offset
+            animation.easingFunction = easingFunctions[kEaseOutQuint]
+            animation.duration = 0.4
+            animation.completionBlock = complete
+            animatorObject.beginAnimations(animation)
+        }
     }
     
       func scrollViewDidScroll(scrollView: UIScrollView) {
