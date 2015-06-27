@@ -91,10 +91,13 @@ class ListLayout: UICollectionViewFlowLayout {
                 let topArea = offset - height
                 if attr.frame.origin.y > topArea && attr.frame.origin.y < offset {
                     let percent = CalculatePercentComplete(offset, end: topArea, current: attr.frame.origin.y)
-                    var transform = MakeUpSwing(percent)
+                    var transform = MakeUpSwing(-percent)
                     transform = CATransform3DTranslate(transform, 0, ExtrapolateValue(0, height, percent), 0)
                     attr.transform3D = transform
                     attr.alpha = ExtrapolateValue(1, 0, percent)
+                    attr.zIndex = Int(ExtrapolateValue(10, 0, percent))
+                } else {
+                    attr.zIndex = 10
                 }
                 section.append(attr)
 
