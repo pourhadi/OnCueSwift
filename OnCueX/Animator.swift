@@ -172,7 +172,10 @@ class Animator:NSObject {
         var percentComplete:CGFloat = CGFloat(elapsed / animation.duration)
         var currentVal = animation.easingFunction!(currentTime: elapsed, beginningValue: animation.fromValue, changeInValue: animation.toValue, duration: animation.duration)
         
-        if (elapsed > animation.delay && currentVal > animation.toValue) {
+        if (elapsed > animation.delay && currentVal >= animation.toValue) {
+            currentVal = animation.toValue
+            animation.view!.setValue(currentVal, forKeyPath: animation.keyPath!)
+
             if animation.completionBlock != nil {
                 animation.completionBlock!()
             }
