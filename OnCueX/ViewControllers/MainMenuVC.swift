@@ -56,6 +56,8 @@ class MainMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.collectionView.delegate = self
+        self.collectionView.dataSource = self
         self.view.addSubview(self.collectionView)
         self.collectionView.snp_makeConstraints { (make) -> Void in
             make.left.right.equalTo(self.view)
