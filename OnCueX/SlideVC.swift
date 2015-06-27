@@ -151,8 +151,8 @@ class SlideVC: UIViewController, UIScrollViewDelegate {
         if animated {
             let animation = Animation(keyPath: "xOffset")
             animation.toValue = offset
-            animation.easingFunction = easingFunctions[kEaseInOutBack]
-            animation.duration = 0.6
+            animation.easingFunction = easingFunctions[kEaseOutQuint]
+            animation.duration = 0.24
             animation.completionBlock = complete
             animation.view = self.scrollView
             animatorObject.beginAnimations(animation)
