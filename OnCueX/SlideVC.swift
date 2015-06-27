@@ -151,8 +151,8 @@ class SlideVC: UIViewController, UIScrollViewDelegate {
         if animated {
             let animation = Animation(keyPath: "xOffset")
             animation.toValue = offset
-            animation.easingFunction = easingFunctions[kEaseOutQuint]
-            animation.duration = 0.4
+            animation.easingFunction = easingFunctions[kEaseInBack]
+            animation.duration = 0.24
             animation.completionBlock = complete
             animation.view = self.scrollView
             animatorObject.beginAnimations(animation)
@@ -162,7 +162,6 @@ class SlideVC: UIViewController, UIScrollViewDelegate {
       func scrollViewDidScroll(scrollView: UIScrollView) {
         
         let offset = scrollView.contentOffset.x
-        print(offset)
         var currentXStart = self.view.frame.size.width * 2
         var nextXStart = self.view.bounds.size.width * 4
         var distance = -(self.view.bounds.size.width*2)
