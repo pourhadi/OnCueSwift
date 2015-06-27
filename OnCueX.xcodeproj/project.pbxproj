@@ -33,6 +33,7 @@
 		446EAA161B34D3680041B8C4 /* CellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446EAA151B34D3680041B8C4 /* CellFactory.swift */; };
 		446EAA1A1B360A060041B8C4 /* MainMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446EAA191B360A060041B8C4 /* MainMenuVC.swift */; };
 		446EAA1C1B360AA20041B8C4 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446EAA1B1B360AA20041B8C4 /* Helpers.swift */; };
+		446F4A8E1B3F68F300EB1B7C /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446F4A8D1B3F68F300EB1B7C /* Animator.swift */; };
 		44A53D301B3E02E000C54160 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A53D2F1B3E02E000C54160 /* Player.swift */; };
 		44A53D361B3E03DB00C54160 /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A53D351B3E03DB00C54160 /* LibraryController.swift */; };
 		44A53D381B3E043700C54160 /* PlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A53D371B3E043700C54160 /* PlayerVC.swift */; };
@@ -130,6 +131,7 @@
 		446EAA151B34D3680041B8C4 /* CellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CellFactory.swift; path = Models/CellFactory.swift; sourceTree = "<group>"; };
 		446EAA191B360A060041B8C4 /* MainMenuVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainMenuVC.swift; path = ViewControllers/MainMenuVC.swift; sourceTree = "<group>"; };
 		446EAA1B1B360AA20041B8C4 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		446F4A8D1B3F68F300EB1B7C /* Animator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
 		44A53D2F1B3E02E000C54160 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Player.swift; path = Controllers/Player.swift; sourceTree = "<group>"; };
 		44A53D351B3E03DB00C54160 /* LibraryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryController.swift; path = Controllers/LibraryController.swift; sourceTree = "<group>"; };
 		44A53D371B3E043700C54160 /* PlayerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlayerVC.swift; path = ViewControllers/PlayerVC.swift; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 		4428A1871B30CF4900708716 /* OnCueX */ = {
 			isa = PBXGroup;
 			children = (
+				446F4A8D1B3F68F300EB1B7C /* Animator.swift */,
 				4400B9141B36785900E9E06D /* UIImageHelpers.swift */,
 				446EAA1B1B360AA20041B8C4 /* Helpers.swift */,
 				4428A1AF1B317E7300708716 /* Controllers */,
@@ -534,6 +537,7 @@
 				4428A1901B30CF4900708716 /* ViewController.swift in Sources */,
 				446EAA141B34CE770041B8C4 /* ListVC.swift in Sources */,
 				4400B9131B36327400E9E06D /* UIManager.swift in Sources */,
+				446F4A8E1B3F68F300EB1B7C /* Animator.swift in Sources */,
 				446EAA161B34D3680041B8C4 /* CellFactory.swift in Sources */,
 				44ABB85B1B3F4E9E00C03130 /* ItemProvider.swift in Sources */,
 				4400B9191B36996300E9E06D /* QueueCell.swift in Sources */,
