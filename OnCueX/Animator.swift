@@ -172,7 +172,7 @@ class Animator:NSObject {
             if animation.completionBlock != nil {
                 animation.completionBlock!()
             }
-            self.displayLink!.removeFromRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
+            self.displayLink!.removeFromRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
             return
         }
 
