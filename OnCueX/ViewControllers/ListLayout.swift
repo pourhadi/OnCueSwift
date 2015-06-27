@@ -63,7 +63,7 @@ extension UICollectionViewLayoutAttributes {
             return 0.0
         }
         set {
-            objc_setAssociatedObject(self, "animationPercent", newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(newValue, "animationPercent", self, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     
