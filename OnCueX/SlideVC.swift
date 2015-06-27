@@ -139,7 +139,38 @@ class SlideVC: UIViewController, UIScrollViewDelegate {
         navContainer.addSubview(navVC.view)
         navVC.didMoveToParentViewController(self)
         
-        
+        self.scrollView.rac_valuesForKeyPath("contentOffset", observer: self).subscribeNext { [weak self] (val) -> Void in
+            if let this = self {
+                var offset = this.scrollView.contentOffset.x
+                var currentXStart = this.view.frame.size.width * 2
+                var nextXStart = this.view.bounds.size.width * 4
+                var distance = -(this.view.bounds.size.width*2)
+                var percent = this.scrollView.contentOffset.x / (this.view.bounds.size.width*2)
+                var currentX = currentXStart + (distance * percent)
+                var nextX = nextXStart + (distance * percent)
+                currentX += this.view.bounds.size.width/2
+                nextX += this.view.bounds.size.width/2
+                
+                func adjustNavContainerPosition() {
+                    let newX = (-offset) + this.view.bounds.size.width/2
+                    this.navContainerAttachment!.anchorPoint = CGPointMake(newX, this.view.center.y)
+                }
+                
+                func adjustLibraryContainerPosition() {
+                    this.libraryContainerAttachment!.anchorPoint = CGPointMake(currentX, this.view.center.y)
+                }
+                
+                func adjustQueueContainerPosition() {
+                    this.queueContainerAttachment!.anchorPoint = CGPointMake(nextX, this.view.center.y)
+                }
+                
+                
+                adjustNavContainerPosition()
+                adjustLibraryContainerPosition()
+                adjustQueueContainerPosition()
+
+            }
+        }
 
     }
     
@@ -158,32 +189,6 @@ class SlideVC: UIViewController, UIScrollViewDelegate {
       func scrollViewDidScroll(scrollView: UIScrollView) {
         
         let offset = scrollView.contentOffset.x
-        var currentXStart = self.view.frame.size.width * 2
-        var nextXStart = self.view.bounds.size.width * 4
-        var distance = -(self.view.bounds.size.width*2)
-        var percent = self.scrollView.contentOffset.x / (self.view.bounds.size.width*2)
-        var currentX = currentXStart + (distance * percent)
-        var nextX = nextXStart + (distance * percent)
-        currentX += self.view.bounds.size.width/2
-        nextX += self.view.bounds.size.width/2
-
-        func adjustNavContainerPosition() {
-            let newX = (-offset) + self.view.bounds.size.width/2
-            navContainerAttachment!.anchorPoint = CGPointMake(newX, self.view.center.y)
-        }
-        
-        func adjustLibraryContainerPosition() {
-            libraryContainerAttachment!.anchorPoint = CGPointMake(currentX, self.view.center.y)
-        }
-        
-        func adjustQueueContainerPosition() {
-            queueContainerAttachment!.anchorPoint = CGPointMake(nextX, self.view.center.y)
-        }
-
-
-        adjustNavContainerPosition()
-        adjustLibraryContainerPosition()
-        adjustQueueContainerPosition()
         
     }
     
