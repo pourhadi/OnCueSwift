@@ -30,15 +30,17 @@ class MainMenuCell : UICollectionViewCell {
     }
 }
 
+enum MainMenuCellTitle:String {
+    case Search = "Search"
+    case Artists = "Artists"
+    case Albums = "Albums"
+    case Playlists = "Playlists"
+}
+
+
 class MainMenuVC: UICollectionViewController {
 
-    enum MainMenuCellTitle:String {
-        case Search = "Search"
-        case Artists = "Artists"
-        case Albums = "Albums"
-        case Playlists = "Playlists"
-    }
-    
+
     let cellTitles:[MainMenuCellTitle] = [.Search, .Artists, .Albums, .Playlists]
     
     override func viewDidLoad() {
