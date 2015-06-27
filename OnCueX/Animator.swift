@@ -168,7 +168,11 @@ class Animator:NSObject {
         }
 
         let animation:Animation = self.currentAnimation as! Animation
-        if (elapsed > animation.duration + animation.delay) {
+        
+        var percentComplete:CGFloat = CGFloat(elapsed / animation.duration)
+        var currentVal = animation.easingFunction!(currentTime: elapsed, beginningValue: animation.fromValue, changeInValue: animation.toValue, duration: animation.duration)
+        
+        if (elapsed > animation.delay && currentVal > animation.toValue) {
             if animation.completionBlock != nil {
                 animation.completionBlock!()
             }
@@ -176,8 +180,7 @@ class Animator:NSObject {
             return
         }
 
-        var percentComplete:CGFloat = CGFloat(elapsed / animation.duration)
-        var currentVal = animation.easingFunction!(currentTime: elapsed, beginningValue: animation.fromValue, changeInValue: animation.toValue, duration: animation.duration)
+        
         animation.view!.setValue(currentVal, forKeyPath: animation.keyPath!)
     }
 
