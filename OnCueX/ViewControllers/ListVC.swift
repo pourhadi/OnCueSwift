@@ -88,7 +88,7 @@ class ListVC: UIViewController {
     
     
     lazy var collectionView:UICollectionView = {
-        var view = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
+        var view = UICollectionView(frame: CGRectZero, collectionViewLayout: ListLayout())
         view.delegate = self.dataSource
         view.dataSource = self.dataSource
         view.alwaysBounceVertical = true

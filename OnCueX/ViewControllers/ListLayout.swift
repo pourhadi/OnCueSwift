@@ -8,6 +8,11 @@
 
 import UIKit
 
+func CalculatePercentComplete(start:CGFloat, end:CGFloat, current:CGFloat) -> CGFloat {
+    var x = end - start
+    return (current - start) / x
+}
+
 func ExtrapolateValue(from:CGFloat, _ to:CGFloat, _ percent:CGFloat) -> CGFloat {
     let value = from + ((to - from) * percent)
     return value
@@ -50,12 +55,50 @@ func MakeUpSwing(percent:CGFloat) -> CATransform3D {
 
 class ListLayout: UICollectionViewFlowLayout {
 
-    var attributes:[UICollectionViewLayoutAttributes] = []
+    var attributes:[[UICollectionViewLayoutAttributes]] = []
     
     override func prepareLayout() {
         super.prepareLayout()
         
+        self.attributes.removeAll()
+        let offset = self.collectionView!.contentOffset.y
         
+        let numOfSections = self.collectionView!.numberOfSections()
+        for x in 0..<numOfSections {
+            var section:[UICollectionViewLayoutAttributes] = []
+            let numOfItems = self.collectionView!.numberOfItemsInSection(x)
+            for y in 0..<numOfItems {
+                let attr = self.layoutAttributesForItemAtIndexPath(NSIndexPath(forItem: y, inSection: x))!.copy() as! UICollectionViewLayoutAttributes
+                
+                let height = attr.frame.size.height
+                
+                let topArea = offset + height
+                if attr.frame.origin.y > offset && attr.frame.origin.y < topArea {
+                    let percent = CalculatePercentComplete(offset, end: topArea, current: attr.frame.origin.y)
+                    attr.transform3D = MakeUpSwing(percent)
+                }
+                section.append(attr)
+
+                
+            }
+            self.attributes.append(section)
+        }
+    }
+    
+    override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
+        return true
+    }
+    
+    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        var attr:[UICollectionViewLayoutAttributes] = []
+        for section in self.attributes {
+            for item in section {
+                if CGRectIntersectsRect(item.frame, rect) {
+                    attr.append(item)
+                }
+            }
+        }
+        return attr
     }
     
 }
