@@ -28,7 +28,7 @@ class UIManager {
             self.slideVC.setViewController(qNav, forSlotIndex: 2)
             
             let menu = MainMenuVC(collectionViewLayout:UICollectionViewFlowLayout())
-            
+            self.slideVC.setViewController(menu, forSlotIndex: 0)
         }
     }
 }
