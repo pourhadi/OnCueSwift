@@ -22,16 +22,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "OnCueX/ViewControllers/Cells/ListItemCell.swift"
-            timestampString = "457090133.019453"
+            filePath = "OnCueX/ViewControllers/ListLayout.swift"
+            timestampString = "457090376.051325"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "113"
-            endingLineNumber = "113"
-            landmarkName = "applyLayoutAttributes(_:)"
+            startingLineNumber = "95"
+            endingLineNumber = "95"
+            landmarkName = "prepareLayout()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

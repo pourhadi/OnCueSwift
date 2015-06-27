@@ -93,6 +93,7 @@ class ListLayout: UICollectionViewFlowLayout {
                     let percent = CalculatePercentComplete(topArea, end: offset, current: attr.frame.origin.y)
                     attr.transform3D = MakeUpSwing(percent)
                     attr.alpha = percent
+                    print(percent)
                     
                 }
                 section.append(attr)
