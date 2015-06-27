@@ -23,7 +23,7 @@ class UIManager {
             self.slideVC.setViewController(nav, forSlotIndex: 1)
             self.browserNav = nav
             
-            let queue = QueueVC(collectionViewLayout: UICollectionViewFlowLayout())
+            let queue = QueueVC(collectionViewLayout: ListLayout())
             let qNav = NavVC(rootViewController: queue)
             self.slideVC.setViewController(qNav, forSlotIndex: 2)
         }
