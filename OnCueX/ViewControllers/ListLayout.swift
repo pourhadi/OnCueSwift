@@ -57,7 +57,10 @@ extension UICollectionViewLayoutAttributes {
     
     var animationPercent:CGFloat {
         get {
-            return objc_getAssociatedObject(self, "animationPercent") as! CGFloat
+            if let percent = objc_getAssociatedObject(self, "animationPercent") as? CGFloat {
+                return percent
+            }
+            return 0.0
         }
         set {
             objc_setAssociatedObject(self, "animationPercent", newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
