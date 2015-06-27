@@ -12,7 +12,7 @@ let _uiManager = _delegate.uiManager
 
 extension UIManager: MainMenuVCDelegate {
     func mainMenuCellSelected(cell:MainMenuCell) {
-        self.slideVC.scrollTo(self.slideVC.view.frame.size.width*2, animated: true) { () -> Void in
+        self.slideVC.scrollTo(self.slideVC.view.frame.size.width, animated: true) { () -> Void in
             print("animation complete")
         }
     }

@@ -110,7 +110,7 @@ class Animator:NSObject {
         self.currentAnimation = animation
 
         self.displayLink = CADisplayLink(target: self, selector: "animationStep")
-        self.displayLink?.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+        self.displayLink?.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
         self.startTime = self.displayLink!.timestamp
     }
     
@@ -130,7 +130,7 @@ class Animator:NSObject {
                 if group.completionBlock != nil {
                     group.completionBlock!()
                 }
-                self.displayLink!.removeFromRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+                self.displayLink!.removeFromRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
                 self.displayLink = nil
                 return
             }
@@ -172,7 +172,7 @@ class Animator:NSObject {
             if animation.completionBlock != nil {
                 animation.completionBlock!()
             }
-            self.displayLink!.removeFromRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+            self.displayLink!.removeFromRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
             return
         }
 
