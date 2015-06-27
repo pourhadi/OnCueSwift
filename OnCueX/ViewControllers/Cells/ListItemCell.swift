@@ -108,10 +108,7 @@ class ListItemCell : UICollectionViewCell {
     
     override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
         super.applyLayoutAttributes(layoutAttributes)
-        let percent = layoutAttributes.animationPercent
-//        let yAnchor = ExtrapolateValue(0.5, 1, percent)
         self.layer.anchorPoint = CGPointMake(0.5, 1)
-
     }
     
 }

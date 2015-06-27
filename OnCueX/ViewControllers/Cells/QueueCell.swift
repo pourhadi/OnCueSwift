@@ -77,6 +77,11 @@ class QueueCellIndexView : UIView {
 
 class QueueCell: UICollectionViewCell, QueuedItemObserver {
     
+    override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
+        super.applyLayoutAttributes(layoutAttributes)
+        self.layer.anchorPoint = CGPointMake(0.5, 1)
+    }
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         self.imageView.image = nil
