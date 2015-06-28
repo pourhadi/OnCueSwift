@@ -65,11 +65,16 @@ class SpotifyProvider:SourceItemProvider {
                     for track in tracks {
                         artists.extend(track.artists as! [SPTPartialArtist])
                     }
-                    artists = uniq(artists)
                     let artistItems:[TrackCollection] = artists.map({ (artist) -> TrackCollection in
                         return SpotifyArtist(partialArtist: artist)
                     })
-                    let collectionList = TrackCollectionList(list: List(items: artistItems, totalCount: UInt(artistItems.count), pageNumber: 0))
+                    var filteredArtists:[TrackCollection] = []
+                    for item in artistItems {
+                        if filteredArtists.index(item) == nil {
+                            filteredArtists.append(item)
+                        }
+                    }
+                    let collectionList = TrackCollectionList(list: List(items: filteredArtists, totalCount: UInt(artistItems.count), pageNumber: 0))
                     sendNext(sink, collectionList)
                     sendCompleted(sink)
                 }
@@ -86,7 +91,13 @@ class SpotifyProvider:SourceItemProvider {
                 let albums:[TrackCollection] = tracks.map({ (track) -> TrackCollection in
                     return SpotifyAlbum(partialAlbum: track.album)
                 })
-                let collectionList = TrackCollectionList(list: List(items: albums, totalCount: UInt(albums.count), pageNumber: 0))
+                var filteredAlbums:[TrackCollection] = []
+                for item in albums {
+                    if filteredAlbums.index(item) == nil {
+                        filteredAlbums.append(item)
+                    }
+                }
+                let collectionList = TrackCollectionList(list: List(items: filteredAlbums, totalCount: UInt(albums.count), pageNumber: 0))
                 sendNext(sink, collectionList)
                 sendCompleted(sink)
             }
@@ -114,6 +125,11 @@ class SpotifyProvider:SourceItemProvider {
             spotify({ (token) -> Void in
                 SPTYourMusic.savedTracksForUserWithAccessToken(token, callback: { (error, obj) -> Void in
                     if let list = obj as? SPTListPage {
+                        guard let _ = list.items as? [SPTPartialTrack] else {
+                            sendNext(sink, [])
+                            sendCompleted(sink)
+                            return
+                        }
                         sendNext(sink, list.items as! [SPTPartialTrack])
                         sendCompleted(sink)
                     } else {
