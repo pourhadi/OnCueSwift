@@ -22,7 +22,29 @@ final internal class SpotifyController: NSObject {
         return nil
     }
     
-    var session:SPTSession?
+    var _session:SPTSession?
+    var session:SPTSession? {
+        get {
+            if let savedSession = _session {
+                return savedSession
+            }
+            if let data = NSUserDefaults.standardUserDefaults().objectForKey("sptSession") as? NSData {
+                if let savedSession = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? SPTSession {
+                    _session = savedSession
+                    return savedSession
+                }
+                
+            }
+            return nil
+        }
+        set {
+            if let val = newValue {
+                let data = NSKeyedArchiver.archivedDataWithRootObject(val)
+                _session = newValue
+                NSUserDefaults.standardUserDefaults().setObject(data, forKey: "sptSession")
+            }
+        }
+    }
     var validSession:Bool {
         if let session = self.session {
             return session.isValid()

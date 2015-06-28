@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ItemManagerDelegate {
         
         let auth = SPTAuth.defaultInstance()
         auth.clientID = _spotifyController.clientID
-        auth.requestedScopes = [SPTAuthStreamingScope]
+        auth.requestedScopes = [SPTAuthStreamingScope, SPTAuthUserLibraryReadScope]
         auth.sessionUserDefaultsKey = "SpotifyDefaultsKey"
         auth.redirectURL = NSURL(string: "oncue-spotify://callback")
         
