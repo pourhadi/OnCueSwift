@@ -150,11 +150,27 @@ class SpotifyProvider:SourceItemProvider {
             sink, disposable in
             spotify({ (token) -> Void in
                 SPTPlaylistList.playlistsForUserWithSession(_spotifyController.session!, callback: { (error, list) -> Void in
-//                    if let list = list as? SPTPlaylistList {
-//                        
-//                    }
+                    if let list = list as? SPTPlaylistList {
+                        if let items = list.items as? [SPTPartialPlaylist] {
+                            let playlists:[TrackCollection] = items.map({ (playlist) -> TrackCollection in
+                                return SpotifyPlaylist(partialPlaylist: playlist)
+                            })
+                            let itemList = List(items: playlists, totalCount: UInt(playlists.count), pageNumber: 0)
+                            let colList = TrackCollectionList(list: itemList)
+                            sendNext(sink, colList)
+                            sendCompleted(sink)
+                        } else {
+                            sendError(sink, NSError(domain: kSpotifyErrorDomain, code: 0, userInfo: nil))
+                            sendCompleted(sink)
+                        }
+                    } else {
+                        sendError(sink, NSError(domain: kSpotifyErrorDomain, code: 0, userInfo: nil))
+                        sendCompleted(sink)
+                    }
                 })
                 }) { () -> Void in
+                    sendError(sink, NSError(domain: kSpotifyErrorDomain, code: 0, userInfo: nil))
+                    sendCompleted(sink)
             }
         }
     }
