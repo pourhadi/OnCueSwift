@@ -10,6 +10,36 @@ import UIKit
 import MediaPlayer
 import ReactiveCocoa
 
+protocol ItemProviderDelegate {
+    func itemProvider(provider:ItemProvider, pushVCForVM:ListVM)
+}
+class ItemProvider:ListVMDelegate {
+    let providers:[SourceItemProvider] = [SpotifyProvider()]
+    
+    func getArtists() -> SignalProducer<ListVM, NSError> {
+        return SignalProducer {
+            sink, disposable in
+            var signals:[RACSignal] = []
+            for provider in self.providers {
+                signals.append(toRACSignal(provider.getArtists()))
+            }
+            var lists:[ItemList] = []
+            RACSignal.merge(signals).subscribeNext({ (obj) -> Void in
+                if let list = obj as? TrackCollectionList {
+                    lists.append(list)
+                }
+                }, completed: { () -> Void in
+                    sendNext(sink, ListVM(lists: lists, displayContext: CustomDisplayContext("Artists"), delegate: self))
+                    sendCompleted(sink)
+            })
+        }
+    }
+    
+    func listVM(listVM:ListVM, selectedItem:protocol<Item>, deselect:(deselect:Bool)->Void) {
+        
+    }
+}
+
 enum SourceCollectionType:String {
     case Artists = "Artists"
     case Albums = "Albums"
@@ -41,6 +71,7 @@ class SpotifyProvider:SourceItemProvider {
                     })
                     let collectionList = TrackCollectionList(list: List(items: artistItems, totalCount: UInt(artistItems.count), pageNumber: 0))
                     sendNext(sink, collectionList)
+                    sendCompleted(sink)
                 }
             })
         }
@@ -57,6 +88,7 @@ class SpotifyProvider:SourceItemProvider {
                 })
                 let collectionList = TrackCollectionList(list: List(items: albums, totalCount: UInt(albums.count), pageNumber: 0))
                 sendNext(sink, collectionList)
+                sendCompleted(sink)
             }
             })
         }
@@ -83,13 +115,16 @@ class SpotifyProvider:SourceItemProvider {
                 SPTYourMusic.savedTracksForUserWithAccessToken(token, callback: { (error, obj) -> Void in
                     if let list = obj as? SPTListPage {
                         sendNext(sink, list.items as! [SPTPartialTrack])
+                        sendCompleted(sink)
                     } else {
                         sendError(sink, NSError(domain: kSpotifyErrorDomain, code: 0, userInfo: nil))
+                        sendCompleted(sink)
                     }
                 })
 
                 }) { () -> Void in
                     sendError(sink, NSError(domain: kSpotifyErrorDomain, code: 0, userInfo: nil))
+                    sendCompleted(sink)
             }
             
         }

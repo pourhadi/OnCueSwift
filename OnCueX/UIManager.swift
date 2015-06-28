@@ -13,13 +13,14 @@ let _uiManager = _delegate.uiManager
 extension UIManager: MainMenuVCDelegate {
     func mainMenuCellSelected(cell:MainMenuCell, title:MainMenuCellTitle) {
         if title == .Artists {
-//            self.itemProvider.getCollectionLists(.Artists, filterContext: nil).subscribeNext { [weak self] (val) -> Void in
-//                if let this = self {
-//                    if let lists = val as? [ItemList] {
-//                        
-//                    }
-//                }
-//            }
+            self.itemProvider.getArtists().start({ (event) -> () in
+                if let vm = event.value {
+                    let listVC = ListVC(listVM: vm)
+                    let nav = NavVC(rootViewController: listVC)
+                    self.browserNav = nav
+                    self.slideVC.setViewController(nav, forSlotIndex: 1)
+                }
+            })
         }
         self.slideVC.scrollTo(self.slideVC.view.frame.size.width, animated: true) { () -> Void in
             print("animation complete")
@@ -37,7 +38,7 @@ class SpotifyManager {
 
 class UIManager {
 
-//    let itemProvider = ItemProvider()
+    let itemProvider = ItemProvider()
     
     lazy var spotifyManager:SpotifyManager = SpotifyManager(delegate:self)
     var slideVC:SlideVC = SlideVC()
@@ -45,6 +46,14 @@ class UIManager {
     var browserNav:NavVC?
     
     func configure() {
+        let queue = QueueVC(collectionViewLayout: ListLayout())
+        let qNav = NavVC(rootViewController: queue)
+        self.slideVC.setViewController(qNav, forSlotIndex: 2)
+        
+        let menu = MainMenuVC()
+        menu.delegate = self
+        self.slideVC.setViewController(menu, forSlotIndex: 0)
+        /*
         self.spotifyManager.getHomeVM { (vm) -> Void in
             let vc = ListVC(listVM: vm)
             let nav = NavVC(rootViewController: vc)
@@ -58,7 +67,7 @@ class UIManager {
             let menu = MainMenuVC()
             menu.delegate = self
             self.slideVC.setViewController(menu, forSlotIndex: 0)
-        }
+        }*/
     }
 }
 
