@@ -37,20 +37,10 @@ extension UIManager:ItemProviderDelegate {
     }
 }
 
-class SpotifyManager {
-    
-    init(delegate:AnyObject) {}
-    func getHomeVM(complete:(vm:ListVM)->Void) {
-        
-    }
-}
-
 class UIManager {
 
     let itemProvider = ItemProvider()
-    
-    lazy var spotifyManager:SpotifyManager = SpotifyManager(delegate:self)
-    var slideVC:SlideVC = SlideVC()
+        var slideVC:SlideVC = SlideVC()
 
     var browserNav:NavVC?
     
@@ -63,21 +53,6 @@ class UIManager {
         let menu = MainMenuVC()
         menu.delegate = self
         self.slideVC.setViewController(menu, forSlotIndex: 0)
-        /*
-        self.spotifyManager.getHomeVM { (vm) -> Void in
-            let vc = ListVC(listVM: vm)
-            let nav = NavVC(rootViewController: vc)
-            self.slideVC.setViewController(nav, forSlotIndex: 1)
-            self.browserNav = nav
-            
-            let queue = QueueVC(collectionViewLayout: ListLayout())
-            let qNav = NavVC(rootViewController: queue)
-            self.slideVC.setViewController(qNav, forSlotIndex: 2)
-            
-            let menu = MainMenuVC()
-            menu.delegate = self
-            self.slideVC.setViewController(menu, forSlotIndex: 0)
-        }*/
     }
 }
 

@@ -16,7 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ItemManagerDelegate {
     var window: UIWindow?
 
     lazy var uiManager:UIManager = UIManager()
-    var spotifyManager:SpotifyManager?
     var navigationController:UINavigationController?
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.

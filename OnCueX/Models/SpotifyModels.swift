@@ -42,7 +42,11 @@ internal struct SpotifyTrack: TrackItem, Queueable {
             let artist = artist as! SPTPartialArtist
             return artist.name
         }
-        return subtitleString(artists, album: self.partialTrack.album.name)
+        var albumString:String?
+        if let album = self.partialTrack.album.name {
+            albumString = album
+        }
+        return subtitleString(artists, album: albumString)
     }
     
     var identifier:String { return self.partialTrack.identifier }
