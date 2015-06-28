@@ -28,6 +28,15 @@ extension UIManager: MainMenuVCDelegate {
     }
 }
 
+extension UIManager:ItemProviderDelegate {
+    func itemProvider(provider:ItemProvider, pushVCForVM:ListVM) {
+        let listVC = ListVC(listVM: pushVCForVM)
+        if let nav = self.browserNav {
+            nav.pushViewController(listVC, animated: true)
+        }
+    }
+}
+
 class SpotifyManager {
     
     init(delegate:AnyObject) {}
@@ -46,6 +55,7 @@ class UIManager {
     var browserNav:NavVC?
     
     func configure() {
+        self.itemProvider.delegate = self
         let queue = QueueVC(collectionViewLayout: ListLayout())
         let qNav = NavVC(rootViewController: queue)
         self.slideVC.setViewController(qNav, forSlotIndex: 2)
