@@ -75,7 +75,7 @@ internal struct LibraryAlbum : AlbumItem {
         self.collection = collection
     }
     
-    var title:String? { return self.representativeItem.title }
+    var title:String? { return self.representativeItem.albumTitle }
     var subtitle:String? { return nil }
     
     var identifier:String { return "\(self.representativeItem.albumPersistentID)" }
@@ -109,7 +109,7 @@ internal struct LibraryArtist : ArtistItem {
         self.collection = collection
     }
     
-    var title:String? { return self.representativeItem.title }
+    var title:String? { return self.representativeItem.artist }
     var subtitle:String? { return nil }
     
     var identifier:String { return "\(self.representativeItem.artistPersistentID)" }
