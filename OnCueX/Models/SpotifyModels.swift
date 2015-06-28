@@ -52,10 +52,25 @@ internal struct SpotifyTrack: TrackItem, Queueable {
     var identifier:String { return self.partialTrack.identifier }
     
     func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {
-        let cover = self.partialTrack.album.getClosestCoverImage(forSize)
-        _imageController.getImage(cover.imageURL) { (url, image) -> Void in
-            complete(context:self, image:image)
+        if self.partialTrack.album != nil {
+            let cover = self.partialTrack.album.getClosestCoverImage(forSize)
+            _imageController.getImage(cover.imageURL) { (url, image) -> Void in
+                complete(context:self, image:image)
+            }
+        } else {
+            SPTTrack.trackWithURI(self.partialTrack.uri, session: _spotifyController.session, callback: { (error, track) -> Void in
+                if let track = track as? SPTTrack {
+                    if track.album != nil {
+                        let cover = track.album.getClosestCoverImage(forSize)
+                        _imageController.getImage(cover.imageURL) { (url, image) -> Void in
+                            complete(context:self, image:image)
+                        }
+                    }
+                    
+                }
+            })
         }
+        
     }
     
     var cellReuseID:String { return "textCell" }
