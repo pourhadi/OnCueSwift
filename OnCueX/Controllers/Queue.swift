@@ -27,17 +27,6 @@ struct QueueObserverWrapper:Identifiable {
     }
 }
 
-/*
-
-index: 5
-playhead:3
-
-index: 5
-playhead:8
-
-
-*/
-
 struct QueueIndex: Equatable {
     let index:Int
     let playhead:Int

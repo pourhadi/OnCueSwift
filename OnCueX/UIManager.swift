@@ -8,7 +8,9 @@
 
 import UIKit
 
-let _uiManager = _delegate.uiManager
+var _uiManager:UIManager {
+    return _delegate.uiManager
+}
 
 extension UIManager: MainMenuVCDelegate {
     func mainMenuCellSelected(cell:MainMenuCell, title:MainMenuCellTitle) {
@@ -19,12 +21,13 @@ extension UIManager: MainMenuVCDelegate {
                     let nav = NavVC(rootViewController: listVC)
                     self.browserNav = nav
                     self.slideVC.setViewController(nav, forSlotIndex: 1)
+                    self.slideVC.scrollTo(self.slideVC.view.frame.size.width, animated: true) { () -> Void in
+                        print("animation complete")
+                    }
                 }
             })
         }
-        self.slideVC.scrollTo(self.slideVC.view.frame.size.width, animated: true) { () -> Void in
-            print("animation complete")
-        }
+        
     }
 }
 
@@ -40,7 +43,7 @@ extension UIManager:ItemProviderDelegate {
 class UIManager {
 
     let itemProvider = ItemProvider()
-        var slideVC:SlideVC = SlideVC()
+    let slideVC:SlideVC = SlideVC()
 
     var browserNav:NavVC?
     
@@ -53,14 +56,5 @@ class UIManager {
         let menu = MainMenuVC()
         menu.delegate = self
         self.slideVC.setViewController(menu, forSlotIndex: 0)
-    }
-}
-
-extension UIManager:ItemManagerDelegate {
-    func itemManager(itemManager:ItemManager, pushVCForVM:ListVM) {
-        let listVC = ListVC(listVM: pushVCForVM)
-        if let nav = self.browserNav {
-            nav.pushViewController(listVC, animated: true)
-        }
     }
 }

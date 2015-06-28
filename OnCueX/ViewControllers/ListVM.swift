@@ -16,19 +16,12 @@ protocol ListVMDelegate: class {
 class ListVM {
     
     unowned var delegate:ListVMDelegate
-//    let updatedSignal:RACSignal = RACSubject()
-//    let pushVCSignal:RACSignal = RACSubject()
-//    let itemSelectedSignal:RACSignal = RACSubject()
-//    
-//    internal var pushSubject:RACSubject { return self.pushVCSignal as! RACSubject }
-//    
+
     init(lists:[ItemList], displayContext:DisplayContext, delegate:ListVMDelegate) {
         self.delegate = delegate
         self.lists = lists
         self.displayContext = displayContext
         self.paginated = false
-//        self.paginated = Int(list.totalCount) > list.items.count
-//        super.init()
     }
     
     var displayContext:DisplayContext

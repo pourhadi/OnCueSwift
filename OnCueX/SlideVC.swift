@@ -128,23 +128,10 @@ class SlideVC: UIViewController, UIScrollViewDelegate {
         animator!.addBehavior(libraryContainerAttachment!)
         animator!.addBehavior(queueContainerAttachment!)
 
-        
-    //    self.addChildViewController(globalLibraryVC)
-     //   globalLibraryVC.view.frame = libraryContainer.bounds
-      //  libraryContainer.addSubview(globalLibraryVC.view)
-       // globalLibraryVC.didMoveToParentViewController(self)
-        
         self.addChildViewController(navVC)
         navVC.view.frame = navContainer.bounds
         navContainer.addSubview(navVC.view)
         navVC.didMoveToParentViewController(self)
-        
-        self.scrollView.rac_signalForKeyPath("contentOffset", observer: self).subscribeNext { [weak self] (val) -> Void in
-            if let this = self {
-                var offset = this.scrollView.contentOffset.x
-            }
-        }
-
     }
     
     func scrollTo(offset:CGFloat, animated:Bool, complete:()->Void) {

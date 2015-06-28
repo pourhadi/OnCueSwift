@@ -16,18 +16,6 @@ class NavBar : UINavigationBar {
     override var barPosition:UIBarPosition {
         return .TopAttached
     }
- 
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        self.delegate = self
-//    }
-//
-//    required init(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-    
-    
-    
 }
 
 class NavVC: UIViewController, UINavigationBarDelegate, UINavigationControllerDelegate {
@@ -75,7 +63,6 @@ class NavVC: UIViewController, UINavigationBarDelegate, UINavigationControllerDe
         }.resizable()
         self.navBar.setBackgroundImage(black, forBarMetrics: .Default)
         self.navBar.shadowImage = UIImage()
-        // Do any additional setup after loading the view.
         
         self.view.addSubview(self.navBar)
         self.navController.willMoveToParentViewController(self)

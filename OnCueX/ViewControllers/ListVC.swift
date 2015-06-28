@@ -66,20 +66,6 @@ class ListVC: UIViewController {
     }
     
     func setupBindings() {
-//        self.listVM.updatedSignal.subscribeNext { [weak self] (val) -> Void in
-//            if let this = self {
-//                this.collectionView.reloadData()
-//            }
-//        }
-//        
-//        self.listVM.pushVCSignal.subscribeNext { [weak self] (val) -> Void in
-//            if let this = self {
-////                if let vm = val as? ListVM<Item> {
-//                    let vc = ListVC(listVM: val as! ListVM)
-//                    this.navigationController!.pushViewController(vc, animated: true)
-////                }
-//            }
-//        }
     }
 
     required init(coder aDecoder: NSCoder) {

@@ -11,45 +11,31 @@ import CoreData
 
 @UIApplicationMain
 
-class AppDelegate: UIResponder, UIApplicationDelegate, ItemManagerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
     lazy var uiManager:UIManager = UIManager()
     var navigationController:UINavigationController?
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
         
         let auth = SPTAuth.defaultInstance()
         auth.clientID = _spotifyController.clientID
         auth.requestedScopes = [SPTAuthStreamingScope, SPTAuthUserLibraryReadScope]
         auth.sessionUserDefaultsKey = "SpotifyDefaultsKey"
         auth.redirectURL = NSURL(string: "oncue-spotify://callback")
-        
-//        let nav = UINavigationController(rootViewController: UIViewController(nibName: nil, bundle: nil))
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
         self.window!.rootViewController = self.uiManager.slideVC
         self.window!.makeKeyAndVisible()
         self.window!.tintColor = UIColor.whiteColor()
-//        self.navigationController = nav
-        
-//        self.spotifyManager = SpotifyManager(delegate:self)
-//        self.spotifyManager!.getHomeVM { (vm) -> Void in
-//            let vc = ListVC(listVM: vm)
-//            nav.pushViewController(vc, animated: true)
-//        }
+
 
         self.uiManager.configure()
         
         return true
     }
-    
-    func itemManager(itemManager:ItemManager, pushVCForVM:ListVM) {
-        let listVC = ListVC(listVM: pushVCForVM)
-        self.navigationController!.pushViewController(listVC, animated: true)
-    }
-    
+
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
         let auth = SPTAuth.defaultInstance()
         

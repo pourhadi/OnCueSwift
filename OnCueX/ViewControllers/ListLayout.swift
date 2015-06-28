@@ -9,7 +9,7 @@
 import UIKit
 
 func CalculatePercentComplete(start:CGFloat, end:CGFloat, current:CGFloat) -> CGFloat {
-    var x = end - start
+    let x = end - start
     return (current - start) / x
 }
 
@@ -58,22 +58,6 @@ func MakeUpSwing(percent:CGFloat) -> CATransform3D {
     return transform;
 }
 
-extension UICollectionViewLayoutAttributes {
-    
-    var animationPercent:CGFloat {
-        get {
-            if let percent = objc_getAssociatedObject(self.indexPath, "animationPercent") as? NSNumber {
-                return CGFloat(percent.floatValue)
-            }
-            return 0.0
-        }
-        set {
-            objc_setAssociatedObject(self.indexPath, "animationPercent", NSNumber(float:Float(newValue)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
-    
-}
-
 class ListLayout: UICollectionViewFlowLayout {
 
     var attributes:[[UICollectionViewLayoutAttributes]] = []
@@ -96,7 +80,6 @@ class ListLayout: UICollectionViewFlowLayout {
                 let topArea = offset - height
                 if attr.frame.origin.y > topArea && attr.frame.origin.y < offset {
                     let percent = CalculatePercentComplete(offset, end: topArea, current: attr.frame.origin.y)
-//                    var transform = MakeUpSwing(-percent)
                     var transform = CATransform3DMakePerspective(0, ExtrapolateValue(0, 0.0018, percent))
                     transform = CATransform3DTranslate(transform, 0, ExtrapolateValue(0, height+(height/2), percent), 0)
                     attr.transform3D = transform
