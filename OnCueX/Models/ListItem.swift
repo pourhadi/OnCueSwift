@@ -49,7 +49,7 @@ protocol TrackCollection: DisplayContext {
 protocol AlbumItem: TrackCollection, Item {}
 
 protocol ArtistItem : TrackCollection, Item {
-    func getAlbums(page:Int, complete:(albums:List<AlbumItem>?)->Void)
+    func getAlbums(page:Int, complete:(albums:List<TrackCollection>?)->Void)
 }
 
 protocol PlaylistItem : TrackCollection, Item {}

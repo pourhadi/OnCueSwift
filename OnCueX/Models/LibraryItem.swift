@@ -129,12 +129,12 @@ internal struct LibraryArtist : ArtistItem {
         }
     }
     
-    func getAlbums(page: Int, complete: (albums: List<AlbumItem>?) -> Void) {
+    func getAlbums(page: Int, complete: (albums: List<TrackCollection>?) -> Void) {
         let query = MPMediaQuery.albumsQuery()
         query.addFilterPredicate(MPMediaPropertyPredicate(value: NSNumber(unsignedLongLong:  self.representativeItem.artistPersistentID), forProperty: MPMediaItemPropertyArtistPersistentID))
         
         if let collections = query.collections {
-            var albums:[AlbumItem] = []
+            var albums:[TrackCollection] = []
             for collection in collections {
                 albums.append(LibraryAlbum(collection: collection))
             }

@@ -138,7 +138,7 @@ internal struct SpotifyArtist : ArtistItem {
         }
     }
     
-    func getAlbums(page: Int, complete: (albums: List<AlbumItem>?) -> Void) {
+    func getAlbums(page: Int, complete: (albums: List<TrackCollection>?) -> Void) {
         
     }
     

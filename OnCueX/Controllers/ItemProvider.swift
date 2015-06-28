@@ -10,10 +10,11 @@ import UIKit
 import MediaPlayer
 import ReactiveCocoa
 
-protocol ItemProviderDelegate {
+protocol ItemProviderDelegate:class {
     func itemProvider(provider:ItemProvider, pushVCForVM:ListVM)
 }
 class ItemProvider:ListVMDelegate {
+    weak var delegate:ItemProviderDelegate?
     let providers:[SourceItemProvider] = [SpotifyProvider()]
     
     func getArtists() -> SignalProducer<ListVM, NSError> {
@@ -36,7 +37,31 @@ class ItemProvider:ListVMDelegate {
     }
     
     func listVM(listVM:ListVM, selectedItem:protocol<Item>, deselect:(deselect:Bool)->Void) {
-        
+        if let collectionItem = selectedItem as? TrackCollection {
+            if let artistItem = collectionItem as? ArtistItem {
+                artistItem.getAlbums(0, complete: { (albums) -> Void in
+                    if let albums = albums {
+                        let list = TrackCollectionList(list: albums)
+                        let vm = ListVM(lists: [list], displayContext: artistItem, delegate: self)
+                        if let delegate = self.delegate {
+                            delegate.itemProvider(self, pushVCForVM:vm)
+                        }
+                    }
+                })
+            } else {
+                collectionItem.getTracks(0, complete: { (list) -> Void in
+                    if let list = list {
+                        let tracks = TrackList(list: list)
+                        let vm = ListVM(lists: [tracks], displayContext: collectionItem, delegate: self)
+                        if let delegate = self.delegate {
+                            delegate.itemProvider(self, pushVCForVM:vm)
+                        }
+                    }
+                })
+            }
+        } else if let trackItem = selectedItem as? Queueable {
+            _queue.insert(trackItem, complete: nil)
+        }
     }
 }
 
