@@ -12,8 +12,8 @@ let _uiManager = _delegate.uiManager
 
 extension UIManager: MainMenuVCDelegate {
     func mainMenuCellSelected(cell:MainMenuCell, title:MainMenuCellTitle) {
-        if title == .Artists {
-            self.itemProvider.getArtists().start({ (event) -> () in
+        if title == .Artists || title == .Albums || title == .Playlists {
+            self.itemProvider.getCollections(SourceCollectionType(rawValue: title.rawValue)!).start({ (event) -> () in
                 if let vm = event.value {
                     let listVC = ListVC(listVM: vm)
                     let nav = NavVC(rootViewController: listVC)

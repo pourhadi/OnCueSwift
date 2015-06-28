@@ -13,16 +13,23 @@ import ReactiveCocoa
 protocol ItemProviderDelegate:class {
     func itemProvider(provider:ItemProvider, pushVCForVM:ListVM)
 }
+
+enum SourceCollectionType:String {
+    case Artists = "Artists"
+    case Albums = "Albums"
+    case Playlists = "Playlists"
+}
+
 class ItemProvider:ListVMDelegate {
     weak var delegate:ItemProviderDelegate?
     let providers:[SourceItemProvider] = [SpotifyProvider()]
     
-    func getArtists() -> SignalProducer<ListVM, NSError> {
+    func getCollections(type:SourceCollectionType) -> SignalProducer<ListVM, NSError> {
         return SignalProducer {
             sink, disposable in
             var signals:[RACSignal] = []
             for provider in self.providers {
-                signals.append(toRACSignal(provider.getArtists()))
+                signals.append(toRACSignal(provider.getCollections(type)))
             }
             var lists:[ItemList] = []
             RACSignal.merge(signals).subscribeNext({ (obj) -> Void in
@@ -65,20 +72,26 @@ class ItemProvider:ListVMDelegate {
     }
 }
 
-enum SourceCollectionType:String {
-    case Artists = "Artists"
-    case Albums = "Albums"
-    case Playlists = "Playlists"
-}
+
 
 protocol SourceItemProvider {
-    func getArtists() -> SignalProducer<TrackCollectionList, NSError>
-    func getAlbums() -> SignalProducer<TrackCollectionList, NSError>
-    func getPlaylists() -> SignalProducer<TrackCollectionList, NSError>
+    func getCollections(type:SourceCollectionType) -> SignalProducer<TrackCollectionList, NSError>
 }
 
 let kSpotifyErrorDomain = "com.pourhadi.OnCue.Spotify.Error"
 class SpotifyProvider:SourceItemProvider {
+    
+    func getCollections(type:SourceCollectionType) -> SignalProducer<TrackCollectionList, NSError> {
+        switch type {
+        case .Artists:
+            return self.getArtists()
+        case .Albums:
+            return self.getAlbums()
+        case .Playlists:
+            return self.getPlaylists()
+        }
+    }
+    
     func getArtists() -> SignalProducer<TrackCollectionList, NSError> {
         return SignalProducer {
             sink, disposable in
