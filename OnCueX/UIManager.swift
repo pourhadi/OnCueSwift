@@ -11,15 +11,34 @@ import UIKit
 let _uiManager = _delegate.uiManager
 
 extension UIManager: MainMenuVCDelegate {
-    func mainMenuCellSelected(cell:MainMenuCell) {
+    func mainMenuCellSelected(cell:MainMenuCell, title:MainMenuCellTitle) {
+        if title == .Artists {
+//            self.itemProvider.getCollectionLists(.Artists, filterContext: nil).subscribeNext { [weak self] (val) -> Void in
+//                if let this = self {
+//                    if let lists = val as? [ItemList] {
+//                        
+//                    }
+//                }
+//            }
+        }
         self.slideVC.scrollTo(self.slideVC.view.frame.size.width, animated: true) { () -> Void in
             print("animation complete")
         }
     }
 }
 
+class SpotifyManager {
+    
+    init(delegate:AnyObject) {}
+    func getHomeVM(complete:(vm:ListVM)->Void) {
+        
+    }
+}
+
 class UIManager {
 
+//    let itemProvider = ItemProvider()
+    
     lazy var spotifyManager:SpotifyManager = SpotifyManager(delegate:self)
     var slideVC:SlideVC = SlideVC()
 

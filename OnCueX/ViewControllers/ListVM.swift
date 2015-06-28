@@ -22,40 +22,31 @@ class ListVM {
 //    
 //    internal var pushSubject:RACSubject { return self.pushVCSignal as! RACSubject }
 //    
-    init(list:ItemList, displayContext:DisplayContext, grouped:Bool, delegate:ListVMDelegate) {
+    init(lists:[ItemList], displayContext:DisplayContext, delegate:ListVMDelegate) {
         self.delegate = delegate
-        self.list = list
-        self.grouped = grouped
+        self.lists = lists
         self.displayContext = displayContext
-        self.paginated = Int(list.totalCount) > list.items.count
+        self.paginated = false
+//        self.paginated = Int(list.totalCount) > list.items.count
 //        super.init()
     }
     
     var displayContext:DisplayContext
     var groups:[[ItemViewModel]] = []
-    var list:ItemList
-    var grouped:Bool
+    var lists:[ItemList]
     var paginated:Bool
     
     func item(atIndexPath:NSIndexPath) -> ItemViewModel {
-        if self.grouped {
-            return self.groups[atIndexPath.section][atIndexPath.row]
-        }
-        return self.list.items[atIndexPath.row]
+        let list = self.lists[atIndexPath.section]
+        return list.items[atIndexPath.row]
     }
     
     func numberOfSections() -> Int {
-        if self.grouped {
-            return self.groups.count
-        }
-        return 1
+        return self.lists.count
     }
     
     func numberOfItems(section:Int) -> Int {
-        if self.grouped {
-            return self.groups[section].count
-        }
-        return self.list.items.count
+       return self.lists[section].items.count
     }
     
     func reuseIDForItem(indexPath:NSIndexPath) -> String {

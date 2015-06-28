@@ -38,7 +38,7 @@ enum MainMenuCellTitle:String {
 }
 
 protocol MainMenuVCDelegate {
-    func mainMenuCellSelected(cell:MainMenuCell)
+    func mainMenuCellSelected(cell:MainMenuCell, title:MainMenuCellTitle)
 }
 
 
@@ -138,7 +138,7 @@ class MainMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let del = self.delegate {
-            del.mainMenuCellSelected(collectionView.cellForItemAtIndexPath(indexPath) as! MainMenuCell)
+            del.mainMenuCellSelected(collectionView.cellForItemAtIndexPath(indexPath) as! MainMenuCell, title:self.cellTitles[indexPath.row])
         }
     }
     

@@ -3,8 +3,6 @@
 Quick is a behavior-driven development framework for Swift and Objective-C.
 Inspired by [RSpec](https://github.com/rspec/rspec), [Specta](https://github.com/specta/specta), and [Ginkgo](https://github.com/onsi/ginkgo).
 
-[![Circle CI](https://circleci.com/gh/Quick/Quick/tree/master.svg?style=svg&circle-token=482ef5bdb37766a3f9d4a98704cedc2c4e0f3e3f)](https://circleci.com/gh/Quick/Quick/tree/master)
-
 ![](https://raw.githubusercontent.com/Quick/Assets/master/Screenshots/QuickSpec%20screenshot.png)
 
 ```swift
@@ -37,7 +35,17 @@ Quick comes together with [Nimble](https://github.com/Quick/Nimble) — a matche
 
 ## Documentation
 
-Read the documentation [in the Documentation folder](https://github.com/Quick/Quick/tree/master/Documentation).
+All documentation can be found in the [Documentation folder](./Documentation), including [detailed installation instructions](./Documentation/InstallingQuick.md) for CocoaPods, Carthage, Git submodules, and more. For example, you can install Quick and [Nimble](https://github.com/Quick/Nimble) using CocoaPods by adding the following to your Podfile:
+
+```
+# Podfile
+
+link_with 'MyTests', 'MyUITests'
+
+use_frameworks!
+pod 'Quick'
+pod 'Nimble'
+```
 
 ## License
 

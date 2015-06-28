@@ -1,99 +1,302 @@
 //
-//  ItemProvider.swift
+//  eProder.wf
 //  OnCueX
 //
-//  Created by Daniel Pourhadi on 6/27/15.
-//  Copyright © 2015 Daniel Pourhadi. All rights reserved.
+//  Creaed by Dane Pourhad on 6/27/15.
+//  Copyrgh © 2015 Dane Pourhad. A rgh reered.
 //
 
 import UIKit
+import MediaPlayer
+import ReactiveCocoa
 
-enum ProviderCollectionType {
-    case Artists
-    case Albums
-    case Playlists
-    case AlbumsForArtist
+enum SourceCollectionType:String {
+    case Artists = "Artists"
+    case Albums = "Albums"
+    case Playlists = "Playlists"
 }
 
-protocol ItemProviderProtocol {
-    func getCollections(type:ProviderCollectionType, filterContext:AnyObject?, complete:(collections:TrackCollectionList?)->Void)
+protocol SourceItemProvider {
+    func getArtists() -> SignalProducer<TrackCollectionList, NSError>
+    func getAlbums() -> SignalProducer<TrackCollectionList, NSError>
+    func getPlaylists() -> SignalProducer<TrackCollectionList, NSError>
 }
 
-class SpotifyItemProvider:ItemProviderProtocol {
-    
-    func getCollections(type:ProviderCollectionType, filterContext:AnyObject?, complete:(collections:TrackCollectionList?)->Void) {
-        switch type {
-        case .Playlists:
-            self.getPlaylists(complete)
-        default:
-            complete(collections: nil)
+let kSpotifyErrorDomain = "com.pourhadi.OnCue.Spotify.Error"
+class SpotifyProvider:SourceItemProvider {
+    func getArtists() -> SignalProducer<TrackCollectionList, NSError> {
+        return SignalProducer {
+            sink, disposable in
+            let sink = sink
+
+            self.getSavedTracks().start({ (event) -> () in
+                if let tracks = event.value {
+                    var artists:[SPTPartialArtist] = []
+                    for track in tracks {
+                        artists.extend(track.artists as! [SPTPartialArtist])
+                    }
+                    artists = uniq(artists)
+                    let artistItems:[TrackCollection] = artists.map({ (artist) -> TrackCollection in
+                        return SpotifyArtist(partialArtist: artist)
+                    })
+                    let collectionList = TrackCollectionList(list: List(items: artistItems, totalCount: UInt(artistItems.count), pageNumber: 0))
+                    sendNext(sink, collectionList)
+                }
+            })
         }
     }
     
-    func getPlaylists(complete:(collections:TrackCollectionList?)->Void) {
-        SPTPlaylistList.playlistsForUserWithSession(_spotifyController.session!, callback: { (error, list) -> Void in
-            if let list = list as? SPTPlaylistList {
-                let items = list.items as! [SPTPartialPlaylist]
-                var playlists:[TrackCollection] = []
-                for item in items {
-                    playlists.append(SpotifyPlaylist(partialPlaylist: item))
-                }
-                
-                let itemList = List<TrackCollection>(items:playlists, totalCount:UInt(playlists.count), pageNumber:0)
-                let collectionList = TrackCollectionList(list: itemList)
-                complete(collections: collectionList)
+    func getAlbums() -> SignalProducer<TrackCollectionList, NSError> {
+        return SignalProducer {
+            sink, disposable in
+            let sink = sink
+        self.getSavedTracks().start( { (event) -> Void in
+            if let tracks = event.value {
+                let albums:[TrackCollection] = tracks.map({ (track) -> TrackCollection in
+                    return SpotifyAlbum(partialAlbum: track.album)
+                })
+                let collectionList = TrackCollectionList(list: List(items: albums, totalCount: UInt(albums.count), pageNumber: 0))
+                sendNext(sink, collectionList)
             }
+            })
+        }
+    }
+    
+    func getPlaylists() -> SignalProducer<TrackCollectionList, NSError> {
+        return SignalProducer {
+            sink, disposable in
+            spotify({ (token) -> Void in
+                SPTPlaylistList.playlistsForUserWithSession(_spotifyController.session!, callback: { (error, list) -> Void in
+//                    if let list = list as? SPTPlaylistList {
+//                        
+//                    }
+                })
+                }) { () -> Void in
+            }
+        }
+    }
+    
+    func getSavedTracks() -> SignalProducer<[SPTPartialTrack], NSError> {
+        return SignalProducer {
+            sink, disposable in
+            spotify({ (token) -> Void in
+                SPTYourMusic.savedTracksForUserWithAccessToken(token, callback: { (error, obj) -> Void in
+                    if let list = obj as? SPTListPage {
+                        sendNext(sink, list.items as! [SPTPartialTrack])
+                    } else {
+                        sendError(sink, NSError(domain: kSpotifyErrorDomain, code: 0, userInfo: nil))
+                    }
+                })
+
+                }) { () -> Void in
+                    sendError(sink, NSError(domain: kSpotifyErrorDomain, code: 0, userInfo: nil))
+            }
+            
+        }
+        
+    }
+}
+
+/*
+
+
+prooco ewodeProder:Deegae {
+    func geCoecon(ype:ProderCoeconype, ferConex:AnyObjec?)->gnaProducer<[], NoError>
+}
+
+ca eProder {
+    
+    e proder:[ewodeProder] = [pofyeProder(), braryeProder()]
+    
+    // reurn [rackCoecon]
+    func geCoecon(ype:ProderCoeconype, ferConex:AnyObjec?) -> gnaProducer<[],NoError> {
+        reurn RACgna.creaegna({ (ubcrber) -> RACDpoabe! n
+            e gna:[RACgna] = ef.proder.ap { (proder) -> RACgna n
+                reurn proder.geCoecon(ype, ferConex: ferConex)
+            }
+            
+            ar :[rackCoecon] = []
+            RACgna.erge(gna).ubcrbeNex({ (obj) -> od n
+                f e  = obj a? rackCoecon {
+                    .append()
+                }
+                }) { () -> od n
+                    e ubcrber:RACubcrber = ubcrber a RACubcrber
+                    ubcrber.endNex()
+                    ubcrber.endCopeed()
+            }
+            reurn RACDpoabe()
         })
     }
 }
 
-class ItemManager: ListVMDelegate {
-    unowned var delegate:ItemManagerDelegate
-    
-    init(delegate:ItemManagerDelegate) {
-        self.delegate = delegate
+ca pofyeProder:ewodeProder {
+    func (:, eecede:prooco<e>, deeec:(deeec:Boo)->od) {
+        
     }
     
-    var homeVM:ListVM?
-    func listVM(listVM:ListVM, selectedItem:protocol<Item>, deselect:(deselect:Bool)->Void) {
-        if let item = selectedItem as? TrackCollection {
-            item.getTracks(0, complete: { (list) -> Void in
-                if let list = list {
-                    let trackList = TrackList(list: list)
-                    let itemVM = ListVM(list: trackList, displayContext:item, grouped: false, delegate:self)
-                    self.delegate.itemManager(self, pushVCForVM: itemVM)
+    func geCoecon(ype:ProderCoeconype, ferConex:AnyObjec?) -> gnaProducer<[],NoError> {
+        wch ype {
+        cae .Pay:
+            reurn ef.gePay()
+        cae .Ar:
+            reurn ef.geAr()
+        defau:
+            reurn RACgna.epy()
+        }
+    }
+    
+    func gePay()->gnaProducer<[],NoError> {
+        reurn gnaProducer {
+            nk, dpoabe n
+            
+            PPay.payForUerWheon(_pofyConroer.eon!, caback: { (error, ) -> od n
+                f e  =  a? PPay {
+                    e e = .e a! [PParaPay]
+                    ar pay:[rackCoecon] = []
+                    for e n e {
+                        pay.append(pofyPay(paraPay: e))
+                    }
+                    
+                    e e = <rackCoecon>(e:pay, oaCoun:Un(pay.coun), pageNuber:0)
+                    e coecon = rackCoecon(: e)
+                    e  = (: <###[e]#>, dpayConex: <###DpayConex#>, deegae: <###Deegae#>)
                 }
             })
-            deselect(deselect: false)
+        }
+        
+        reurn RACgna.creaegna({ (ubcrber) -> RACDpoabe! n
             
-        } else if let item = selectedItem as? Queueable {
-            _queue.insert(item, complete: nil)
-            deselect(deselect: true)
+            
+            reurn RACDpoabe()
+        })
+    }
+    
+    func geAr() -> gnaProducer<[],NoError> {
+        reurn RACgna.creaegna({ (ubcrber) -> RACDpoabe! n
+            ef.geaedrack { (rack) -> od n
+                ar ar:[PParaAr] = []
+                f e rack = rack {
+                    for rack n rack {
+                        for ar n rack.ar {
+                            f e ar = ar a? PParaAr {
+                                ar.append(ar)
+                            }
+                        }
+                    }
+                }
+                
+                e are:[rackCoecon] = ar.ap({ (ar) -> rackCoecon n
+                    reurn pofyAr(paraAr: ar)
+                })
+                
+                e  = <rackCoecon>(e: are, oaCoun: Un(are.coun), pageNuber: 0)
+                e coecon = rackCoecon(: )
+                e ubcrber:RACubcrber = ubcrber a RACubcrber
+                ubcrber.endNex(coecon)
+                ubcrber.endCopeed()
+            }
+            reurn RACDpoabe()
+        })
+    }
+    
+    func geaedrack(copee:(rack:[PPararack]?)->od) {
+
+        pofy({ (oken) -> od n
+            PYouruc.aedrackForUerWhAcceoken(oken, caback: { (error, obj) -> od n
+                f e page = obj a? PPage {
+                    e e = page.e
+                    copee(rack: e a? [PPararack])
+                }
+            })
+            }) { () -> od n
+                copee(rack:n)
+        }
+        
+
+    }
+}
+
+ca braryeProder:ewodeProder {
+    func geCoecon(ype:ProderCoeconype, ferConex:AnyObjec?) -> gnaProducer<[],NoError> {
+        wch ype {
+        cae .Ar:
+            reurn ef.geAr()
+        defau:
+            reurn RACgna.epy()
+        }
+
+    }
+    
+    func geAr() -> gnaProducer<[],NoError> {
+        reurn RACgna.creaegna({ (ubcrber) -> RACDpoabe! n
+        
+        
+        e query = PedaQuery.arQuery()
+        f e coecon = query.coecon {
+            e ar:[rackCoecon] = coecon.ap({ (coecon) -> rackCoecon n
+                reurn braryAr(coecon: coecon)
+            })
+            e  = <rackCoecon>(e: ar, oaCoun: Un(ar.coun), pageNuber: 0)
+            e co = rackCoecon(: )
+            e ubcrber:RACubcrber = ubcrber a RACubcrber
+            ubcrber.endNex(co)
+            ubcrber.endCopeed()
+            }
+          reurn RACDpoabe()
+        })
+    }
+}
+
+ca eanager: Deegae {
+    unowned ar deegae:eanagerDeegae
+    
+    n(deegae:eanagerDeegae) {
+        ef.deegae = deegae
+    }
+    
+    ar hoe:?
+    func (:, eecede:prooco<e>, deeec:(deeec:Boo)->od) {
+        f e e = eecede a? rackCoecon {
+            e.gerack(0, copee: { () -> od n
+                f e  =  {
+                    e rack = rack(: )
+                    e e = (: [rack], dpayConex:e, deegae:ef)
+                    ef.deegae.eanager(ef, puhCFor: e)
+                }
+            })
+            deeec(deeec: fae)
+            
+        } ee f e e = eecede a? Queueabe {
+            _queue.ner(e, copee: n)
+            deeec(deeec: rue)
             
         }
     }
 }
 
-class SpotifyManager: ItemManager {
+ca pofyanager: eanager {
     
-    func getHomeVM(complete:(vm:ListVM)->Void) {
-        spotify { (token) -> Void in
-            SPTPlaylistList.playlistsForUserWithSession(_spotifyController.session!, callback: { (error, list) -> Void in
-                if let list = list as? SPTPlaylistList {
-                    let items = list.items as! [SPTPartialPlaylist]
-                    var playlists:[TrackCollection] = []
-                    for item in items {
-                        playlists.append(SpotifyPlaylist(partialPlaylist: item))
+    func geHoe(copee:(:)->od) {
+        pofy { (oken) -> od n
+            PPay.payForUerWheon(_pofyConroer.eon!, caback: { (error, ) -> od n
+                f e  =  a? PPay {
+                    e e = .e a! [PParaPay]
+                    ar pay:[rackCoecon] = []
+                    for e n e {
+                        pay.append(pofyPay(paraPay: e))
                     }
                     
-                    let itemList = List<TrackCollection>(items:playlists, totalCount:UInt(playlists.count), pageNumber:0)
-                    let collectionList = TrackCollectionList(list: itemList)
-                    let displayContext = CustomDisplayContext("Playlists")
-                    let listVM = ListVM(list: collectionList, displayContext:displayContext, grouped: false, delegate:self)
-                    self.homeVM = listVM
-                    complete(vm:listVM)
+                    e e = <rackCoecon>(e:pay, oaCoun:Un(pay.coun), pageNuber:0)
+                    e coecon = rackCoecon(: e)
+                    e dpayConex = CuoDpayConex("Pay")
+                    e  = (: [coecon], dpayConex:dpayConex, deegae:ef)
+                    ef.hoe = 
+                    copee(:)
                 }
             })
         }
     }
 }
+
+*/

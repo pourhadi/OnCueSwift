@@ -1,3 +1,4 @@
+github "AFNetworking/AFNetworking" "2.5.4"
 github "antitypical/Result" "0.5"
-github "SnapKit/SnapKit" "dce953eba6462f0598dae52b351615f4948f25a2"
-github "ReactiveCocoa/ReactiveCocoa" "1b7e41328d22902e5357d10c38c04606be4cd478"
+github "SnapKit/SnapKit" "e9c9f6fe8e0954a50dd62a61a449b66ef84ae205"
+github "ReactiveCocoa/ReactiveCocoa" "462da2a6f511c72ced8239276422bf65017105b0"

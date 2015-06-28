@@ -112,8 +112,9 @@ public func subtitleString(artists:[String]?, album:String?) -> String {
     return string
 }
 
+class ItemManager {}
 protocol ItemManagerDelegate: class {
-    func itemManager(itemManager:ItemManager, pushVCForVM:ListVM)
+//    func itemManager(itemManager:ItemManager, pushVCForVM:ListVM)
 }
 
 protocol ItemViewModelObserver: class {

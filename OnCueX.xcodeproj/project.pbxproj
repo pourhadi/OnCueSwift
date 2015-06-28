@@ -34,6 +34,8 @@
 		446EAA1A1B360A060041B8C4 /* MainMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446EAA191B360A060041B8C4 /* MainMenuVC.swift */; };
 		446EAA1C1B360AA20041B8C4 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446EAA1B1B360AA20041B8C4 /* Helpers.swift */; };
 		446F4A8E1B3F68F300EB1B7C /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446F4A8D1B3F68F300EB1B7C /* Animator.swift */; };
+		446F4A951B3FAA0100EB1B7C /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446F4A931B3FAA0100EB1B7C /* ReactiveCocoa.framework */; };
+		446F4A961B3FAA0100EB1B7C /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446F4A941B3FAA0100EB1B7C /* Result.framework */; };
 		44A53D301B3E02E000C54160 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A53D2F1B3E02E000C54160 /* Player.swift */; };
 		44A53D361B3E03DB00C54160 /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A53D351B3E03DB00C54160 /* LibraryController.swift */; };
 		44A53D381B3E043700C54160 /* PlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A53D371B3E043700C54160 /* PlayerVC.swift */; };
@@ -132,6 +134,8 @@
 		446EAA191B360A060041B8C4 /* MainMenuVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainMenuVC.swift; path = ViewControllers/MainMenuVC.swift; sourceTree = "<group>"; };
 		446EAA1B1B360AA20041B8C4 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		446F4A8D1B3F68F300EB1B7C /* Animator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
+		446F4A931B3FAA0100EB1B7C /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/iOS/ReactiveCocoa.framework; sourceTree = "<group>"; };
+		446F4A941B3FAA0100EB1B7C /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		44A53D2F1B3E02E000C54160 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Player.swift; path = Controllers/Player.swift; sourceTree = "<group>"; };
 		44A53D351B3E03DB00C54160 /* LibraryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryController.swift; path = Controllers/LibraryController.swift; sourceTree = "<group>"; };
 		44A53D371B3E043700C54160 /* PlayerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlayerVC.swift; path = ViewControllers/PlayerVC.swift; sourceTree = "<group>"; };
@@ -147,6 +151,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				446F4A951B3FAA0100EB1B7C /* ReactiveCocoa.framework in Frameworks */,
+				446F4A961B3FAA0100EB1B7C /* Result.framework in Frameworks */,
 				44E5644E1B3D3079004CC5E3 /* SnapKit.framework in Frameworks */,
 				4B6C67CF2C5AEEA6B43C5EEC /* Pods.framework in Frameworks */,
 				4428A1B51B31804900708716 /* Spotify.framework in Frameworks */,
@@ -312,6 +318,8 @@
 		9F6896E32A760BD6DAFA4138 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				446F4A931B3FAA0100EB1B7C /* ReactiveCocoa.framework */,
+				446F4A941B3FAA0100EB1B7C /* Result.framework */,
 				44E5643F1B3D301C004CC5E3 /* SnapKit.xcodeproj */,
 				4428A1B41B31804900708716 /* Spotify.framework */,
 				0B180B9719C8F2A627B88D5F /* Pods.framework */,
@@ -334,6 +342,7 @@
 				5CAFE0154BB3BE3AB66DFEEC /* Embed Pods Frameworks */,
 				4400B9201B38BD9F00E9E06D /* Run Script */,
 				44E5644F1B3D3081004CC5E3 /* CopyFiles */,
+				446F4A971B3FAA0700EB1B7C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -472,6 +481,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Xcode git autocommit script by Andre Arko\n#   This script will automatically commit any changed files to the project's\n#   git repository, in the branch \"builds\"\n\n# If you use this script, you can create more typical commits in the master\n# branch with the commands:\n#   git checkout master\n#   git checkout builds .\n#   git commit -m \"Description of changes since last commit to master\"\n\nif [ -z \"`git branch | grep builds`\" ]; then\ngit co -b builds\nelse\ngit co builds\nfi\n\ngit add .\ngit commit -a -m \"`date +'Build on %F at %r'`\"\n# ignore git-commit exiting >0, since nothing to commit is fine\nexit 0";
+		};
+		446F4A971B3FAA0700EB1B7C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/ReactiveCocoa.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
 		};
 		5CAFE0154BB3BE3AB66DFEEC /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
