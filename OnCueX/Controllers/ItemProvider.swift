@@ -22,7 +22,7 @@ enum SourceCollectionType:String {
 
 class ItemProvider:ListVMDelegate {
     weak var delegate:ItemProviderDelegate?
-    let providers:[SourceItemProvider] = [SpotifyProvider()]
+    let providers:[SourceItemProvider] = [SpotifyProvider(), LibraryProvider()]
     
     func getCollections(type:SourceCollectionType) -> SignalProducer<ListVM, NSError> {
         return SignalProducer {
@@ -78,6 +78,45 @@ class ItemProvider:ListVMDelegate {
 
 protocol SourceItemProvider {
     func getCollections(type:SourceCollectionType) -> SignalProducer<TrackCollectionList, NSError>
+}
+
+class LibraryProvider:SourceItemProvider {
+    func getCollections(type:SourceCollectionType) -> SignalProducer<TrackCollectionList, NSError> {
+        var query:MPMediaQuery
+        switch type {
+        case .Artists:
+            query = MPMediaQuery.artistsQuery()
+        case .Albums:
+            query = MPMediaQuery.albumsQuery()
+        case .Playlists:
+            query = MPMediaQuery.playlistsQuery()
+        }
+        
+        return self.getCollections(query, type: type)
+    }
+
+    func getCollections(forQuery:MPMediaQuery, type:SourceCollectionType) -> SignalProducer<TrackCollectionList, NSError> {
+        return SignalProducer {
+            sink, disposable in
+            let sink = sink
+            if let collections = forQuery.collections {
+                let array:[TrackCollection] = collections.map({ (collection) -> TrackCollection in
+                    switch type {
+                    case .Artists:
+                        return LibraryArtist(collection: collection)
+                    case .Albums:
+                        return LibraryAlbum(collection: collection)
+                    case .Playlists:
+                        return LibraryPlaylist(playlist: collection as! MPMediaPlaylist)
+                    }
+                })
+                let list = List(items: array, totalCount: UInt(array.count), pageNumber: 0)
+                let colList = TrackCollectionList(list: list)
+                sendNext(sink, colList)
+                sendCompleted(sink)
+            }
+        }
+    }
 }
 
 let kSpotifyErrorDomain = "com.pourhadi.OnCue.Spotify.Error"
