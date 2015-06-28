@@ -37,7 +37,7 @@ class ItemProvider:ListVMDelegate {
                     lists.append(list)
                 }
                 }, completed: { () -> Void in
-                    sendNext(sink, ListVM(lists: lists, displayContext: CustomDisplayContext("Artists"), delegate: self))
+                    sendNext(sink, ListVM(lists: lists, displayContext: CustomDisplayContext(type.rawValue), delegate: self))
                     sendCompleted(sink)
             })
         }
