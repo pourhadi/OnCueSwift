@@ -80,10 +80,10 @@ class ListLayout: UICollectionViewFlowLayout {
                 let topArea = offset - height
                 if attr.frame.origin.y > topArea && attr.frame.origin.y < offset {
                     let percent = CalculatePercentComplete(offset, end: topArea, current: attr.frame.origin.y)
-                    var transform = CATransform3DMakePerspective(0, ExtrapolateValue(0, 0.0018, percent))
+                    var transform = CATransform3DMakePerspective(0, ExtrapolateValue(0, 0.0028, percent))
                     transform = CATransform3DTranslate(transform, 0, ExtrapolateValue(0, height+(height/2), percent), 0)
-                    let scale:CGFloat = ExtrapolateValue(1, 0.8, percent)
-                    transform = CATransform3DScale(transform, scale, scale, scale)
+                    let scale:CGFloat = ExtrapolateValue(1, 0.95, percent)
+//                    transform = CATransform3DScale(transform, scale, scale, scale)
                     attr.transform3D = transform
                     attr.alpha = ExtrapolateValue(1, 0, percent)
                     attr.zIndex = Int(ExtrapolateValue(10, 0, percent))
