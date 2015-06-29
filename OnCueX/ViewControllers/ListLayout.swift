@@ -82,7 +82,7 @@ class ListLayout: UICollectionViewFlowLayout {
                     let percent = CalculatePercentComplete(offset, end: topArea, current: attr.frame.origin.y)
                     var transform = CATransform3DMakePerspective(0, ExtrapolateValue(0, 0.0028, percent))
                     transform = CATransform3DTranslate(transform, 0, ExtrapolateValue(0, height+(height/2), percent), 0)
-                    let scale:CGFloat = ExtrapolateValue(1, 0.95, percent)
+//                    let scale:CGFloat = ExtrapolateValue(1, 0.95, percent)
 //                    transform = CATransform3DScale(transform, scale, scale, scale)
                     attr.transform3D = transform
                     attr.alpha = ExtrapolateValue(1, 0, percent)
