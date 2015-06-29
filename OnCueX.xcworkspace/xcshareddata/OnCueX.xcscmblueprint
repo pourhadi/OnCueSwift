@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "80F9BCE4C70FEBC4F8C9D5E36F4E8EEE4C72D647",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "80F9BCE4C70FEBC4F8C9D5E36F4E8EEE4C72D647" : 0,
+    "3AF18F9C6F5D633BAA0B3F935459E0C777C82047" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "BD771344-F83C-490F-806F-A9026948B388",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "80F9BCE4C70FEBC4F8C9D5E36F4E8EEE4C72D647" : "OnCueX\/",
+    "3AF18F9C6F5D633BAA0B3F935459E0C777C82047" : "OnCueX\/SnapKit\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "OnCueX",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 203,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "OnCueX.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/SnapKit\/SnapKit",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "3AF18F9C6F5D633BAA0B3F935459E0C777C82047"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/pourhadi\/OnCueX.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "80F9BCE4C70FEBC4F8C9D5E36F4E8EEE4C72D647"
+    }
+  ]
+}
