@@ -108,7 +108,7 @@ class ListItemCell : UICollectionViewCell {
     
     override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
         super.applyLayoutAttributes(layoutAttributes)
-        self.layer.anchorPoint = CGPointMake(0.5, ExtrapolateValue(0.5, 1, ExtrapolateValue(1, 0, layoutAttributes.alpha)))
+        self.layer.anchorPoint = CGPointMake(0.5, ExtrapolateValue(0.5, 0, ExtrapolateValue(1, 0, layoutAttributes.alpha)))
     }
     
 }
