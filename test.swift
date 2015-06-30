@@ -13,14 +13,12 @@ class test: UIView {
   
     func test() {
         
-        var test:String
+        var test:String?
         
         var x = 0
         
         if x == 0 {
             test = "OK"
-        } else {
-            test = "Not okay"
         }
         
         print(test)
