@@ -8,9 +8,9 @@
 
 import UIKit
 
-enum ItemSource {
-    case Library
-    case Spotify
+enum ItemSource:String {
+    case Library = "Library"
+    case Spotify = "Spotify"
 }
 
 enum ItemType:String {
@@ -21,7 +21,7 @@ enum ItemType:String {
 }
 
 /* generic base for all items */
-protocol Item:ImageSource, DisplayContext, Identifiable {
+protocol Item:DisplayContext, Identifiable {
     var source:ItemSource { get }
     var cellReuseID:String { get }
     var itemType:ItemType { get }
@@ -37,17 +37,18 @@ protocol TrackCollection: Item {
 
 /* more narrow group definitions */
 protocol AlbumItem: TrackCollection {}
+
 protocol ArtistItem : TrackCollection {
     func getAlbums(page:Int, complete:(albums:List<TrackCollection>?)->Void)
 }
+
 protocol PlaylistItem : TrackCollection {}
 
 
-
+/* identifying items */
 protocol Identifiable {
     var identifier:String { get }
 }
-
 
 extension Identifiable {
     func isEqual(other:Identifiable) -> Bool {
@@ -55,6 +56,7 @@ extension Identifiable {
     }
 }
 
+/* for displaying */
 protocol ImageSource:Identifiable {
     func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void)
 }
@@ -197,7 +199,7 @@ class TrackCollectionList : ItemList {
         self.list = list
         var newItems:[ItemViewModel] = []
         for trackItem in self.list.items {
-            newItems.append(ItemViewModel(item:trackItem as! Item))
+            newItems.append(ItemViewModel(item:trackItem as Item))
         }
         self.items = newItems
     }

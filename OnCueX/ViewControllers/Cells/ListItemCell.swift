@@ -69,15 +69,6 @@ class ItemLabelsView: UIView {
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    override var alpha:CGFloat {
-//        didSet {
-//            self.invalidateIntrinsicContentSize()
-//        }
-//    }
-//    
-
-    
 }
 
 class ListItemCell : UICollectionViewCell {

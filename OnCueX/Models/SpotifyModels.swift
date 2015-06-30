@@ -87,7 +87,6 @@ internal struct SpotifyTrack: TrackItem, Queueable {
     }
 }
 
-
 internal struct SpotifyAlbum : AlbumItem {
     var itemType:ItemType { return .Album }
     var source:ItemSource { return .Spotify }
