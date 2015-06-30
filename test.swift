@@ -21,8 +21,10 @@ class test: UIView {
             test = "OK"
         }
         
-        print(test)
         
+        if test == "ok" {
+            
+        }
         
         
         
