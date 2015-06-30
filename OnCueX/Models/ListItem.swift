@@ -7,7 +7,6 @@
 //
 
 import UIKit
-//import ReactiveCocoa
 
 enum ItemSource {
     case Library
@@ -20,6 +19,30 @@ enum ItemType:String {
     case Playlist = "Playlist"
     case Track = "Track"
 }
+
+/* generic base for all items */
+protocol Item:ImageSource, DisplayContext, Identifiable {
+    var source:ItemSource { get }
+    var cellReuseID:String { get }
+    var itemType:ItemType { get }
+}
+
+/* for individual tracks */
+protocol TrackItem : Item { var duration:NSTimeInterval { get } }
+
+/* for groups of tracks */
+protocol TrackCollection: Item {
+    func getTracks(page:Int, complete:(list:List<protocol<TrackItem>>?)->Void)
+}
+
+/* more narrow group definitions */
+protocol AlbumItem: TrackCollection {}
+protocol ArtistItem : TrackCollection {
+    func getAlbums(page:Int, complete:(albums:List<TrackCollection>?)->Void)
+}
+protocol PlaylistItem : TrackCollection {}
+
+
 
 protocol Identifiable {
     var identifier:String { get }
@@ -35,26 +58,6 @@ extension Identifiable {
 protocol ImageSource:Identifiable {
     func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void)
 }
-
-protocol Item:ImageSource, DisplayContext, Identifiable {
-    var source:ItemSource { get }
-    var cellReuseID:String { get }
-    var itemType:ItemType { get }
-}
-
-protocol TrackCollection: DisplayContext {
-    func getTracks(page:Int, complete:(list:List<protocol<TrackItem>>?)->Void)
-}
-
-protocol AlbumItem: TrackCollection, Item {}
-
-protocol ArtistItem : TrackCollection, Item {
-    func getAlbums(page:Int, complete:(albums:List<TrackCollection>?)->Void)
-}
-
-protocol PlaylistItem : TrackCollection, Item {}
-
-protocol TrackItem : Item { var duration:NSTimeInterval { get } }
 
 protocol DisplayContext:ImageSource {
     var title:String? { get }

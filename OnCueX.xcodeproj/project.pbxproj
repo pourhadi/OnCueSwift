@@ -15,6 +15,7 @@
 		4400B9191B36996300E9E06D /* QueueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400B9181B36996300E9E06D /* QueueCell.swift */; };
 		4400B91B1B36997800E9E06D /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400B91A1B36997800E9E06D /* Queueable.swift */; };
 		4400B91D1B377BC700E9E06D /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400B91C1B377BC700E9E06D /* Queue.swift */; };
+		440545A31B429615003F720B /* StackedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440545A21B429615003F720B /* StackedImageView.swift */; };
 		440602F31B39F76300B9E531 /* ImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440602F21B39F76300B9E531 /* ImageController.swift */; };
 		442780C61B318A89004D1B3A /* SpotifyModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442780C51B318A89004D1B3A /* SpotifyModels.swift */; };
 		442780C81B318CF5004D1B3A /* SpotifyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442780C71B318CF5004D1B3A /* SpotifyController.swift */; };
@@ -36,8 +37,6 @@
 		446F4A8E1B3F68F300EB1B7C /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446F4A8D1B3F68F300EB1B7C /* Animator.swift */; };
 		446F4A951B3FAA0100EB1B7C /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446F4A931B3FAA0100EB1B7C /* ReactiveCocoa.framework */; };
 		446F4A961B3FAA0100EB1B7C /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446F4A941B3FAA0100EB1B7C /* Result.framework */; };
-		44A53D301B3E02E000C54160 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A53D2F1B3E02E000C54160 /* Player.swift */; };
-		44A53D361B3E03DB00C54160 /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A53D351B3E03DB00C54160 /* LibraryController.swift */; };
 		44A53D381B3E043700C54160 /* PlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A53D371B3E043700C54160 /* PlayerVC.swift */; };
 		44A53D3A1B3E948200C54160 /* ListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A53D391B3E948200C54160 /* ListLayout.swift */; };
 		44ABB8551B3F466D00C03130 /* LibraryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44ABB8541B3F466D00C03130 /* LibraryItem.swift */; };
@@ -109,6 +108,7 @@
 		4400B9181B36996300E9E06D /* QueueCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QueueCell.swift; path = ViewControllers/Cells/QueueCell.swift; sourceTree = "<group>"; };
 		4400B91A1B36997800E9E06D /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Queueable.swift; path = Models/Queueable.swift; sourceTree = "<group>"; };
 		4400B91C1B377BC700E9E06D /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Queue.swift; path = Controllers/Queue.swift; sourceTree = "<group>"; };
+		440545A21B429615003F720B /* StackedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackedImageView.swift; sourceTree = "<group>"; };
 		440602F21B39F76300B9E531 /* ImageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageController.swift; path = Controllers/ImageController.swift; sourceTree = "<group>"; };
 		442780C51B318A89004D1B3A /* SpotifyModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpotifyModels.swift; path = Models/SpotifyModels.swift; sourceTree = "<group>"; };
 		442780C71B318CF5004D1B3A /* SpotifyController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpotifyController.swift; path = Controllers/SpotifyController.swift; sourceTree = "<group>"; };
@@ -136,8 +136,6 @@
 		446F4A8D1B3F68F300EB1B7C /* Animator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
 		446F4A931B3FAA0100EB1B7C /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/iOS/ReactiveCocoa.framework; sourceTree = "<group>"; };
 		446F4A941B3FAA0100EB1B7C /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
-		44A53D2F1B3E02E000C54160 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Player.swift; path = Controllers/Player.swift; sourceTree = "<group>"; };
-		44A53D351B3E03DB00C54160 /* LibraryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryController.swift; path = Controllers/LibraryController.swift; sourceTree = "<group>"; };
 		44A53D371B3E043700C54160 /* PlayerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlayerVC.swift; path = ViewControllers/PlayerVC.swift; sourceTree = "<group>"; };
 		44A53D391B3E948200C54160 /* ListLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListLayout.swift; path = ViewControllers/ListLayout.swift; sourceTree = "<group>"; };
 		44ABB8541B3F466D00C03130 /* LibraryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryItem.swift; path = Models/LibraryItem.swift; sourceTree = "<group>"; };
@@ -268,6 +266,7 @@
 				4400B9161B36995100E9E06D /* QueueVC.swift */,
 				44A53D371B3E043700C54160 /* PlayerVC.swift */,
 				44A53D391B3E948200C54160 /* ListLayout.swift */,
+				440545A21B429615003F720B /* StackedImageView.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -279,8 +278,6 @@
 				4400B9121B36327400E9E06D /* UIManager.swift */,
 				4400B91C1B377BC700E9E06D /* Queue.swift */,
 				440602F21B39F76300B9E531 /* ImageController.swift */,
-				44A53D2F1B3E02E000C54160 /* Player.swift */,
-				44A53D351B3E03DB00C54160 /* LibraryController.swift */,
 				44ABB85A1B3F4E9E00C03130 /* ItemProvider.swift */,
 			);
 			name = Controllers;
@@ -549,7 +546,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				44A53D301B3E02E000C54160 /* Player.swift in Sources */,
 				4400B90F1B362E3600E9E06D /* SlideVC.swift in Sources */,
 				44ABB8551B3F466D00C03130 /* LibraryItem.swift in Sources */,
 				4428A1B31B317EB400708716 /* ListItem.swift in Sources */,
@@ -559,6 +555,7 @@
 				4400B91B1B36997800E9E06D /* Queueable.swift in Sources */,
 				4400B9151B36785900E9E06D /* UIImageHelpers.swift in Sources */,
 				4428A1901B30CF4900708716 /* ViewController.swift in Sources */,
+				440545A31B429615003F720B /* StackedImageView.swift in Sources */,
 				446EAA141B34CE770041B8C4 /* ListVC.swift in Sources */,
 				4400B9131B36327400E9E06D /* UIManager.swift in Sources */,
 				446F4A8E1B3F68F300EB1B7C /* Animator.swift in Sources */,
@@ -574,7 +571,6 @@
 				4400B91D1B377BC700E9E06D /* Queue.swift in Sources */,
 				446EAA131B34CADE0041B8C4 /* ListVM.swift in Sources */,
 				4428A18B1B30CF4900708716 /* AppDelegate.swift in Sources */,
-				44A53D361B3E03DB00C54160 /* LibraryController.swift in Sources */,
 				4400B9111B362E4E00E9E06D /* NavVC.swift in Sources */,
 				4428A18E1B30CF4900708716 /* OnCueX.xcdatamodeld in Sources */,
 			);
