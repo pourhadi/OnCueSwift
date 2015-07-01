@@ -33,6 +33,10 @@ class ListCellIndexView: UIView {
         return CGSizeMake(60, UIViewNoIntrinsicMetric)
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.layer.cornerRadius = frame.size.width/2
+    }
 }
 
 class ItemLabelsView: UIView {
