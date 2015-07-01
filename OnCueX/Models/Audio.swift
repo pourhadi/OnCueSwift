@@ -11,13 +11,13 @@ import AVFoundation
 
 struct AudioBuffer {
     var ready:Bool = false
+    let buffer:AVAudioPCMBuffer
     
-    var buffer:AVAudioPCMBuffer?
-    
-//    var buf:TPCircularBuffer?
-    
-    init() {
-        
+    init(format:AVAudioFormat, frameCapacity:AVAudioFrameCount) {
+        self.buffer = AVAudioPCMBuffer(PCMFormat: format, frameCapacity: frameCapacity)
     }
     
+    mutating func appendData(data:UnsafeMutablePointer<Float>, length:Int) {
+        
+    }
 }
