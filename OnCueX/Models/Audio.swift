@@ -7,7 +7,17 @@
 //
 
 import UIKit
+import AVFoundation
 
-class AudioBuffer {
+struct AudioBuffer {
     var ready:Bool = false
+    
+    var buffer:AVAudioPCMBuffer?
+    
+//    var buf:TPCircularBuffer?
+    
+    init() {
+        
+    }
+    
 }
