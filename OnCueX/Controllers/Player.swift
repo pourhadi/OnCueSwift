@@ -56,16 +56,16 @@ class Player: AudioProviderDelegate {
 //            
 //            self.playerNode.scheduleBuffer(buffer, completionHandler: nil)
 ////            
+
+            if !self.engine.running {
+                try self.engine.start()
+            }
             if track.source == .Spotify {
                 self.spotifyProvider.startProvidingAudio(track)
             } else {
                 self.libraryProvider.startProvidingAudio(track)
             }
             
-            if !self.engine.running {
-                try self.engine.start()
-            }
-            self.playerNode.play()
         } catch { print("error") }
     }
     
