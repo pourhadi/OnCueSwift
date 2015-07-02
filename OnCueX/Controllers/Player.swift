@@ -85,17 +85,17 @@ class Player: AudioProviderDelegate {
     }()
     
     func provider(provider:AudioProvider?, hasNewBuffer:AVAudioPCMBuffer) {
-        if self.spotifyNode == nil {
-            self.spotifyNode = AVAudioPlayerNode()
-            self.engine.attachNode(self.spotifyNode!)
-            print(hasNewBuffer.frameLength)
-            print(hasNewBuffer.frameCapacity)
-            print(hasNewBuffer.format)
-            self.engine.connect(self.spotifyNode!, to: self.engine.mainMixerNode, format: hasNewBuffer.format)
-            self.spotifyNode!.play()
-        }
-        self.spotifyNode!.scheduleBuffer(hasNewBuffer, completionHandler: nil)
-//        self.playerNode.scheduleBuffer(hasNewBuffer, completionHandler: nil)
+//        if self.spotifyNode == nil {
+//            self.spotifyNode = AVAudioPlayerNode()
+//            self.engine.attachNode(self.spotifyNode!)
+//            print(hasNewBuffer.frameLength)
+//            print(hasNewBuffer.frameCapacity)
+//            print(hasNewBuffer.format)
+//            self.engine.connect(self.spotifyNode!, to: self.engine.mainMixerNode, format: hasNewBuffer.format)
+//            self.spotifyNode!.play()
+//        }
+//        self.spotifyNode!.scheduleBuffer(hasNewBuffer, completionHandler: nil)
+        self.playerNode.scheduleBuffer(hasNewBuffer, completionHandler: nil)
     }
 }
 
@@ -161,7 +161,7 @@ class SpotifyAudioProvider: AudioProvider {
                 AEFloatConverterToFloatBufferList(self.converter!, buffer.mutableAudioBufferList, floatBuffer.mutableAudioBufferList, UInt32(frameCount))
                 floatBuffer.frameLength = AVAudioFrameCount(frameCount)
 
-                delegate.provider(self.provider, hasNewBuffer: floatBuffer)
+                delegate.provider(self.provider, hasNewBuffer: buffer)
             }
             return 0
         }
