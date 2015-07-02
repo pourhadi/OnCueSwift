@@ -67,9 +67,9 @@ class ItemProvider:ListVMDelegate {
                 })
             }
             deselect(deselect: false)
-        } else if let trackItem = selectedItem as? Queueable {
+        } else if let trackItem = selectedItem as? TrackItem {
             deselect(deselect: true)
-            _queue.insert(trackItem, complete: nil)
+            _trackManager.trackSelected(trackItem)
         }
     }
 }

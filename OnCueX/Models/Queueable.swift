@@ -9,7 +9,7 @@
 import UIKit
 import ReactiveCocoa
 
-protocol Queueable: DisplayContext, Identifiable {
+protocol Queueable: DisplayContext, Identifiable, Playable {
     var isContainer:Bool { get }
     func getTracks(complete:(tracks:[TrackItem])->Void)
 }

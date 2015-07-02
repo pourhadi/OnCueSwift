@@ -19,6 +19,7 @@ class Player {
     
     init() {
         self.configure()
+        self.startSession()
     }
     
     func configure() {
@@ -41,15 +42,60 @@ class Player {
         return outputFormat
     }()
     
-    var audioFile = UnsafeMutablePointer<ExtAudioFileRef>()
-    func play(item:MPMediaItem) {
-        let url = item.assetURL!
-        ExtAudioFileOpenURL(url as CFURL, audioFile)
-        
-        let totalFrames = UnsafeMutablePointer<Int64>()
-        let dataSize = UnsafeMutablePointer<UInt32>()
-        dataSize.initialize(UInt32(sizeof(Int64)))
-        ExtAudioFileGetProperty(audioFile.memory, kExtAudioFileProperty_FileLengthFrames, dataSize, totalFrames)
+    var frameIndex = 0
+    var audioFile = ExtAudioFileRef()
+    
+    func play(url:NSURL) {
+        do {
+            let file = try AVAudioFile(forReading: url)
+            let buffer = AVAudioPCMBuffer(PCMFormat: file.processingFormat, frameCapacity: AVAudioFrameCount(file.length))
+            try  file.readIntoBuffer(buffer)
+            
+            try self.engine.start()
+        } catch { print("error") }
+    }
+    
+    func startSession() {
+        let session = AVAudioSession.sharedInstance()
+        do {
+            try session.setCategory(AVAudioSessionCategoryPlayback)
+        } catch {
+            print("session error")
+        }
         
     }
+    
+/*AVAudioSession *sessionInstance = [AVAudioSession sharedInstance];
+NSError *error;
+
+// set the session category
+bool success = [sessionInstance setCategory:AVAudioSessionCategoryPlayback error:&error];
+if (!success) NSLog(@"Error setting AVAudioSession category! %@\n", [error localizedDescription]);
+
+double hwSampleRate = 44100.0;
+success = [sessionInstance setPreferredSampleRate:hwSampleRate error:&error];
+if (!success) NSLog(@"Error setting preferred sample rate! %@\n", [error localizedDescription]);
+
+NSTimeInterval ioBufferDuration = 0.0029;
+success = [sessionInstance setPreferredIOBufferDuration:ioBufferDuration error:&error];
+if (!success) NSLog(@"Error setting preferred io buffer duration! %@\n", [error localizedDescription]);
+
+*/
+
+//    func play(item:MPMediaItem) {
+//        let url = item.assetURL!
+//        ExtAudioFileOpenURL(url as CFURL, &audioFile)
+//        
+//        var totalFrames:Int64 = 0
+//        var dataSize:UInt32 = UInt32(sizeof(Int64))
+//        ExtAudioFileGetProperty(audioFile, kExtAudioFileProperty_FileLengthFrames, &dataSize, &totalFrames)
+//        
+//        var desc = AudioStreamBasicDescription()
+//        dataSize = UInt32(sizeof(AudioStreamBasicDescription))
+//        ExtAudioFileGetProperty(audioFile, kExtAudioFileProperty_FileDataFormat, &dataSize, &desc)
+//        
+//        ExtAudioFileSetProperty(audioFile, kExtAudioFileProperty_ClientDataFormat, UInt32(sizeof(AudioStreamBasicDescription)), &desc)
+//        
+//        self.frameIndex = 0
+//    }
 }

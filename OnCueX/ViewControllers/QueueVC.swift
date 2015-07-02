@@ -86,7 +86,6 @@ class QueueVC: UICollectionViewController {
         return cell
     }
 
-
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return CGSizeMake(self.view.bounds.size.width, 100)
     }
