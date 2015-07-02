@@ -146,20 +146,17 @@ class SpotifyAudioProvider: AudioProvider {
                 let buffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &audioDescription), frameCapacity: AVAudioFrameCount(frameCount))
                 buffer.frameLength = AVAudioFrameCount(frameCount)
                 if buffer.floatChannelData != nil {
-                    print("float is not nil")
                 } else if buffer.int16ChannelData != nil {
-                    print("16 bit is not nil")
                     buffer.int16ChannelData.memory[0] = UnsafePointer<Int16>(audioFrames)[0]
                     buffer.int16ChannelData.memory[1] = UnsafePointer<Int16>(audioFrames)[1]
                 } else if buffer.int32ChannelData != nil {
-                    print("32 bit is not nil")
-                    
                     buffer.int32ChannelData.memory[0] = UnsafePointer<Int32>(audioFrames)[0]
                     buffer.int32ChannelData.memory[1] = UnsafePointer<Int32>(audioFrames)[1]
 
                 }
                 
-                let floatBuffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &FloatDescription), frameCapacity: AVAudioFrameCount(frameCount))
+                var desc = self.converter!.floatingPointAudioDescription
+                let floatBuffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &desc), frameCapacity: AVAudioFrameCount(frameCount))
                 AEFloatConverterToFloat(self.converter!, UnsafeMutablePointer<AudioBufferList>(buffer.audioBufferList), floatBuffer.floatChannelData, UInt32(frameCount))
 //                memcpy(buffer.audioBufferList.memory.mBuffers., audioFrames, frameCount * Int(audioDescription.mBytesPerFrame) * Int(audioDescription.mChannelsPerFrame))
                 delegate.provider(self.provider, hasNewBuffer: floatBuffer)
