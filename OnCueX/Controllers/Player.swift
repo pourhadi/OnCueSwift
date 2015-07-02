@@ -159,9 +159,9 @@ class SpotifyAudioProvider: AudioProvider {
                 let floatBuffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &desc), frameCapacity: AVAudioFrameCount(frameCount))
 //                AEFloatConverterToFloat(self.converter!, UnsafeMutablePointer<AudioBufferList>(buffer.audioBufferList), floatBuffer.floatChannelData, UInt32(frameCount))
                 AEFloatConverterToFloatBufferList(self.converter!, buffer.mutableAudioBufferList, floatBuffer.mutableAudioBufferList, UInt32(frameCount))
-                floatBuffer.frameLength = AVAudioFrameCount(frameCount)
+//                floatBuffer.frameLength = AVAudioFrameCount(frameCount)
 
-                delegate.provider(self.provider, hasNewBuffer: buffer)
+                delegate.provider(self.provider, hasNewBuffer: floatBuffer)
             }
             return 0
         }
