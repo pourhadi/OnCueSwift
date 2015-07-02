@@ -127,7 +127,7 @@ class SpotifyAudioProvider: AudioProvider {
             if let delegate = self.providerDelegate {
                 let buffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &audioDescription), frameCapacity: AVAudioFrameCount(frameCount))
                 buffer.frameLength = AVAudioFrameCount(frameCount)
-                memcpy(buffer.audioBufferList.memory.mBuffers.mData, audioFrames, frameCount)
+                memcpy(buffer.audioBufferList.memory.mBuffers.mData, audioFrames, frameCount * Int(audioDescription.mBytesPerFrame) * Int(audioDescription.mChannelsPerFrame))
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     delegate.provider(self.provider, hasNewBuffer: buffer)
                 })
