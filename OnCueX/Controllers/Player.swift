@@ -51,10 +51,11 @@ class Player {
             let buffer = AVAudioPCMBuffer(PCMFormat: file.processingFormat, frameCapacity: AVAudioFrameCount(file.length))
             try  file.readIntoBuffer(buffer)
             
+            self.libraryPlayerNode.scheduleBuffer(buffer, completionHandler: nil)
             if !self.engine.running {
                 try self.engine.start()
             }
-            self.libraryPlayerNode.scheduleBuffer(buffer, completionHandler: nil)
+            self.libraryPlayerNode.play()
         } catch { print("error") }
     }
     
