@@ -91,7 +91,7 @@ class Player: AudioProviderDelegate {
             print(hasNewBuffer.frameLength)
             print(hasNewBuffer.frameCapacity)
             print(hasNewBuffer.format)
-//            self.engine.connect(self.spotifyNode!, to: self.engine.mainMixerNode, format: hasNewBuffer.format)
+            self.engine.connect(self.spotifyNode!, to: self.engine.mainMixerNode, format: hasNewBuffer.format)
             self.spotifyNode!.play()
         }
         self.spotifyNode!.scheduleBuffer(hasNewBuffer, completionHandler: nil)
@@ -162,9 +162,7 @@ class SpotifyAudioProvider: AudioProvider {
                 let floatBuffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &FloatDescription), frameCapacity: AVAudioFrameCount(frameCount))
                 AEFloatConverterToFloat(self.converter!, UnsafeMutablePointer<AudioBufferList>(buffer.audioBufferList), floatBuffer.floatChannelData, UInt32(frameCount))
 //                memcpy(buffer.audioBufferList.memory.mBuffers., audioFrames, frameCount * Int(audioDescription.mBytesPerFrame) * Int(audioDescription.mChannelsPerFrame))
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    delegate.provider(self.provider, hasNewBuffer: buffer)
-                })
+                delegate.provider(self.provider, hasNewBuffer: floatBuffer)
             }
             return 0
         }
