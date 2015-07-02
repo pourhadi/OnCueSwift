@@ -16,7 +16,7 @@ let _player = Player()
 class Player: AudioProviderDelegate {
     var engine:AVAudioEngine = AVAudioEngine()
     let playerNode = AVAudioPlayerNode()
-    
+    var spotifyNode:AVAudioPlayerNode?
     init() {
         self.configure()
         self.startSession()
@@ -60,7 +60,7 @@ class Player: AudioProviderDelegate {
             if !self.engine.running {
                 try self.engine.start()
             }
-            self.playerNode.play()
+//            self.playerNode.play()
         } catch { print("error") }
     }
     
@@ -82,7 +82,13 @@ class Player: AudioProviderDelegate {
     }()
     
     func provider(provider:AudioProvider?, hasNewBuffer:AVAudioPCMBuffer) {
-        self.playerNode.scheduleBuffer(hasNewBuffer, completionHandler: nil)
+        if self.spotifyNode == nil {
+            self.spotifyNode = AVAudioPlayerNode()
+            self.engine.attachNode(self.spotifyNode!)
+            self.engine.connect(self.spotifyNode!, to: self.engine.mainMixerNode, format: hasNewBuffer.format)
+            self.spotifyNode!.play()
+        }
+        self.spotifyNode!.scheduleBuffer(hasNewBuffer, completionHandler: nil)
     }
 }
 
