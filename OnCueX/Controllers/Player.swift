@@ -145,7 +145,6 @@ class SpotifyAudioProvider: AudioProvider {
             
             if let delegate = self.providerDelegate {
                 let buffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &audioDescription), frameCapacity: AVAudioFrameCount(frameCount))
-                buffer.frameLength = AVAudioFrameCount(frameCount)
                 if buffer.floatChannelData != nil {
                 } else if buffer.int16ChannelData != nil {
                     buffer.int16ChannelData.memory.assignFrom(UnsafeMutablePointer<Int16>(audioFrames), count: frameCount)
@@ -154,12 +153,13 @@ class SpotifyAudioProvider: AudioProvider {
                     buffer.int32ChannelData.memory[1] = UnsafePointer<Int32>(audioFrames)[1]
 
                 }
-                
+                buffer.frameLength = AVAudioFrameCount(frameCount)
+
                 var desc = self.converter!.floatingPointAudioDescription
                 let floatBuffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &desc), frameCapacity: AVAudioFrameCount(frameCount))
-//                AEFloatConverterToFloat(self.converter!, UnsafeMutablePointer<AudioBufferList>(buffer.audioBufferList), floatBuffer.floatChannelData, UInt32(frameCount))
+                AEFloatConverterToFloat(self.converter!, UnsafeMutablePointer<AudioBufferList>(buffer.audioBufferList), floatBuffer.floatChannelData, UInt32(frameCount))
 
-                AEFloatConverterToFloatBufferList(self.converter!, buffer.mutableAudioBufferList, floatBuffer.mutableAudioBufferList, UInt32(frameCount))
+//                AEFloatConverterToFloatBufferList(self.converter!, buffer.mutableAudioBufferList, floatBuffer.mutableAudioBufferList, UInt32(frameCount))
                 floatBuffer.frameLength = AVAudioFrameCount(frameCount)
 
                 delegate.provider(self.provider, hasNewBuffer: floatBuffer)
