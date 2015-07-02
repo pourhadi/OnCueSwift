@@ -50,17 +50,17 @@ class Player: AudioProviderDelegate {
     
     func play(track:TrackItem) {
         do {
-            let file = try AVAudioFile(forReading: track.assetURL)
-            let buffer = AVAudioPCMBuffer(PCMFormat: file.processingFormat, frameCapacity: AVAudioFrameCount(file.length))
-            try  file.readIntoBuffer(buffer)
-            
-            self.playerNode.scheduleBuffer(buffer, completionHandler: nil)
+//            let file = try AVAudioFile(forReading: track.assetURL)
+//            let buffer = AVAudioPCMBuffer(PCMFormat: file.processingFormat, frameCapacity: AVAudioFrameCount(file.length))
+//            try  file.readIntoBuffer(buffer)
 //            
-//            if track.source == .Spotify {
-//                self.spotifyProvider.startProvidingAudio(track)
-//            } else {
-//                self.libraryProvider.startProvidingAudio(track)
-//            }
+//            self.playerNode.scheduleBuffer(buffer, completionHandler: nil)
+////            
+            if track.source == .Spotify {
+                self.spotifyProvider.startProvidingAudio(track)
+            } else {
+                self.libraryProvider.startProvidingAudio(track)
+            }
             
             if !self.engine.running {
                 try self.engine.start()
