@@ -9,15 +9,14 @@
 import UIKit
 import AVFoundation
 
-struct AudioBuffer {
-    var ready:Bool = false
-    let buffer:AVAudioPCMBuffer
+protocol Playable:Identifiable {
+    var assetURL:NSURL { get }
+}
+
+protocol AudioReceiver {
+    func newBufferReady(provider:AudioProvider, buffer:AVAudioPCMBuffer)
+}
+
+protocol AudioProvider {
     
-    init(format:AVAudioFormat, frameCapacity:AVAudioFrameCount) {
-        self.buffer = AVAudioPCMBuffer(PCMFormat: format, frameCapacity: frameCapacity)
-    }
-    
-    mutating func appendData(data:UnsafeMutablePointer<Float>, length:Int) {
-        
-    }
 }

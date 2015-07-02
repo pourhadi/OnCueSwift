@@ -26,6 +26,9 @@ extension SPTPartialAlbum {
 }
 
 internal struct SpotifyTrack: TrackItem, Queueable {
+    var assetURL:NSURL {
+        return self.partialTrack.playableUri
+    }
     var source:ItemSource { return .Spotify }
     
     private var partialTrack:SPTPartialTrack

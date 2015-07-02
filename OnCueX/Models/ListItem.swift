@@ -28,7 +28,7 @@ protocol Item:DisplayContext, Identifiable {
 }
 
 /* for individual tracks */
-protocol TrackItem : Item { var duration:NSTimeInterval { get } }
+protocol TrackItem : Item, Playable { var duration:NSTimeInterval { get } }
 
 /* for groups of tracks */
 protocol TrackCollection: Item {

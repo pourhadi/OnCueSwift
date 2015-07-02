@@ -8,6 +8,10 @@
 
 import UIKit
 import AVFoundation
+import MediaPlayer
+import CoreAudio
+
+let _player = Player()
 
 class Player {
     var engine:AVAudioEngine = AVAudioEngine()
@@ -22,7 +26,24 @@ class Player {
         
         self.engine.attachNode(self.libraryPlayerNode);
         self.engine.connect(self.libraryPlayerNode, to: mainMixer, format: nil)
-        
-        
+    }
+    
+    let description:AudioStreamBasicDescription = {
+        var outputFormat = AudioStreamBasicDescription()
+        outputFormat.mFormatID = kAudioFormatLinearPCM;
+        outputFormat.mFormatFlags       = kAudioFormatFlagIsBigEndian | kAudioFormatFlagIsPacked | kAudioFormatFlagIsFloat;
+        outputFormat.mSampleRate        = 44100;
+        outputFormat.mChannelsPerFrame  = 2;
+        outputFormat.mBitsPerChannel    = 32;
+        outputFormat.mBytesPerPacket    = (outputFormat.mBitsPerChannel / 8) * outputFormat.mChannelsPerFrame;
+        outputFormat.mFramesPerPacket   = 1;
+        outputFormat.mBytesPerFrame     = outputFormat.mBytesPerPacket;
+        return outputFormat
+    }()
+    
+    var audioFile = UnsafeMutablePointer<ExtAudioFileRef>()
+    func play(item:MPMediaItem) {
+        let url = item.assetURL!
+        ExtAudioFileOpenURL(url as CFURL, audioFile)
     }
 }

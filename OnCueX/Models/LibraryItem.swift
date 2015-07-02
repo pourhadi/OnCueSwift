@@ -24,6 +24,10 @@ extension MPMediaItem {
 }
 
 internal struct LibraryTrack: TrackItem, Queueable {
+    var assetURL:NSURL {
+        return self.mediaItem.assetURL!
+    }
+    
     var source:ItemSource { return .Library }
     
     private var mediaItem:MPMediaItem
