@@ -85,6 +85,9 @@ class Player: AudioProviderDelegate {
         if self.spotifyNode == nil {
             self.spotifyNode = AVAudioPlayerNode()
             self.engine.attachNode(self.spotifyNode!)
+            print(hasNewBuffer.frameLength)
+            print(hasNewBuffer.frameCapacity)
+            print(hasNewBuffer.format)
             self.engine.connect(self.spotifyNode!, to: self.engine.mainMixerNode, format: hasNewBuffer.format)
             self.spotifyNode!.play()
         }
