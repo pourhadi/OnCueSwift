@@ -131,6 +131,8 @@ class SpotifyAudioProvider: AudioProvider {
                     print("float is not nil")
                 } else if buffer.int16ChannelData != nil {
                     print("16 bit is not nil")
+                    buffer.int16ChannelData.memory[0] = UnsafePointer<Int16>(audioFrames)[0]
+                    buffer.int16ChannelData.memory[1] = UnsafePointer<Int16>(audioFrames)[1]
                 } else if buffer.int32ChannelData != nil {
                     print("32 bit is not nil")
                     
