@@ -88,6 +88,7 @@ class Player: AudioProviderDelegate {
             print(hasNewBuffer.frameLength)
             print(hasNewBuffer.frameCapacity)
             print(hasNewBuffer.format)
+            self.engine.connect(self.engine.mainMixerNode, to: self.engine.outputNode, format: hasNewBuffer.format)
             self.engine.connect(self.spotifyNode!, to: self.engine.mainMixerNode, format: hasNewBuffer.format)
             self.spotifyNode!.play()
         }
