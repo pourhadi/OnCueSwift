@@ -104,6 +104,7 @@ class Player: AudioProviderDelegate {
 //        }
 //        self.spotifyNode!.scheduleBuffer(hasNewBuffer, completionHandler: nil)
         self.playerNode.scheduleBuffer(hasNewBuffer, completionHandler: nil)
+        self.playerNode.play()
     }
 }
 
