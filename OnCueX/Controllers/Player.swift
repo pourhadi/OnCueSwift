@@ -51,7 +51,9 @@ class Player {
             let buffer = AVAudioPCMBuffer(PCMFormat: file.processingFormat, frameCapacity: AVAudioFrameCount(file.length))
             try  file.readIntoBuffer(buffer)
             
-            try self.engine.start()
+            if !self.engine.running {
+                try self.engine.start()
+            }
             self.libraryPlayerNode.scheduleBuffer(buffer, completionHandler: nil)
         } catch { print("error") }
     }
@@ -60,6 +62,7 @@ class Player {
         let session = AVAudioSession.sharedInstance()
         do {
             try session.setCategory(AVAudioSessionCategoryPlayback)
+            try session.setActive(true)
         } catch {
             print("session error")
         }
