@@ -10,8 +10,22 @@ import UIKit
 import AVFoundation
 import MediaPlayer
 import CoreAudio
+import TheAmazingAudioEngine
 
 let _player = Player()
+
+var FloatDescription:AudioStreamBasicDescription = {
+    var outputFormat = AudioStreamBasicDescription()
+    outputFormat.mFormatID = kAudioFormatLinearPCM;
+    outputFormat.mFormatFlags       = kAudioFormatFlagIsBigEndian | kAudioFormatFlagIsPacked | kAudioFormatFlagIsFloat;
+    outputFormat.mSampleRate        = 44100;
+    outputFormat.mChannelsPerFrame  = 2;
+    outputFormat.mBitsPerChannel    = 32;
+    outputFormat.mBytesPerPacket    = (outputFormat.mBitsPerChannel / 8) * outputFormat.mChannelsPerFrame;
+    outputFormat.mFramesPerPacket   = 1;
+    outputFormat.mBytesPerFrame     = outputFormat.mBytesPerPacket;
+    return outputFormat
+    }()
 
 class Player: AudioProviderDelegate {
     var engine:AVAudioEngine = AVAudioEngine()
@@ -29,18 +43,7 @@ class Player: AudioProviderDelegate {
 //        self.engine.connect(self.playerNode, to: mainMixer, format: nil)
     }
     
-    let description:AudioStreamBasicDescription = {
-        var outputFormat = AudioStreamBasicDescription()
-        outputFormat.mFormatID = kAudioFormatLinearPCM;
-        outputFormat.mFormatFlags       = kAudioFormatFlagIsBigEndian | kAudioFormatFlagIsPacked | kAudioFormatFlagIsFloat;
-        outputFormat.mSampleRate        = 44100;
-        outputFormat.mChannelsPerFrame  = 2;
-        outputFormat.mBitsPerChannel    = 32;
-        outputFormat.mBytesPerPacket    = (outputFormat.mBitsPerChannel / 8) * outputFormat.mChannelsPerFrame;
-        outputFormat.mFramesPerPacket   = 1;
-        outputFormat.mBytesPerFrame     = outputFormat.mBytesPerPacket;
-        return outputFormat
-    }()
+    
     
     var frameIndex = 0
     var audioFile = ExtAudioFileRef()
@@ -88,7 +91,7 @@ class Player: AudioProviderDelegate {
             print(hasNewBuffer.frameLength)
             print(hasNewBuffer.frameCapacity)
             print(hasNewBuffer.format)
-            self.engine.connect(self.spotifyNode!, to: self.engine.mainMixerNode, format: hasNewBuffer.format)
+//            self.engine.connect(self.spotifyNode!, to: self.engine.mainMixerNode, format: hasNewBuffer.format)
             self.spotifyNode!.play()
         }
         self.spotifyNode!.scheduleBuffer(hasNewBuffer, completionHandler: nil)
@@ -132,7 +135,13 @@ class SpotifyAudioProvider: AudioProvider {
     class SpotifyCoreAudioController : SPTCoreAudioController {
         weak var providerDelegate:AudioProviderDelegate?
         weak var provider:SpotifyAudioProvider?
+        
+        var converter:AEFloatConverter?
         override func attemptToDeliverAudioFrames(audioFrames: UnsafePointer<Void>, ofCount frameCount: Int, var streamDescription audioDescription: AudioStreamBasicDescription) -> Int {
+            if self.converter == nil {
+                self.converter = AEFloatConverter(sourceFormat: audioDescription)
+            }
+            
             if let delegate = self.providerDelegate {
                 let buffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &audioDescription), frameCapacity: AVAudioFrameCount(frameCount))
                 buffer.frameLength = AVAudioFrameCount(frameCount)
@@ -150,6 +159,8 @@ class SpotifyAudioProvider: AudioProvider {
 
                 }
                 
+                let floatBuffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &FloatDescription), frameCapacity: AVAudioFrameCount(frameCount))
+                AEFloatConverterToFloat(self.converter!, UnsafeMutablePointer<AudioBufferList>(buffer.audioBufferList), floatBuffer.floatChannelData, UInt32(frameCount))
 //                memcpy(buffer.audioBufferList.memory.mBuffers., audioFrames, frameCount * Int(audioDescription.mBytesPerFrame) * Int(audioDescription.mChannelsPerFrame))
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     delegate.provider(self.provider, hasNewBuffer: buffer)
