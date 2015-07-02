@@ -45,5 +45,11 @@ class Player {
     func play(item:MPMediaItem) {
         let url = item.assetURL!
         ExtAudioFileOpenURL(url as CFURL, audioFile)
+        
+        let totalFrames = UnsafeMutablePointer<Int64>()
+        let dataSize = UnsafeMutablePointer<UInt32>()
+        dataSize.initialize(UInt32(sizeof(Int64)))
+        ExtAudioFileGetProperty(audioFile.memory, kExtAudioFileProperty_FileLengthFrames, dataSize, totalFrames)
+        
     }
 }
