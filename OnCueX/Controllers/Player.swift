@@ -58,6 +58,8 @@ class Player: AudioProviderDelegate {
             
             if track.source == .Spotify {
                 self.spotifyProvider.startProvidingAudio(track)
+            } else {
+                self.libraryProvider.startProvidingAudio(track)
             }
             
             if !self.engine.running {
@@ -78,6 +80,12 @@ class Player: AudioProviderDelegate {
         
     }
     
+    lazy var libraryProvider:LibraryAudioProvider = {
+        let provider = LibraryAudioProvider()
+        provider.delegate = self
+        return provider
+        }()
+    
     lazy var spotifyProvider:SpotifyAudioProvider = {
        let provider = SpotifyAudioProvider()
         provider.delegate = self
@@ -85,17 +93,17 @@ class Player: AudioProviderDelegate {
     }()
     
     func provider(provider:AudioProvider?, hasNewBuffer:AVAudioPCMBuffer) {
-        if self.spotifyNode == nil {
-            self.spotifyNode = AVAudioPlayerNode()
-            self.engine.attachNode(self.spotifyNode!)
-            print(hasNewBuffer.frameLength)
-            print(hasNewBuffer.frameCapacity)
-            print(hasNewBuffer.format)
-            self.engine.connect(self.spotifyNode!, to: self.engine.mainMixerNode, format: hasNewBuffer.format)
-            self.spotifyNode!.play()
-        }
-        self.spotifyNode!.scheduleBuffer(hasNewBuffer, completionHandler: nil)
-//        self.playerNode.scheduleBuffer(hasNewBuffer, completionHandler: nil)
+//        if self.spotifyNode == nil {
+//            self.spotifyNode = AVAudioPlayerNode()
+//            self.engine.attachNode(self.spotifyNode!)
+//            print(hasNewBuffer.frameLength)
+//            print(hasNewBuffer.frameCapacity)
+//            print(hasNewBuffer.format)
+//            self.engine.connect(self.spotifyNode!, to: self.engine.mainMixerNode, format: hasNewBuffer.format)
+//            self.spotifyNode!.play()
+//        }
+//        self.spotifyNode!.scheduleBuffer(hasNewBuffer, completionHandler: nil)
+        self.playerNode.scheduleBuffer(hasNewBuffer, completionHandler: nil)
     }
 }
 
@@ -106,6 +114,24 @@ protocol AudioProviderDelegate:class {
 protocol AudioProvider {
     weak var delegate:AudioProviderDelegate? { get set }
     func startProvidingAudio(track:Playable)
+}
+
+class LibraryAudioProvider: AudioProvider {
+    var delegate:AudioProviderDelegate?
+    
+    func startProvidingAudio(track: Playable) {
+        do {
+            let file = try AVAudioFile(forReading: track.assetURL)
+            let buffer = AVAudioPCMBuffer(PCMFormat: file.processingFormat, frameCapacity: AVAudioFrameCount(file.length))
+            try  file.readIntoBuffer(buffer)
+            if let del = self.delegate {
+                del.provider(self, hasNewBuffer: buffer)
+            }
+        } catch {
+            print("error")
+        }
+    }
+    
 }
 
 class SpotifyAudioProvider: AudioProvider {
