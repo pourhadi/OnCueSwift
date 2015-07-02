@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OnCueX/Controllers/Player.swift"
-            timestampString = "457554230.565029"
+            timestampString = "457554721.43923"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
-            landmarkName = "provider(_:hasNewBuffer:)"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
+            landmarkName = "startSession()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
