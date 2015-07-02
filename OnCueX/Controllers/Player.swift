@@ -15,7 +15,7 @@ let _player = Player()
 
 class Player: AudioProviderDelegate {
     var engine:AVAudioEngine = AVAudioEngine()
-    let libraryPlayerNode = AVAudioPlayerNode()
+    let playerNode = AVAudioPlayerNode()
     
     init() {
         self.configure()
@@ -25,8 +25,8 @@ class Player: AudioProviderDelegate {
     func configure() {
         let mainMixer = self.engine.mainMixerNode
         
-        self.engine.attachNode(self.libraryPlayerNode);
-        self.engine.connect(self.libraryPlayerNode, to: mainMixer, format: nil)
+        self.engine.attachNode(self.playerNode);
+        self.engine.connect(self.playerNode, to: mainMixer, format: nil)
     }
     
     let description:AudioStreamBasicDescription = {
@@ -45,17 +45,22 @@ class Player: AudioProviderDelegate {
     var frameIndex = 0
     var audioFile = ExtAudioFileRef()
     
-    func play(url:NSURL) {
+    func play(track:TrackItem) {
         do {
-            let file = try AVAudioFile(forReading: url)
-            let buffer = AVAudioPCMBuffer(PCMFormat: file.processingFormat, frameCapacity: AVAudioFrameCount(file.length))
-            try  file.readIntoBuffer(buffer)
+//            let file = try AVAudioFile(forReading: url)
+//            let buffer = AVAudioPCMBuffer(PCMFormat: file.processingFormat, frameCapacity: AVAudioFrameCount(file.length))
+//            try  file.readIntoBuffer(buffer)
+//            
+//            self.playerNode.scheduleBuffer(buffer, completionHandler: nil)
             
-            self.libraryPlayerNode.scheduleBuffer(buffer, completionHandler: nil)
+            if track.source == .Spotify {
+                self.spotifyProvider.startProvidingAudio(track)
+            }
+            
             if !self.engine.running {
                 try self.engine.start()
             }
-            self.libraryPlayerNode.play()
+            self.playerNode.play()
         } catch { print("error") }
     }
     
@@ -70,13 +75,19 @@ class Player: AudioProviderDelegate {
         
     }
     
-    func provider(provider:AudioProvider, hasNewBuffer:AVAudioPCMBuffer) {
-        
+    lazy var spotifyProvider:SpotifyAudioProvider = {
+       let provider = SpotifyAudioProvider()
+        provider.delegate = self
+        return provider
+    }()
+    
+    func provider(provider:AudioProvider?, hasNewBuffer:AVAudioPCMBuffer) {
+        self.playerNode.scheduleBuffer(hasNewBuffer, completionHandler: nil)
     }
 }
 
 protocol AudioProviderDelegate:class {
-    func provider(provider:AudioProvider, hasNewBuffer:AVAudioPCMBuffer)
+    func provider(provider:AudioProvider?, hasNewBuffer:AVAudioPCMBuffer)
 }
 
 protocol AudioProvider {
@@ -88,6 +99,7 @@ class SpotifyAudioProvider: AudioProvider {
     var delegate:AudioProviderDelegate? {
         set {
             self.audioController.providerDelegate = newValue
+            self.audioController.provider = self
         }
         get {
             return self.audioController.providerDelegate
@@ -95,16 +107,28 @@ class SpotifyAudioProvider: AudioProvider {
     }
     
     func startProvidingAudio(track: Playable) {
-        
+        if !self.streamController.loggedIn {
+            self.streamController.loginWithSession(_spotifyController.session!, callback: { (error) -> Void in
+                self.streamController.playURIs([track.assetURL], withOptions: nil, callback: { (error) -> Void in
+                    
+                })
+            })
+        } else {
+            self.streamController.playURIs([track.assetURL], withOptions: nil, callback: { (error) -> Void in
+                
+            })
+        }
     }
     
     class SpotifyCoreAudioController : SPTCoreAudioController {
         weak var providerDelegate:AudioProviderDelegate?
-
+        weak var provider:SpotifyAudioProvider?
         override func attemptToDeliverAudioFrames(audioFrames: UnsafePointer<Void>, ofCount frameCount: Int, var streamDescription audioDescription: AudioStreamBasicDescription) -> Int {
             if let delegate = self.providerDelegate {
                 let buffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &audioDescription), frameCapacity: AVAudioFrameCount(frameCount))
-                buffer.floatChannelData.memory.initialize(Float(audioFrames.memory))
+                buffer.floatChannelData.memory.initializeFrom(UnsafeMutablePointer<Float>(audioFrames), count: frameCount)
+                buffer.frameLength = AVAudioFrameCount(frameCount)
+                delegate.provider(self.provider, hasNewBuffer: buffer)
             }
             return 0
         }
