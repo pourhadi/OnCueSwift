@@ -25,8 +25,8 @@ class Player: AudioProviderDelegate {
     func configure() {
         let mainMixer = self.engine.mainMixerNode
         
-        self.engine.attachNode(self.playerNode);
-        self.engine.connect(self.playerNode, to: mainMixer, format: nil)
+//        self.engine.attachNode(self.playerNode);
+//        self.engine.connect(self.playerNode, to: mainMixer, format: nil)
     }
     
     let description:AudioStreamBasicDescription = {
