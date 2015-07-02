@@ -13,7 +13,7 @@ import CoreAudio
 
 let _player = Player()
 
-class Player {
+class Player: AudioProviderDelegate {
     var engine:AVAudioEngine = AVAudioEngine()
     let libraryPlayerNode = AVAudioPlayerNode()
     
@@ -70,37 +70,46 @@ class Player {
         
     }
     
-/*AVAudioSession *sessionInstance = [AVAudioSession sharedInstance];
-NSError *error;
+    func provider(provider:AudioProvider, hasNewBuffer:AVAudioPCMBuffer) {
+        
+    }
+}
 
-// set the session category
-bool success = [sessionInstance setCategory:AVAudioSessionCategoryPlayback error:&error];
-if (!success) NSLog(@"Error setting AVAudioSession category! %@\n", [error localizedDescription]);
+protocol AudioProviderDelegate:class {
+    func provider(provider:AudioProvider, hasNewBuffer:AVAudioPCMBuffer)
+}
 
-double hwSampleRate = 44100.0;
-success = [sessionInstance setPreferredSampleRate:hwSampleRate error:&error];
-if (!success) NSLog(@"Error setting preferred sample rate! %@\n", [error localizedDescription]);
+protocol AudioProvider {
+    weak var delegate:AudioProviderDelegate? { get set }
+    func startProvidingAudio(track:Playable)
+}
 
-NSTimeInterval ioBufferDuration = 0.0029;
-success = [sessionInstance setPreferredIOBufferDuration:ioBufferDuration error:&error];
-if (!success) NSLog(@"Error setting preferred io buffer duration! %@\n", [error localizedDescription]);
+class SpotifyAudioProvider: AudioProvider {
+    var delegate:AudioProviderDelegate? {
+        set {
+            self.audioController.providerDelegate = newValue
+        }
+        get {
+            return self.audioController.providerDelegate
+        }
+    }
+    
+    func startProvidingAudio(track: Playable) {
+        
+    }
+    
+    class SpotifyCoreAudioController : SPTCoreAudioController {
+        weak var providerDelegate:AudioProviderDelegate?
 
-*/
-
-//    func play(item:MPMediaItem) {
-//        let url = item.assetURL!
-//        ExtAudioFileOpenURL(url as CFURL, &audioFile)
-//        
-//        var totalFrames:Int64 = 0
-//        var dataSize:UInt32 = UInt32(sizeof(Int64))
-//        ExtAudioFileGetProperty(audioFile, kExtAudioFileProperty_FileLengthFrames, &dataSize, &totalFrames)
-//        
-//        var desc = AudioStreamBasicDescription()
-//        dataSize = UInt32(sizeof(AudioStreamBasicDescription))
-//        ExtAudioFileGetProperty(audioFile, kExtAudioFileProperty_FileDataFormat, &dataSize, &desc)
-//        
-//        ExtAudioFileSetProperty(audioFile, kExtAudioFileProperty_ClientDataFormat, UInt32(sizeof(AudioStreamBasicDescription)), &desc)
-//        
-//        self.frameIndex = 0
-//    }
+        override func attemptToDeliverAudioFrames(audioFrames: UnsafePointer<Void>, ofCount frameCount: Int, var streamDescription audioDescription: AudioStreamBasicDescription) -> Int {
+            if let delegate = self.providerDelegate {
+                let buffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &audioDescription), frameCapacity: AVAudioFrameCount(frameCount))
+                buffer.floatChannelData.memory.initialize(Float(audioFrames.memory))
+            }
+            return 0
+        }
+    }
+    
+    let audioController = SpotifyCoreAudioController()
+    lazy var streamController:SPTAudioStreamingController = SPTAudioStreamingController(clientId: _spotifyController.clientID, audioController: self.audioController)
 }

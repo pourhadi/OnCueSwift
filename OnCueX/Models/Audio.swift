@@ -12,11 +12,3 @@ import AVFoundation
 protocol Playable:Identifiable {
     var assetURL:NSURL { get }
 }
-
-protocol AudioReceiver {
-    func newBufferReady(provider:AudioProvider, buffer:AVAudioPCMBuffer)
-}
-
-protocol AudioProvider {
-    
-}
