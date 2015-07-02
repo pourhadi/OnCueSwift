@@ -140,7 +140,7 @@ final class Queue {
                 complete(item:item)
             })
         } else {
-            complete(item:found!)
+            complete(item:found)
         }
     }
     
