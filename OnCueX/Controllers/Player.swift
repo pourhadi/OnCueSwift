@@ -148,8 +148,7 @@ class SpotifyAudioProvider: AudioProvider {
                 buffer.frameLength = AVAudioFrameCount(frameCount)
                 if buffer.floatChannelData != nil {
                 } else if buffer.int16ChannelData != nil {
-                    buffer.int16ChannelData.memory[0] = UnsafePointer<Int16>(audioFrames)[0]
-                    buffer.int16ChannelData.memory[1] = UnsafePointer<Int16>(audioFrames)[1]
+//                    buffer.int16ChannelData.memory = UnsafePointer<Int16>(audioFrames)
                 } else if buffer.int32ChannelData != nil {
                     buffer.int32ChannelData.memory[0] = UnsafePointer<Int32>(audioFrames)[0]
                     buffer.int32ChannelData.memory[1] = UnsafePointer<Int32>(audioFrames)[1]
@@ -158,8 +157,8 @@ class SpotifyAudioProvider: AudioProvider {
                 
                 var desc = self.converter!.floatingPointAudioDescription
                 let floatBuffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &desc), frameCapacity: AVAudioFrameCount(frameCount))
-//                AEFloatConverterToFloat(self.converter!, UnsafeMutablePointer<AudioBufferList>(buffer.audioBufferList), floatBuffer.floatChannelData, UInt32(frameCount))
-                AEFloatConverterToFloatBufferList(self.converter!, UnsafeMutablePointer<AudioBufferList>(buffer.audioBufferList), UnsafeMutablePointer<AudioBufferList>(floatBuffer.mutableAudioBufferList), UInt32(frameCount))
+                AEFloatConverterToFloat(self.converter!, UnsafeMutablePointer<AudioBufferList>(buffer.audioBufferList), floatBuffer.floatChannelData, UInt32(frameCount))
+//                AEFloatConverterToFloatBufferList(self.converter!, UnsafeMutablePointer<AudioBufferList>(buffer.audioBufferList), floatBuffer.mutableAudioBufferList.memory, UInt32(frameCount))
                 floatBuffer.frameLength = AVAudioFrameCount(frameCount)
 
 //                memcpy(buffer.audioBufferList.memory.mBuffers., audioFrames, frameCount * Int(audioDescription.mBytesPerFrame) * Int(audioDescription.mChannelsPerFrame))
