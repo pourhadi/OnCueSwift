@@ -52,6 +52,7 @@ class Player {
             try  file.readIntoBuffer(buffer)
             
             try self.engine.start()
+            self.libraryPlayerNode.scheduleBuffer(buffer, completionHandler: nil)
         } catch { print("error") }
     }
     
