@@ -61,7 +61,7 @@ class Player: AudioProviderDelegate {
                 try self.engine.start()
             }
             if track.source == .Spotify {
-//                self.spotifyProvider.startProvidingAudio(track)
+                self.spotifyProvider.startProvidingAudio(track)
             } else {
                 self.libraryProvider.startProvidingAudio(track)
             }
@@ -86,11 +86,11 @@ class Player: AudioProviderDelegate {
         return provider
         }()
     
-//    lazy var spotifyProvider:SpotifyAudioProvider = {
-//       let provider = SpotifyAudioProvider()
-//        provider.delegate = self
-//        return provider
-//    }()
+    lazy var spotifyProvider:SpotifyAudioProvider = {
+       let provider = SpotifyAudioProvider()
+        provider.delegate = self
+        return provider
+    }()
     
     func provider(provider:AudioProvider?, hasNewBuffer:AVAudioPCMBuffer) {
 //        if self.spotifyNode == nil {
