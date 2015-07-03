@@ -27,7 +27,7 @@ var FloatDescription:AudioStreamBasicDescription = {
     return outputFormat
     }()
 
-var inFormatDescription:AVAudioFormat = AVAudioFormat(standardFormatWithSampleRate: AVAudioSession.sharedInstance().sampleRate, channels: 2)
+var inFormatDescription:AVAudioFormat?
 class Player: AudioProviderDelegate {
     var engine:AVAudioEngine = AVAudioEngine()
     let playerNode = AVAudioPlayerNode()
@@ -42,6 +42,7 @@ class Player: AudioProviderDelegate {
         
         self.engine.attachNode(self.playerNode);
         self.engine.connect(self.playerNode, to: mainMixer, format: nil)
+        inFormatDescription = mainMixer.outputFormatForBus(0)
     }
     
     
@@ -167,9 +168,9 @@ class SpotifyAudioProvider: AudioProvider {
         
         lazy var audioConverter:AudioConverterRef = {
             var ref:AudioConverterRef = nil
-            var outFormat = self.converter!.floatingPointAudioDescription
+            var outFormat = inFormatDescription!.streamDescription
             var inFormat = self.inFormat!.streamDescription
-            AudioConverterNew(inFormat, &outFormat, &ref)
+            AudioConverterNew(inFormat, outFormat, &ref)
             
             return ref
         }()
@@ -177,7 +178,7 @@ class SpotifyAudioProvider: AudioProvider {
         var converter:AEFloatConverter?
         override func attemptToDeliverAudioFrames(audioFrames: UnsafePointer<Void>, ofCount frameCount: Int, var streamDescription audioDescription: AudioStreamBasicDescription) -> Int {
             if self.converter == nil {
-                self.converter = AEFloatConverter(sourceFormat: audioDescription)
+                self.converter = AEFloatConverter(sourceFormat: inFormatDescription!.streamDescription.memory)
             }
             
             let intArray = UnsafeMutableBufferPointer<Int16>(start: UnsafeMutablePointer<Int16>(audioFrames), count: frameCount)
@@ -212,13 +213,13 @@ class SpotifyAudioProvider: AudioProvider {
                 print(buffer.debugDescription)
                 buffer.frameLength = AVAudioFrameCount(frameCount)
                 print(buffer.debugDescription)
-                var desc = self.converter!.floatingPointAudioDescription
-                let floatBuffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &desc), frameCapacity: AVAudioFrameCount(frameCount))
+                
+                let floatBuffer = AVAudioPCMBuffer(PCMFormat: inFormatDescription!, frameCapacity: AVAudioFrameCount(frameCount))
 //                AEFloatConverterToFloat(self.converter!, buffer.mutableAudioBufferList, floatBuffer.floatChannelData, UInt32(frameCount))
 
 //                floatBuffer.floatChannelData.memory.initializeFrom(UnsafeMutablePointer<Float>(buffer.int16ChannelData), count: frameCount)
 //                AEFloatConverterToFloatBufferList(self.converter!, bufList.unsafeMutablePointer, floatBuffer.mutableAudioBufferList, UInt32(frameCount))
-                var outBytes:UInt32 = UInt32(frameCount * Int(inFormatDescription.streamDescription.memory.mBytesPerFrame))
+//                var outBytes:UInt32 = UInt32(frameCount * Int(inFormatDescription.streamDescription.memory.mBytesPerFrame))
             
                 let status = AudioConverterConvertComplexBuffer(self.audioConverter, UInt32(frameCount), buffer.mutableAudioBufferList, floatBuffer.mutableAudioBufferList)
 //                print(UInt32(frameCount * Int(audioDescription.mBytesPerFrame)))
