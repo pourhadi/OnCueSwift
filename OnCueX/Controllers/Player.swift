@@ -166,6 +166,11 @@ class SpotifyAudioProvider: AudioProvider {
         weak var providerDelegate:AudioProviderDelegate?
         weak var provider:SpotifyAudioProvider?
         
+         @available(iOS 9.0, *)
+        lazy var avConverter:AVAudioConverter = {
+            return AVAudioConverter(fromFormat: self.inFormat!, toFormat: inFormatDescription!)
+        }()
+        
         lazy var audioConverter:AudioConverterRef = {
             var ref:AudioConverterRef = nil
             var outFormat = inFormatDescription!.streamDescription
@@ -224,11 +229,21 @@ class SpotifyAudioProvider: AudioProvider {
 //                let status = AudioConverterConvertComplexBuffer(self.audioConverter, UInt32(frameCount), buffer.mutableAudioBufferList, floatBuffer.mutableAudioBufferList)
 //                print(UInt32(frameCount * Int(audioDescription.mBytesPerFrame)))
 //                var databuffer = floatBuffer.floatChannelData.memory
-                let status = AudioConverterConvertBuffer(self.audioConverter, UInt32(frameCount * Int(audioDescription.mBytesPerFrame / audioDescription.mChannelsPerFrame)), audioFrames, &outBytes, floatBuffer.floatChannelData.memory)
-                print(status)
+//                let status = AudioConverterConvertBuffer(self.audioConverter, UInt32(frameCount * Int(audioDescription.mBytesPerFrame / audioDescription.mChannelsPerFrame)), audioFrames, &outBytes, floatBuffer.floatChannelData.memory)
+//                print(status)
 //                print(outBytes)
                 floatBuffer.frameLength = AVAudioFrameCount(frameCount)
 
+                do {
+                    if #available(iOS 9.0, *) {
+                        try self.avConverter.convertToBuffer(floatBuffer, fromBuffer: buffer)
+                    } else {
+                        // Fallback on earlier versions
+                    }
+                } catch {
+                    print("error")
+                }
+                
                 delegate.provider(self.provider, hasNewBuffer: floatBuffer)
             }
             return 0
