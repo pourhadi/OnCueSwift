@@ -188,6 +188,8 @@ class SpotifyAudioProvider: AudioProvider {
                     for var x = 0; x < frameCount; x += buffer.stride {
 //                        buffer.int16ChannelData.memory[x] = data[x]
                     }
+                    buffer.mutableAudioBufferList.memory.mNumberBuffers = 1
+                    buffer.mutableAudioBufferList.memory.mBuffers.mNumberChannels = audioDescription.mChannelsPerFrame
                     buffer.mutableAudioBufferList.memory.mBuffers.mData = UnsafeMutablePointer<Void>(audioFrames)
                     buffer.mutableAudioBufferList.memory.mBuffers.mDataByteSize = audioDescription.mBytesPerFrame * UInt32(frameCount)
                     //                    buffer.int16ChannelData.memory.initializeFrom(UnsafeMutablePointer<Int16>(audioFrames), count: frameCount)
