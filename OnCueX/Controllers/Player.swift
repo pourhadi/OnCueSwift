@@ -210,7 +210,8 @@ AudioBufferList list;
 list.mNumberBuffers = 1;
 list.mBuffers[0] = buf;*/
                 
-                let buf = AudioBuffer(mNumberChannels: UInt32(audioDescription.mChannelsPerFrame), mDataByteSize: audioDescription.mBytesPerFrame * UInt32(frameCount), mData: UnsafeMutablePointer<Void>(audioFrames))
+                var mem = audioFrames.memory
+                let buf = AudioBuffer(mNumberChannels: UInt32(audioDescription.mChannelsPerFrame), mDataByteSize: audioDescription.mBytesPerFrame * UInt32(frameCount), mData: &mem)
                 var list = AudioBufferList(mNumberBuffers: 1, mBuffers: buf)
                 buffer.mutableAudioBufferList.memory = list
 //                if buffer.floatChannelData != nil {
