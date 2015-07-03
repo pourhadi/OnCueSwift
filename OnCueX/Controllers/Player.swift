@@ -202,12 +202,11 @@ class SpotifyAudioProvider: AudioProvider {
                 let buffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &audioDescription), frameCapacity: AVAudioFrameCount(frameCount))
                 if buffer.floatChannelData != nil {
                 } else if buffer.int16ChannelData != nil {
-                    let intArray = UnsafeMutableBufferPointer<Int16>(start: UnsafeMutablePointer<Int16>(audioFrames), count: frameCount)
+                    var intBuffer = UnsafePointer<Int16>(audioFrames)
                     
                     for var x = 0; x < frameCount; x += buffer.stride {
-                        let y = audioFrames[x]
-                        buffer.int16ChannelData[x].memory = Int16(y)
-                        print(Int16(y))
+                        buffer.int16ChannelData[x].memory = intBuffer++.memory
+//                        print(Int16(y))
                         print(buffer.int16ChannelData[x].memory)
 //                        lval.value = intArray[x].value
 //                        print(lval.value)
