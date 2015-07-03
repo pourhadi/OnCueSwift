@@ -79,16 +79,24 @@ static OSStatus complexInputDataProc(AudioConverterRef             inAudioConver
     
     [self updateFormats];
 }
+/*    outputFormat.mFormatID = kAudioFormatLinearPCM;
+ outputFormat.mFormatFlags       = kAudioFormatFlagIsBigEndian | kAudioFormatFlagIsPacked | kAudioFormatFlagIsFloat;
+ outputFormat.mSampleRate        = 44100;
+ outputFormat.mChannelsPerFrame  = 2;
+ outputFormat.mBitsPerChannel    = 32;
+ outputFormat.mBytesPerPacket    = (outputFormat.mBitsPerChannel / 8) * outputFormat.mChannelsPerFrame;
+ outputFormat.mFramesPerPacket   = 1;
+ outputFormat.mBytesPerFrame     = outputFormat.mBytesPerPacket;*/
 
 - (void)updateFormats {
     _floatAudioDescription = (AudioStreamBasicDescription) {
         .mFormatID          = kAudioFormatLinearPCM,
-        .mFormatFlags       = kAudioFormatFlagIsFloat | kAudioFormatFlagIsPacked | kAudioFormatFlagIsNonInterleaved,
-        .mChannelsPerFrame  = _floatFormatChannelsPerFrame ? _floatFormatChannelsPerFrame : _sourceAudioDescription.mChannelsPerFrame,
-        .mBytesPerPacket    = sizeof(float),
+        .mFormatFlags       = kAudioFormatFlagIsBigEndian | kAudioFormatFlagIsPacked | kAudioFormatFlagIsFloat,
+        .mChannelsPerFrame  = 2,
+        .mBytesPerPacket    = (32 / 8) * 2,
         .mFramesPerPacket   = 1,
-        .mBytesPerFrame     = sizeof(float),
-        .mBitsPerChannel    = 8 * sizeof(float),
+        .mBytesPerFrame     = (32 / 8) * 2,
+        .mBitsPerChannel    = 32,
         .mSampleRate        = _sourceAudioDescription.mSampleRate
     };
     
