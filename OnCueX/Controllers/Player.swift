@@ -95,16 +95,22 @@ class Player: AudioProviderDelegate {
     }()
     
     func provider(provider:AudioProvider?, hasNewBuffer:AVAudioPCMBuffer) {
-//        if self.spotifyNode == nil {
-//            self.spotifyNode = AVAudioPlayerNode()
-//            self.engine.attachNode(self.spotifyNode!)
-//            print(hasNewBuffer.frameLength)
-//            print(hasNewBuffer.frameCapacity)
-//            print(hasNewBuffer.format)
-//            self.engine.connect(self.spotifyNode!, to: self.engine.mainMixerNode, format: hasNewBuffer.format)
-//            self.spotifyNode!.play()
-//        }
-//        self.spotifyNode!.scheduleBuffer(hasNewBuffer, completionHandler: nil)
+        if let provider = provider {
+            if provider.isEqual(self.spotifyProvider) {
+                if self.spotifyNode == nil {
+                    self.spotifyNode = AVAudioPlayerNode()
+                    self.engine.attachNode(self.spotifyNode!)
+                    print(hasNewBuffer.frameLength)
+                    print(hasNewBuffer.frameCapacity)
+                    print(hasNewBuffer.format)
+                    self.engine.connect(self.spotifyNode!, to: self.engine.mainMixerNode, format: hasNewBuffer.format)
+                    self.spotifyNode!.play()
+                }
+                self.spotifyNode!.scheduleBuffer(hasNewBuffer, completionHandler: nil)
+            }
+            return
+        }
+        
         self.playerNode.scheduleBuffer(hasNewBuffer, completionHandler: nil)
         self.playerNode.play()
     }
@@ -114,13 +120,17 @@ protocol AudioProviderDelegate:class {
     func provider(provider:AudioProvider?, hasNewBuffer:AVAudioPCMBuffer)
 }
 
-protocol AudioProvider {
+protocol AudioProvider: Identifiable {
     weak var delegate:AudioProviderDelegate? { get set }
     func startProvidingAudio(track:Playable)
 }
 
 class LibraryAudioProvider: AudioProvider {
     var delegate:AudioProviderDelegate?
+    
+    var identifier:String {
+        return "Library"
+    }
     
     func startProvidingAudio(track: Playable) {
         do {
@@ -138,6 +148,11 @@ class LibraryAudioProvider: AudioProvider {
 }
 
 class SpotifyAudioProvider: AudioProvider {
+    
+    var identifier:String {
+        return "Spotify"
+    }
+    
     var delegate:AudioProviderDelegate? {
         set {
             self.audioController.providerDelegate = newValue
@@ -178,73 +193,29 @@ class SpotifyAudioProvider: AudioProvider {
             AudioConverterNew(inFormat, outFormat, &ref)
             
             return ref
-        }()
+            }()
         var inFormat:AVAudioFormat?
         var converter:AEFloatConverter?
         override func attemptToDeliverAudioFrames(audioFrames: UnsafePointer<Void>, ofCount frameCount: Int, var streamDescription audioDescription: AudioStreamBasicDescription) -> Int {
-            if self.converter == nil {
-                self.converter = AEFloatConverter(sourceFormat: inFormatDescription!.streamDescription.memory)
-            }
             
-            let intArray = UnsafeMutableBufferPointer<Int16>(start: UnsafeMutablePointer<Int16>(audioFrames), count: frameCount)
-            let buf = AudioBuffer(intArray, numberOfChannels:Int(audioDescription.mChannelsPerFrame))
-            let bufList: UnsafeMutableAudioBufferListPointer = AudioBufferList.allocate(maximumBuffers: 1)
-            bufList.unsafeMutablePointer.memory.mBuffers = buf
-            
-            self.inFormat = AVAudioFormat(streamDescription: &audioDescription)
             if let delegate = self.providerDelegate {
                 let buffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &audioDescription), frameCapacity: AVAudioFrameCount(frameCount))
                 if buffer.floatChannelData != nil {
                 } else if buffer.int16ChannelData != nil {
-//                    buffer.int16ChannelData.memory.initializeFrom(UnsafeMutablePointer<Int16>(audioFrames), count: frameCount)
-
                     let intArray = UnsafeMutableBufferPointer<Int16>(start: UnsafeMutablePointer<Int16>(audioFrames), count: frameCount)
-
+                    
                     for var x = 0; x < frameCount; x += buffer.stride {
-                        buffer.int16ChannelData.memory[x] = intArray[x]
+                        var lval = buffer.int16ChannelData.memory[x]
+                        lval.value = intArray[x].value
+                        //                        buffer.int16ChannelData.memory[x] = intArray[x]
                     }
-//                    buffer.mutableAudioBufferList.memory.mNumberBuffers = 1
-//                    buffer.mutableAudioBufferList.memory.mBuffers.mNumberChannels = audioDescription.mChannelsPerFrame
-//                    buffer.mutableAudioBufferList.memory.mBuffers.mData = UnsafeMutablePointer<Void>(audioFrames)
-//                    buffer.mutableAudioBufferList.memory.mBuffers.mDataByteSize = audioDescription.mBytesPerFrame * UInt32(frameCount)
-                    //                    buffer.int16ChannelData.memory.initializeFrom(UnsafeMutablePointer<Int16>(audioFrames), count: frameCount)
-//                    let bufList = buffer.mutableAudioBufferList
-//                    bufList.memory.mBuffers.mData.put(audioFrames.memory)
                 } else if buffer.int32ChannelData != nil {
                     buffer.int32ChannelData.memory[0] = UnsafePointer<Int32>(audioFrames)[0]
                     buffer.int32ChannelData.memory[1] = UnsafePointer<Int32>(audioFrames)[1]
-
+                    
                 }
-                print(buffer.debugDescription)
                 buffer.frameLength = AVAudioFrameCount(frameCount)
-                print(buffer.debugDescription)
-                
-                let floatBuffer = AVAudioPCMBuffer(PCMFormat: inFormatDescription!, frameCapacity: AVAudioFrameCount(frameCount))
-//                AEFloatConverterToFloat(self.converter!, buffer.mutableAudioBufferList, floatBuffer.floatChannelData, UInt32(frameCount))
-
-//                floatBuffer.floatChannelData.memory.initializeFrom(UnsafeMutablePointer<Float>(buffer.int16ChannelData), count: frameCount)
-//                AEFloatConverterToFloatBufferList(self.converter!, bufList.unsafeMutablePointer, floatBuffer.mutableAudioBufferList, UInt32(frameCount))
-                var outBytes:UInt32 = UInt32(frameCount * Int(inFormatDescription!.streamDescription.memory.mBytesPerFrame))
-            
-//                let status = AudioConverterConvertComplexBuffer(self.audioConverter, UInt32(frameCount), buffer.mutableAudioBufferList, floatBuffer.mutableAudioBufferList)
-//                print(UInt32(frameCount * Int(audioDescription.mBytesPerFrame)))
-//                var databuffer = floatBuffer.floatChannelData.memory
-//                let status = AudioConverterConvertBuffer(self.audioConverter, UInt32(frameCount * Int(audioDescription.mBytesPerFrame / audioDescription.mChannelsPerFrame)), audioFrames, &outBytes, floatBuffer.floatChannelData.memory)
-//                print(status)
-//                print(outBytes)
-                floatBuffer.frameLength = AVAudioFrameCount(frameCount)
-
-                do {
-                    if #available(iOS 9.0, *) {
-                        try self.avConverter.convertToBuffer(floatBuffer, fromBuffer: buffer)
-                    } else {
-                        // Fallback on earlier versions
-                    }
-                } catch {
-                    print("error")
-                }
-                
-                delegate.provider(self.provider, hasNewBuffer: floatBuffer)
+                delegate.provider(self.provider, hasNewBuffer: buffer)
             }
             return 0
         }
