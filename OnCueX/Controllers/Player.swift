@@ -201,17 +201,17 @@ class SpotifyAudioProvider: AudioProvider {
             if let delegate = self.providerDelegate {
                 let buffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &audioDescription), frameCapacity: AVAudioFrameCount(frameCount))
                 if buffer.floatChannelData != nil {
-                } else if buffer.int16ChannelData != nil {
-                    var intBuffer = UnsafeBufferPointer(start:audioFrames, count:frameCount)
-                    
-                    for var x = 0; x < frameCount; x += buffer.stride {
-                        buffer.int16ChannelData[x].memory = Int16(intBuffer[x])
-//                        print(Int16(y))
-                        print(buffer.int16ChannelData[x].memory)
-//                        lval.value = intArray[x].value
-//                        print(lval.value)
-                        //                        buffer.int16ChannelData.memory[x] = intArray[x]
-                    }
+//                } else if buffer.int16ChannelData != nil {
+//                    var intBuffer = UnsafeBufferPointer(start:audioFrames, count:frameCount)
+//                    
+//                    for var x = 0; x < frameCount; x += buffer.stride {
+//                        buffer.int16ChannelData[x].memory = Int16(intBuffer[x])
+////                        print(Int16(y))
+//                        print(buffer.int16ChannelData[x].memory)
+////                        lval.value = intArray[x].value
+////                        print(lval.value)
+//                        //                        buffer.int16ChannelData.memory[x] = intArray[x]
+//                    }
                 } else if buffer.int32ChannelData != nil {
                     buffer.int32ChannelData.memory[0] = UnsafePointer<Int32>(audioFrames)[0]
                     buffer.int32ChannelData.memory[1] = UnsafePointer<Int32>(audioFrames)[1]
