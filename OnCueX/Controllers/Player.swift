@@ -194,10 +194,10 @@ class SpotifyAudioProvider: AudioProvider {
                     for var x = 0; x < frameCount; x += buffer.stride {
                         buffer.int16ChannelData.memory[x] = data[x]
                     }
-                    buffer.mutableAudioBufferList.memory.mNumberBuffers = 1
-                    buffer.mutableAudioBufferList.memory.mBuffers.mNumberChannels = audioDescription.mChannelsPerFrame
-                    buffer.mutableAudioBufferList.memory.mBuffers.mData = UnsafeMutablePointer<Void>(audioFrames)
-                    buffer.mutableAudioBufferList.memory.mBuffers.mDataByteSize = audioDescription.mBytesPerFrame * UInt32(frameCount)
+//                    buffer.mutableAudioBufferList.memory.mNumberBuffers = 1
+//                    buffer.mutableAudioBufferList.memory.mBuffers.mNumberChannels = audioDescription.mChannelsPerFrame
+//                    buffer.mutableAudioBufferList.memory.mBuffers.mData = UnsafeMutablePointer<Void>(audioFrames)
+//                    buffer.mutableAudioBufferList.memory.mBuffers.mDataByteSize = audioDescription.mBytesPerFrame * UInt32(frameCount)
                     //                    buffer.int16ChannelData.memory.initializeFrom(UnsafeMutablePointer<Int16>(audioFrames), count: frameCount)
 //                    let bufList = buffer.mutableAudioBufferList
 //                    bufList.memory.mBuffers.mData.put(audioFrames.memory)
@@ -210,7 +210,7 @@ class SpotifyAudioProvider: AudioProvider {
 
                 var desc = self.converter!.floatingPointAudioDescription
                 let floatBuffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &desc), frameCapacity: AVAudioFrameCount(frameCount))
-                AEFloatConverterToFloat(self.converter!, bufList.unsafeMutablePointer, floatBuffer.floatChannelData, UInt32(frameCount))
+                AEFloatConverterToFloat(self.converter!, buffer.mutableAudioBufferList, floatBuffer.floatChannelData, UInt32(frameCount))
 
 //                floatBuffer.floatChannelData.memory.initializeFrom(UnsafeMutablePointer<Float>(buffer.int16ChannelData), count: frameCount)
 //                AEFloatConverterToFloatBufferList(self.converter!, bufList.unsafeMutablePointer, floatBuffer.mutableAudioBufferList, UInt32(frameCount))
