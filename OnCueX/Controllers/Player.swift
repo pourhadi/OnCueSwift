@@ -167,9 +167,9 @@ class SpotifyAudioProvider: AudioProvider {
         
         lazy var audioConverter:AudioConverterRef = {
             var ref:AudioConverterRef = nil
-            var outFormat = inFormatDescription.streamDescription
+            var outFormat = self.converter!.floatingPointAudioDescription
             var inFormat = self.inFormat!.streamDescription
-            AudioConverterNew(inFormat, outFormat, &ref)
+            AudioConverterNew(inFormat, &outFormat, &ref)
             
             return ref
         }()
@@ -199,18 +199,18 @@ class SpotifyAudioProvider: AudioProvider {
                 }
                 buffer.frameLength = AVAudioFrameCount(frameCount)
 
-//                var desc = self.converter!.floatingPointAudioDescription
-                let floatBuffer = AVAudioPCMBuffer(PCMFormat: inFormatDescription, frameCapacity: AVAudioFrameCount(frameCount))
+                var desc = self.converter!.floatingPointAudioDescription
+                let floatBuffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &desc), frameCapacity: AVAudioFrameCount(frameCount))
 //                AEFloatConverterToFloat(self.converter!, UnsafeMutablePointer<AudioBufferList>(buffer.audioBufferList), floatBuffer.floatChannelData, UInt32(frameCount))
 
 //                floatBuffer.floatChannelData.memory.initializeFrom(UnsafeMutablePointer<Float>(buffer.int16ChannelData), count: frameCount)
-                AEFloatConverterToFloatBufferList(self.converter!, buffer.mutableAudioBufferList, floatBuffer.mutableAudioBufferList, UInt32(frameCount))
+//                AEFloatConverterToFloatBufferList(self.converter!, buffer.mutableAudioBufferList, floatBuffer.mutableAudioBufferList, UInt32(frameCount))
                 var outBytes:UInt32 = UInt32(frameCount * Int(inFormatDescription.streamDescription.memory.mBytesPerFrame))
             
 //                let status = AudioConverterConvertComplexBuffer(self.audioConverter, UInt32(frameCount), buffer.audioBufferList, floatBuffer.mutableAudioBufferList)
                 print(UInt32(frameCount * Int(audioDescription.mBytesPerFrame)))
-                var buf = floatBuffer.floatChannelData.memory.memory
-                let status = AudioConverterConvertBuffer(self.audioConverter, UInt32(frameCount * Int(audioDescription.mBytesPerFrame)), audioFrames, &outBytes, &buf)
+                var buf = floatBuffer.floatChannelData.memory
+                let status = AudioConverterConvertBuffer(self.audioConverter, UInt32(frameCount * Int(audioDescription.mBytesPerFrame)), audioFrames, &outBytes, buf)
                 print(status)
 //                print(outBytes)
                 floatBuffer.frameLength = AVAudioFrameCount(frameCount)
