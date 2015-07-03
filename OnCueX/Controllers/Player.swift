@@ -228,7 +228,7 @@ class SpotifyAudioProvider: AudioProvider {
 //                print(outBytes)
                 floatBuffer.frameLength = AVAudioFrameCount(frameCount)
 
-                delegate.provider(self.provider, hasNewBuffer: buffer)
+                delegate.provider(self.provider, hasNewBuffer: floatBuffer)
             }
             return 0
         }
