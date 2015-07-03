@@ -184,7 +184,12 @@ class SpotifyAudioProvider: AudioProvider {
                 let buffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &audioDescription), frameCapacity: AVAudioFrameCount(frameCount))
                 if buffer.floatChannelData != nil {
                 } else if buffer.int16ChannelData != nil {
-                    buffer.int16ChannelData.memory.initializeFrom(UnsafeMutablePointer<Int16>(audioFrames), count: frameCount)
+                    let data = UnsafeMutablePointer<Int16>(audioFrames)
+                    for var x = 0; x < frameCount; x += buffer.stride {
+                        buffer.int16ChannelData.memory[x] = data[x]
+                    }
+                    
+                    //                    buffer.int16ChannelData.memory.initializeFrom(UnsafeMutablePointer<Int16>(audioFrames), count: frameCount)
 //                    let bufList = buffer.mutableAudioBufferList
 //                    bufList.memory.mBuffers.mData.put(audioFrames.memory)
                 } else if buffer.int32ChannelData != nil {
@@ -199,7 +204,7 @@ class SpotifyAudioProvider: AudioProvider {
 //                AEFloatConverterToFloat(self.converter!, UnsafeMutablePointer<AudioBufferList>(buffer.audioBufferList), floatBuffer.floatChannelData, UInt32(frameCount))
 
 //                floatBuffer.floatChannelData.memory.initializeFrom(UnsafeMutablePointer<Float>(buffer.int16ChannelData), count: frameCount)
-//                AEFloatConverterToFloatBufferList(self.converter!, buffer.mutableAudioBufferList, floatBuffer.mutableAudioBufferList, UInt32(frameCount))
+                AEFloatConverterToFloatBufferList(self.converter!, buffer.mutableAudioBufferList, floatBuffer.mutableAudioBufferList, UInt32(frameCount))
                 var outBytes:UInt32 = UInt32(frameCount * Int(inFormatDescription.streamDescription.memory.mBytesPerFrame))
             
 //                let status = AudioConverterConvertComplexBuffer(self.audioConverter, UInt32(frameCount), buffer.audioBufferList, floatBuffer.mutableAudioBufferList)
