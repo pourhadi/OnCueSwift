@@ -204,7 +204,7 @@ class SpotifyAudioProvider: AudioProvider {
             
 //                let status = AudioConverterConvertComplexBuffer(self.audioConverter, UInt32(frameCount), buffer.audioBufferList, floatBuffer.mutableAudioBufferList)
                 print(UInt32(frameCount * Int(audioDescription.mBytesPerFrame)))
-                let status = AudioConverterConvertBuffer(self.audioConverter, 1024, audioFrames, &outBytes, floatBuffer.mutableAudioBufferList.memory.mBuffers.mData)
+                let status = AudioConverterConvertBuffer(self.audioConverter, 1024, audioFrames, &outBytes, floatBuffer.floatChannelData.memory)
                 print(status)
 //                print(outBytes)
                 floatBuffer.frameLength = AVAudioFrameCount(frameCount)
