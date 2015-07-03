@@ -185,13 +185,8 @@ class SpotifyAudioProvider: AudioProvider {
                 if buffer.floatChannelData != nil {
                 } else if buffer.int16ChannelData != nil {
 //                    buffer.int16ChannelData.memory.initializeFrom(UnsafeMutablePointer<Int16>(audioFrames), count: frameCount)
-                    let data = UnsafePointer<Int16>(audioFrames)
-                    for x in 0..<audioDescription.mChannelsPerFrame {
-                        let channel = buffer.int16ChannelData[Int(x)]
-                        for y in 0..<frameCount {
-                            channel[y] = data[y]
-                        }
-                    }
+                    let bufList = buffer.audioBufferList
+                    bufList.memory.mBuffers.mData.initializeFrom(UnsafeMutablePointer<Void>(audioFrames), count: frameCount)
                 } else if buffer.int32ChannelData != nil {
                     buffer.int32ChannelData.memory[0] = UnsafePointer<Int32>(audioFrames)[0]
                     buffer.int32ChannelData.memory[1] = UnsafePointer<Int32>(audioFrames)[1]
