@@ -211,7 +211,7 @@ list.mNumberBuffers = 1;
 list.mBuffers[0] = buf;*/
                 
                 let buf = AudioBuffer(mNumberChannels: UInt32(audioDescription.mChannelsPerFrame), mDataByteSize: audioDescription.mBytesPerFrame * UInt32(frameCount), mData: UnsafeMutablePointer<Void>(audioFrames))
-                let list = AudioBufferList(mNumberBuffers: 1, mBuffers: buf)
+                var list = AudioBufferList(mNumberBuffers: 1, mBuffers: buf)
                 buffer.mutableAudioBufferList.memory = list
 //                if buffer.floatChannelData != nil {
 //                } else if buffer.int16ChannelData != nil {
@@ -233,7 +233,7 @@ list.mBuffers[0] = buf;*/
                 buffer.frameLength = AVAudioFrameCount(frameCount)
                 let floatBuffer = AVAudioPCMBuffer(PCMFormat: inFormatDescription!, frameCapacity: AVAudioFrameCount(frameCount))
                 
-                let status = AudioConverterConvertComplexBuffer(self.audioConverter, UInt32(frameCount), buffer.audioBufferList, floatBuffer.mutableAudioBufferList)
+                let status = AudioConverterConvertComplexBuffer(self.audioConverter, UInt32(frameCount), &list, floatBuffer.mutableAudioBufferList)
                 floatBuffer.frameLength = AVAudioFrameCount(frameCount)
                 print(status)
                 print(floatBuffer)
