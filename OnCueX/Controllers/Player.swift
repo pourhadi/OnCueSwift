@@ -207,6 +207,7 @@ class SpotifyAudioProvider: AudioProvider {
                     for var x = 0; x < frameCount; x += buffer.stride {
                         var lval = buffer.int16ChannelData.memory[x]
                         lval.value = intArray[x].value
+                        print(lval.value)
                         //                        buffer.int16ChannelData.memory[x] = intArray[x]
                     }
                 } else if buffer.int32ChannelData != nil {
