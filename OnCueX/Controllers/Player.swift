@@ -200,7 +200,20 @@ class SpotifyAudioProvider: AudioProvider {
             self.inFormat = AVAudioFormat(streamDescription: &audioDescription)
             if let delegate = self.providerDelegate {
                 let buffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &audioDescription), frameCapacity: AVAudioFrameCount(frameCount))
-                if buffer.floatChannelData != nil {
+                
+/*AudioBuffer buf;
+buf.mData = (void*)audioFrames;
+buf.mDataByteSize = (UInt32)audioDescription.mBytesPerFrame * (UInt32)frameCount;
+buf.mNumberChannels = audioDescription.mChannelsPerFrame;
+
+AudioBufferList list;
+list.mNumberBuffers = 1;
+list.mBuffers[0] = buf;*/
+                
+                let buf = AudioBuffer(mNumberChannels: UInt32(audioDescription.mChannelsPerFrame), mDataByteSize: audioDescription.mBytesPerFrame * UInt32(frameCount), mData: UnsafeMutablePointer<Void>(audioFrames))
+                let list = AudioBufferList(mNumberBuffers: 1, mBuffers: buf)
+                buffer.mutableAudioBufferList.memory = list
+//                if buffer.floatChannelData != nil {
 //                } else if buffer.int16ChannelData != nil {
 //                    var intBuffer = UnsafeBufferPointer(start:audioFrames, count:frameCount)
 //                    
@@ -212,11 +225,11 @@ class SpotifyAudioProvider: AudioProvider {
 ////                        print(lval.value)
 //                        //                        buffer.int16ChannelData.memory[x] = intArray[x]
 //                    }
-                } else if buffer.int32ChannelData != nil {
-                    buffer.int32ChannelData.memory[0] = UnsafePointer<Int32>(audioFrames)[0]
-                    buffer.int32ChannelData.memory[1] = UnsafePointer<Int32>(audioFrames)[1]
-                    
-                }
+//                } else if buffer.int32ChannelData != nil {
+//                    buffer.int32ChannelData.memory[0] = UnsafePointer<Int32>(audioFrames)[0]
+//                    buffer.int32ChannelData.memory[1] = UnsafePointer<Int32>(audioFrames)[1]
+//                    
+//                }
                 buffer.frameLength = AVAudioFrameCount(frameCount)
                 let floatBuffer = AVAudioPCMBuffer(PCMFormat: inFormatDescription!, frameCapacity: AVAudioFrameCount(frameCount))
                 
