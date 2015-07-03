@@ -42,7 +42,7 @@ class Player: AudioProviderDelegate {
         
         self.engine.attachNode(self.playerNode);
         self.engine.connect(self.playerNode, to: mainMixer, format: nil)
-        inFormatDescription = mainMixer.outputFormatForBus(0)
+        inFormatDescription = mainMixer.inputFormatForBus(0)
     }
     
     
@@ -96,19 +96,19 @@ class Player: AudioProviderDelegate {
     
     func provider(provider:AudioProvider?, hasNewBuffer:AVAudioPCMBuffer) {
         if let provider = provider {
-            if provider.isEqual(self.spotifyProvider) {
-                if self.spotifyNode == nil {
-                    self.spotifyNode = AVAudioPlayerNode()
-                    self.engine.attachNode(self.spotifyNode!)
-                    print(hasNewBuffer.frameLength)
-                    print(hasNewBuffer.frameCapacity)
-                    print(hasNewBuffer.format)
-                    self.engine.connect(self.spotifyNode!, to: self.engine.mainMixerNode, format: hasNewBuffer.format)
-                    self.spotifyNode!.play()
-                }
-                self.spotifyNode!.scheduleBuffer(hasNewBuffer, completionHandler: nil)
-            }
-            return
+//            if provider.isEqual(self.spotifyProvider) {
+//                if self.spotifyNode == nil {
+//                    self.spotifyNode = AVAudioPlayerNode()
+//                    self.engine.attachNode(self.spotifyNode!)
+//                    print(hasNewBuffer.frameLength)
+//                    print(hasNewBuffer.frameCapacity)
+//                    print(hasNewBuffer.format)
+//                    self.engine.connect(self.spotifyNode!, to: self.engine.mainMixerNode, format: hasNewBuffer.format)
+//                    self.spotifyNode!.play()
+//                }
+//                self.spotifyNode!.scheduleBuffer(hasNewBuffer, completionHandler: nil)
+//            }
+//            return
         }
         
         self.playerNode.scheduleBuffer(hasNewBuffer, completionHandler: nil)
@@ -197,7 +197,7 @@ class SpotifyAudioProvider: AudioProvider {
         var inFormat:AVAudioFormat?
         var converter:AEFloatConverter?
         override func attemptToDeliverAudioFrames(audioFrames: UnsafePointer<Void>, ofCount frameCount: Int, var streamDescription audioDescription: AudioStreamBasicDescription) -> Int {
-            
+            self.inFormat = AVAudioFormat(streamDescription: &audioDescription)
             if let delegate = self.providerDelegate {
                 let buffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &audioDescription), frameCapacity: AVAudioFrameCount(frameCount))
                 if buffer.floatChannelData != nil {
@@ -215,7 +215,10 @@ class SpotifyAudioProvider: AudioProvider {
                     
                 }
                 buffer.frameLength = AVAudioFrameCount(frameCount)
-                delegate.provider(self.provider, hasNewBuffer: buffer)
+                let floatBuffer = AVAudioPCMBuffer(PCMFormat: inFormatDescription!, frameCapacity: AVAudioFrameCount(frameCount))
+                
+                AudioConverterConvertComplexBuffer(self.audioConverter, UInt32(frameCount), buffer.audioBufferList, floatBuffer.mutableAudioBufferList)
+                delegate.provider(self.provider, hasNewBuffer: floatBuffer)
             }
             return 0
         }
