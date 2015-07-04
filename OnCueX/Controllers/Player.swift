@@ -203,7 +203,7 @@ class SpotifyAudioProvider: AudioProvider {
         var inFormat:AVAudioFormat?
         var converter:AEFloatConverter?
         
-        var genericNode:UnsafeMutablePointer<AUNode> = nil
+        var genericNode = UnsafeMutablePointer<AUNode>()
         var genericDescription: AudioComponentDescription  = {
             var cd:AudioComponentDescription = AudioComponentDescription(componentType: OSType(kAudioUnitType_Output),componentSubType: OSType(kAudioUnitSubType_GenericOutput),componentManufacturer: OSType(kAudioUnitManufacturer_Apple),componentFlags: 0,componentFlagsMask: 0)
             return cd
@@ -215,7 +215,7 @@ class SpotifyAudioProvider: AudioProvider {
             if self.genericNode == nil {
                 AUGraphAddNode(graph, &genericDescription, genericNode)
                 
-                let audioUnit:UnsafeMutablePointer<AudioUnit> = nil
+                let audioUnit:UnsafeMutablePointer<AudioUnit> = UnsafeMutablePointer<AudioUnit>()
                 let outDesc:UnsafeMutablePointer<AudioComponentDescription> = nil
                 AUGraphNodeInfo(graph, genericNode.memory, outDesc, audioUnit)
                 
@@ -223,7 +223,7 @@ class SpotifyAudioProvider: AudioProvider {
                 AUGraphNodeInfo(graph, sourceNode, outDesc, inputUnit)
                 
                 let val:UInt32 = 4096
-                let maxFramesSlice:UnsafeMutablePointer<UInt32> = nil
+                let maxFramesSlice:UnsafeMutablePointer<UInt32> = UnsafeMutablePointer<UInt32>()
                 maxFramesSlice.memory = val
                 AudioUnitSetProperty (
                     audioUnit.memory,
@@ -234,8 +234,8 @@ class SpotifyAudioProvider: AudioProvider {
                     UInt32(sizeof (UInt32))
                 )
                 
-                let inputDescription:UnsafeMutablePointer<AudioStreamBasicDescription> = nil
-                let size:UnsafeMutablePointer<UInt32> = nil
+                let inputDescription:UnsafeMutablePointer<AudioStreamBasicDescription> = UnsafeMutablePointer<AudioStreamBasicDescription>()
+                let size:UnsafeMutablePointer<UInt32> = UnsafeMutablePointer<UInt32>()
                 size.memory = UInt32(sizeof(AudioStreamBasicDescription))
                 AudioUnitGetProperty(inputUnit.memory, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, inputDescription, size)
                 size.memory = UInt32(sizeof(AudioStreamBasicDescription))
@@ -258,7 +258,7 @@ class SpotifyAudioProvider: AudioProvider {
                 
                 let contextInfo = RenderContextInfo(delegate: self.providerDelegate!, outputUnit: audioUnit.memory, formatDescription:inFormatDescription!)
                 
-                let pointer:UnsafeMutablePointer<RenderContextInfo> = nil
+                let pointer:UnsafeMutablePointer<RenderContextInfo> = UnsafeMutablePointer<RenderContextInfo>()
                 pointer.memory = contextInfo
                 AUGraphAddRenderNotify(graph, callback.inputProc, pointer)
             }
