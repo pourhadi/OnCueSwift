@@ -255,11 +255,9 @@ class SpotifyAudioProvider: AudioProvider {
                     return 0
                     }, inputProcRefCon: nil)
                 
-                let contextInfo = RenderContextInfo(delegate: self.providerDelegate!, outputUnit: audioUnit, formatDescription:inFormatDescription!)
-                
-                let pointer:UnsafeMutablePointer<RenderContextInfo> = UnsafeMutablePointer<RenderContextInfo>()
-                pointer.memory = contextInfo
-                AUGraphAddRenderNotify(graph, callback.inputProc, pointer)
+                var contextInfo = RenderContextInfo(delegate: self.providerDelegate!, outputUnit: audioUnit, formatDescription:inFormatDescription!)
+
+                AUGraphAddRenderNotify(graph, callback.inputProc, &contextInfo)
             }
             
             
