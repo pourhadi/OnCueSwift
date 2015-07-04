@@ -203,37 +203,43 @@ class SpotifyAudioProvider: AudioProvider {
             return cd
         }()
 
+        
         override func connectOutputBus(sourceOutputBusNumber: UInt32, ofNode sourceNode: AUNode, toInputBus destinationInputBusNumber: UInt32, ofNode destinationNode: AUNode, inGraph graph: AUGraph) throws {
             if self.genericNode == nil {
-                AUGraphAddNode(graph, &genericDescription, genericNode)
+//                AUGraphAddNode(graph, &genericDescription, genericNode)
+//                
+//                let audioUnit:UnsafeMutablePointer<AudioUnit> = nil
+//                let outDesc:UnsafeMutablePointer<AudioComponentDescription> = nil
+//                AUGraphNodeInfo(graph, genericNode.memory, outDesc, audioUnit)
+//                
+//                let val:UInt32 = 4096
+//                let maxFramesSlice:UnsafeMutablePointer<UInt32> = nil
+//                maxFramesSlice.memory = val
+//                AudioUnitSetProperty (
+//                    audioUnit.memory,
+//                    kAudioUnitProperty_MaximumFramesPerSlice,
+//                    kAudioUnitScope_Global,
+//                    0,
+//                    maxFramesSlice,
+//                    UInt32(sizeof (UInt32))
+//                )
                 
-                let audioUnit:UnsafeMutablePointer<AudioUnit> = nil
-                let outDesc:UnsafeMutablePointer<AudioComponentDescription> = nil
-                AUGraphNodeInfo(graph, genericNode.memory, outDesc, audioUnit)
-                
-                let val:UInt32 = 4096
-                let maxFramesSlice:UnsafeMutablePointer<UInt32> = nil
-                maxFramesSlice.memory = val
-                AudioUnitSetProperty (
-                    audioUnit.memory,
-                    kAudioUnitProperty_MaximumFramesPerSlice,
-                    kAudioUnitScope_Global,
-                    0,
-                    maxFramesSlice,
-                    UInt32(sizeof (UInt32))
-                )
-                let callback:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: { (inRefCon, acitonFlags, timeStamp, inBusNumber, inNumberFrames, buffer) -> OSStatus in
-                    print("render called back")
-                    return 0
-                    }, inputProcRefCon: nil)
-                
-                AUGraphAddRenderNotify(graph, callback.inputProc, nil)
-                AUGraphConnectNodeInput(graph, sourceNode, sourceOutputBusNumber, genericNode.memory, 0)
+//                AUGraphConnectNodeInput(graph, sourceNode, sourceOutputBusNumber, genericNode.memory, 0)
                 
             }
             
+            do { try super.connectOutputBus(sourceOutputBusNumber, ofNode: sourceNode, toInputBus: destinationInputBusNumber, ofNode: destinationNode, inGraph: graph) } catch { print("error") }
+            let callback:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: { (inRefCon, acitonFlags, timeStamp, inBusNumber, inNumberFrames, buffer) -> OSStatus in
+                print("render called back")
+                return 0
+                }, inputProcRefCon: nil)
+            
+            AUGraphAddRenderNotify(graph, callback.inputProc, nil)
+            
+            
         }
         
+        /*
         override func attemptToDeliverAudioFrames(audioFrames: UnsafePointer<Void>, ofCount frameCount: Int, var streamDescription audioDescription: AudioStreamBasicDescription) -> Int {
             self.inFormat = AVAudioFormat(streamDescription: &audioDescription)
             if let delegate = self.providerDelegate {
@@ -280,6 +286,7 @@ list.mBuffers[0] = buf;*/
             }
             return 0
         }
+*/
     }
     
     let audioController = SpotifyCoreAudioController()
