@@ -241,7 +241,8 @@ class SpotifyAudioProvider: AudioProvider {
                 AudioUnitSetProperty(genericUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &inputDescription, size)
                 AudioUnitSetProperty(genericUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, inFormatDescription!.streamDescription, size)
                 AUGraphConnectNodeInput(graph, sourceNode, sourceOutputBusNumber, genericNode, 0)
-                
+                AUGraphConnectNodeInput(graph, genericNode, 0, destinationNode, destinationInputBusNumber)
+
                 let callback:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: { (inRefCon, acitonFlags, timeStamp, inBusNumber, inNumberFrames, buffer) -> OSStatus in
                     let pointer = UnsafeMutablePointer<RenderContextInfo>(inRefCon)
                     let del:AudioProviderDelegate = pointer.memory.delegate
