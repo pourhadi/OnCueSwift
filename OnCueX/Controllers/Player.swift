@@ -205,17 +205,15 @@ class SpotifyAudioProvider: AudioProvider {
         
         var genericUnit:AudioUnit = AudioUnit()
         var genericNode:AUNode = AUNode()
-        var genericDescription: AudioComponentDescription  = {
-            var cd:AudioComponentDescription = AudioComponentDescription(componentType: OSType(kAudioUnitType_Output),componentSubType: OSType(kAudioUnitSubType_GenericOutput),componentManufacturer: OSType(kAudioUnitManufacturer_Apple),componentFlags: 0,componentFlagsMask: 0)
-            return cd
-        }()
+        var genericDescription: AudioComponentDescription  =  AudioComponentDescription(componentType: OSType(kAudioUnitType_Output),componentSubType: OSType(kAudioUnitSubType_GenericOutput),componentManufacturer: OSType(kAudioUnitManufacturer_Apple),componentFlags: 0,componentFlagsMask: 0)
+
 
         override func connectOutputBus(sourceOutputBusNumber: UInt32, ofNode sourceNode: AUNode, toInputBus destinationInputBusNumber: UInt32, ofNode destinationNode: AUNode, inGraph graph: AUGraph) throws {
 //            do { try super.connectOutputBus(sourceOutputBusNumber, ofNode: sourceNode, toInputBus: destinationInputBusNumber, ofNode: destinationNode, inGraph: graph) } catch { print("error") }
 
             if self.genericNode == 0 {
                 var status = AUGraphAddNode(graph, &genericDescription, &genericNode)
-                print(status)
+                print("add: \(status)")
                 var outDesc:AudioComponentDescription = AudioComponentDescription()
                 AUGraphNodeInfo(graph, genericNode, &outDesc, &genericUnit)
                 
