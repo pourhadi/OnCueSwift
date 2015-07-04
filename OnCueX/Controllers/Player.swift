@@ -196,6 +196,44 @@ class SpotifyAudioProvider: AudioProvider {
             }()
         var inFormat:AVAudioFormat?
         var converter:AEFloatConverter?
+        
+        var genericNode:UnsafeMutablePointer<AUNode> = nil
+        var genericDescription: AudioComponentDescription  = {
+            var cd:AudioComponentDescription = AudioComponentDescription(componentType: OSType(kAudioUnitType_Output),componentSubType: OSType(kAudioUnitSubType_GenericOutput),componentManufacturer: OSType(kAudioUnitManufacturer_Apple),componentFlags: 0,componentFlagsMask: 0)
+            return cd
+        }()
+
+        override func connectOutputBus(sourceOutputBusNumber: UInt32, ofNode sourceNode: AUNode, toInputBus destinationInputBusNumber: UInt32, ofNode destinationNode: AUNode, inGraph graph: AUGraph) throws {
+            if self.genericNode == nil {
+                AUGraphAddNode(graph, &genericDescription, genericNode)
+                
+                let audioUnit:UnsafeMutablePointer<AudioUnit> = nil
+                let outDesc:UnsafeMutablePointer<AudioComponentDescription> = nil
+                AUGraphNodeInfo(graph, genericNode.memory, outDesc, audioUnit)
+                
+                let val:UInt32 = 4096
+                let maxFramesSlice:UnsafeMutablePointer<UInt32> = nil
+                maxFramesSlice.memory = val
+                AudioUnitSetProperty (
+                    audioUnit.memory,
+                    kAudioUnitProperty_MaximumFramesPerSlice,
+                    kAudioUnitScope_Global,
+                    0,
+                    maxFramesSlice,
+                    UInt32(sizeof (UInt32))
+                )
+                let callback:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: { (inRefCon, acitonFlags, timeStamp, inBusNumber, inNumberFrames, buffer) -> OSStatus in
+                    print("render called back")
+                    return 0
+                    }, inputProcRefCon: nil)
+                
+                AUGraphAddRenderNotify(graph, callback.inputProc, nil)
+                AUGraphConnectNodeInput(graph, sourceNode, sourceOutputBusNumber, genericNode.memory, 0)
+                
+            }
+            
+        }
+        
         override func attemptToDeliverAudioFrames(audioFrames: UnsafePointer<Void>, ofCount frameCount: Int, var streamDescription audioDescription: AudioStreamBasicDescription) -> Int {
             self.inFormat = AVAudioFormat(streamDescription: &audioDescription)
             if let delegate = self.providerDelegate {
