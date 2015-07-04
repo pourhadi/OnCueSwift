@@ -240,8 +240,8 @@ class SpotifyAudioProvider: AudioProvider {
 //                var descPointer = UnsafePointer<AudioStreamBasicDescription>(&inputDescription)
                 AudioUnitSetProperty(genericUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &inputDescription, size)
                 AudioUnitSetProperty(genericUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, inFormatDescription!.streamDescription, size)
-                AUGraphConnectNodeInput(graph, sourceNode, sourceOutputBusNumber+1, genericNode, 0)
-//                AUGraphConnectNodeInput(graph, genericNode, 0, destinationNode, destinationInputBusNumber)
+                AUGraphConnectNodeInput(graph, sourceNode, sourceOutputBusNumber, genericNode, 0)
+                AUGraphConnectNodeInput(graph, genericNode, 0, destinationNode, destinationInputBusNumber)
 
                 let callback:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: { (inRefCon, acitonFlags, timeStamp, inBusNumber, inNumberFrames, buffer) -> OSStatus in
                     let pointer = UnsafeMutablePointer<RenderContextInfo>(inRefCon)
@@ -258,10 +258,10 @@ class SpotifyAudioProvider: AudioProvider {
                 
                 var contextInfo = RenderContextInfo(delegate: self.providerDelegate!, outputUnit: genericUnit, formatDescription:inFormatDescription!)
 
-                AUGraphAddRenderNotify(graph, callback.inputProc, &contextInfo)
+                AudioUnitAddRenderNotify(genericUnit, callback.inputProc, &contextInfo)
             }
             
-            do { try super.connectOutputBus(sourceOutputBusNumber, ofNode: sourceNode, toInputBus: destinationInputBusNumber, ofNode: destinationNode, inGraph: graph) } catch { print("error") }
+//            do { try super.connectOutputBus(sourceOutputBusNumber, ofNode: sourceNode, toInputBus: destinationInputBusNumber, ofNode: destinationNode, inGraph: graph) } catch { print("error") }
 
             
         }
