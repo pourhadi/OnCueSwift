@@ -223,24 +223,23 @@ class SpotifyAudioProvider: AudioProvider {
                 AUGraphNodeInfo(graph, sourceNode, outDesc, inputUnit)
                 
                 let val:UInt32 = 4096
-                let maxFramesSlice:UnsafeMutablePointer<UInt32> = UnsafeMutablePointer<UInt32>()
-                maxFramesSlice.memory = val
+                var maxFramesSlice:UInt32 = val
                 AudioUnitSetProperty (
                     audioUnit.memory,
                     kAudioUnitProperty_MaximumFramesPerSlice,
                     kAudioUnitScope_Global,
                     0,
-                    maxFramesSlice,
+                    &maxFramesSlice,
                     UInt32(sizeof (UInt32))
                 )
                 
-                let inputDescription:UnsafeMutablePointer<AudioStreamBasicDescription> = UnsafeMutablePointer<AudioStreamBasicDescription>()
-                let size:UnsafeMutablePointer<UInt32> = UnsafeMutablePointer<UInt32>()
-                size.memory = UInt32(sizeof(AudioStreamBasicDescription))
-                AudioUnitGetProperty(inputUnit.memory, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, inputDescription, size)
-                size.memory = UInt32(sizeof(AudioStreamBasicDescription))
-                AudioUnitSetProperty(audioUnit.memory, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, inputDescription, size.memory)
-                AudioUnitSetProperty(audioUnit.memory, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, inFormatDescription!.streamDescription, size.memory)
+                var inputDescription:AudioStreamBasicDescription = AudioStreamBasicDescription()
+                var size:UInt32 = UInt32(sizeof(AudioStreamBasicDescription))
+                AudioUnitGetProperty(inputUnit.memory, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &inputDescription, &size)
+                size = UInt32(sizeof(AudioStreamBasicDescription))
+//                var descPointer = UnsafePointer<AudioStreamBasicDescription>(&inputDescription)
+                AudioUnitSetProperty(audioUnit.memory, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &inputDescription, size)
+                AudioUnitSetProperty(audioUnit.memory, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, inFormatDescription!.streamDescription, size)
                 AUGraphConnectNodeInput(graph, sourceNode, sourceOutputBusNumber, genericNode, 0)
                 
                 let callback:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: { (inRefCon, acitonFlags, timeStamp, inBusNumber, inNumberFrames, buffer) -> OSStatus in
