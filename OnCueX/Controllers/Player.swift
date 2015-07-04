@@ -214,8 +214,8 @@ class SpotifyAudioProvider: AudioProvider {
 //            do { try super.connectOutputBus(sourceOutputBusNumber, ofNode: sourceNode, toInputBus: destinationInputBusNumber, ofNode: destinationNode, inGraph: graph) } catch { print("error") }
 
             if self.genericNode == 0 {
-                AUGraphAddNode(graph, &genericDescription, &genericNode)
-                
+                var status = AUGraphAddNode(graph, &genericDescription, &genericNode)
+                print(status)
                 var outDesc:AudioComponentDescription = AudioComponentDescription()
                 AUGraphNodeInfo(graph, genericNode, &outDesc, &genericUnit)
                 
@@ -240,8 +240,8 @@ class SpotifyAudioProvider: AudioProvider {
 //                var descPointer = UnsafePointer<AudioStreamBasicDescription>(&inputDescription)
                 AudioUnitSetProperty(genericUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &inputDescription, size)
                 AudioUnitSetProperty(genericUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, inFormatDescription!.streamDescription, size)
-                AUGraphConnectNodeInput(graph, sourceNode, sourceOutputBusNumber, genericNode, 0)
-                AUGraphConnectNodeInput(graph, genericNode, 0, destinationNode, destinationInputBusNumber)
+                AUGraphConnectNodeInput(graph, sourceNode, sourceOutputBusNumber+1, genericNode, 0)
+//                AUGraphConnectNodeInput(graph, genericNode, 0, destinationNode, destinationInputBusNumber)
 
                 let callback:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: { (inRefCon, acitonFlags, timeStamp, inBusNumber, inNumberFrames, buffer) -> OSStatus in
                     let pointer = UnsafeMutablePointer<RenderContextInfo>(inRefCon)
@@ -261,7 +261,8 @@ class SpotifyAudioProvider: AudioProvider {
                 AUGraphAddRenderNotify(graph, callback.inputProc, &contextInfo)
             }
             
-            
+            do { try super.connectOutputBus(sourceOutputBusNumber, ofNode: sourceNode, toInputBus: destinationInputBusNumber, ofNode: destinationNode, inGraph: graph) } catch { print("error") }
+
             
         }
         
