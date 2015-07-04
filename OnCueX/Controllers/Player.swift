@@ -257,7 +257,7 @@ class SpotifyAudioProvider: AudioProvider {
                     }, inputProcRefCon: nil)
                 
                 var contextInfo = RenderContextInfo(delegate: self.providerDelegate!, outputUnit: genericUnit, formatDescription:inFormatDescription!)
-
+                AudioOutputUnitStart(genericUnit)
                 AudioUnitAddRenderNotify(genericUnit, callback.inputProc, &contextInfo)
             }
             
