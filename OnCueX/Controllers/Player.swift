@@ -178,6 +178,12 @@ class SpotifyAudioProvider: AudioProvider {
     }
     
     class SpotifyCoreAudioController : SPTCoreAudioController {
+        struct RenderContextInfo {
+            var delegate:AudioProviderDelegate
+            var outputUnit:AudioUnit
+            var formatDescription:AVAudioFormat
+        }
+        
         weak var providerDelegate:AudioProviderDelegate?
         weak var provider:SpotifyAudioProvider?
         
@@ -203,38 +209,60 @@ class SpotifyAudioProvider: AudioProvider {
             return cd
         }()
 
-        
         override func connectOutputBus(sourceOutputBusNumber: UInt32, ofNode sourceNode: AUNode, toInputBus destinationInputBusNumber: UInt32, ofNode destinationNode: AUNode, inGraph graph: AUGraph) throws {
+            do { try super.connectOutputBus(sourceOutputBusNumber, ofNode: sourceNode, toInputBus: destinationInputBusNumber, ofNode: destinationNode, inGraph: graph) } catch { print("error") }
+
             if self.genericNode == nil {
-//                AUGraphAddNode(graph, &genericDescription, genericNode)
-//                
-//                let audioUnit:UnsafeMutablePointer<AudioUnit> = nil
-//                let outDesc:UnsafeMutablePointer<AudioComponentDescription> = nil
-//                AUGraphNodeInfo(graph, genericNode.memory, outDesc, audioUnit)
-//                
-//                let val:UInt32 = 4096
-//                let maxFramesSlice:UnsafeMutablePointer<UInt32> = nil
-//                maxFramesSlice.memory = val
-//                AudioUnitSetProperty (
-//                    audioUnit.memory,
-//                    kAudioUnitProperty_MaximumFramesPerSlice,
-//                    kAudioUnitScope_Global,
-//                    0,
-//                    maxFramesSlice,
-//                    UInt32(sizeof (UInt32))
-//                )
+                AUGraphAddNode(graph, &genericDescription, genericNode)
                 
-//                AUGraphConnectNodeInput(graph, sourceNode, sourceOutputBusNumber, genericNode.memory, 0)
+                let audioUnit:UnsafeMutablePointer<AudioUnit> = nil
+                let outDesc:UnsafeMutablePointer<AudioComponentDescription> = nil
+                AUGraphNodeInfo(graph, genericNode.memory, outDesc, audioUnit)
                 
+                let inputUnit:UnsafeMutablePointer<AudioUnit> = nil
+                AUGraphNodeInfo(graph, sourceNode, outDesc, inputUnit)
+                
+                let val:UInt32 = 4096
+                let maxFramesSlice:UnsafeMutablePointer<UInt32> = nil
+                maxFramesSlice.memory = val
+                AudioUnitSetProperty (
+                    audioUnit.memory,
+                    kAudioUnitProperty_MaximumFramesPerSlice,
+                    kAudioUnitScope_Global,
+                    0,
+                    maxFramesSlice,
+                    UInt32(sizeof (UInt32))
+                )
+                
+                let inputDescription:UnsafeMutablePointer<AudioStreamBasicDescription> = nil
+                let size:UnsafeMutablePointer<UInt32> = nil
+                size.memory = UInt32(sizeof(AudioStreamBasicDescription))
+                AudioUnitGetProperty(inputUnit.memory, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, inputDescription, size)
+                size.memory = UInt32(sizeof(AudioStreamBasicDescription))
+                AudioUnitSetProperty(audioUnit.memory, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, inputDescription, size.memory)
+                AudioUnitSetProperty(audioUnit.memory, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, inFormatDescription!.streamDescription, size.memory)
+                AUGraphConnectNodeInput(graph, sourceNode, sourceOutputBusNumber, genericNode.memory, 0)
+                
+                let callback:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: { (inRefCon, acitonFlags, timeStamp, inBusNumber, inNumberFrames, buffer) -> OSStatus in
+                    let pointer = UnsafeMutablePointer<RenderContextInfo>(inRefCon)
+                    let del:AudioProviderDelegate = pointer.memory.delegate
+                    let audioUnit = pointer.memory.outputUnit
+                    
+                    AudioUnitRender(audioUnit, acitonFlags, timeStamp, inBusNumber, inNumberFrames, buffer)
+                    let avBuffer = AVAudioPCMBuffer(PCMFormat: pointer.memory.formatDescription, frameCapacity: AVAudioFrameCount(inNumberFrames))
+                    avBuffer.mutableAudioBufferList.memory = buffer.memory
+                    del.provider(nil, hasNewBuffer: avBuffer)
+                    print("render called back")
+                    return 0
+                    }, inputProcRefCon: nil)
+                
+                let contextInfo = RenderContextInfo(delegate: self.providerDelegate!, outputUnit: audioUnit.memory, formatDescription:inFormatDescription!)
+                
+                let pointer:UnsafeMutablePointer<RenderContextInfo> = nil
+                pointer.memory = contextInfo
+                AUGraphAddRenderNotify(graph, callback.inputProc, pointer)
             }
             
-            do { try super.connectOutputBus(sourceOutputBusNumber, ofNode: sourceNode, toInputBus: destinationInputBusNumber, ofNode: destinationNode, inGraph: graph) } catch { print("error") }
-            let callback:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: { (inRefCon, acitonFlags, timeStamp, inBusNumber, inNumberFrames, buffer) -> OSStatus in
-                print("render called back")
-                return 0
-                }, inputProcRefCon: nil)
-            
-            AUGraphAddRenderNotify(graph, callback.inputProc, nil)
             
             
         }
