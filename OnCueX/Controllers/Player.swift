@@ -203,7 +203,8 @@ class SpotifyAudioProvider: AudioProvider {
         var inFormat:AVAudioFormat?
         var converter:AEFloatConverter?
         
-        var genericNode:AUNode = 0
+        var genericUnit:AudioUnit = AudioUnit()
+        var genericNode:AUNode = AUNode()
         var genericDescription: AudioComponentDescription  = {
             var cd:AudioComponentDescription = AudioComponentDescription(componentType: OSType(kAudioUnitType_Output),componentSubType: OSType(kAudioUnitSubType_GenericOutput),componentManufacturer: OSType(kAudioUnitManufacturer_Apple),componentFlags: 0,componentFlagsMask: 0)
             return cd
@@ -215,9 +216,8 @@ class SpotifyAudioProvider: AudioProvider {
             if self.genericNode == 0 {
                 AUGraphAddNode(graph, &genericDescription, &genericNode)
                 
-                var audioUnit:AudioUnit = AudioUnit()
                 var outDesc:AudioComponentDescription = AudioComponentDescription()
-                AUGraphNodeInfo(graph, genericNode, &outDesc, &audioUnit)
+                AUGraphNodeInfo(graph, genericNode, &outDesc, &genericUnit)
                 
                 var inputUnit:AudioUnit = AudioUnit()
                 AUGraphNodeInfo(graph, sourceNode, &outDesc, &inputUnit)
@@ -225,7 +225,7 @@ class SpotifyAudioProvider: AudioProvider {
                 let val:UInt32 = 4096
                 var maxFramesSlice:UInt32 = val
                 AudioUnitSetProperty (
-                    audioUnit,
+                    genericUnit,
                     kAudioUnitProperty_MaximumFramesPerSlice,
                     kAudioUnitScope_Global,
                     0,
@@ -238,8 +238,8 @@ class SpotifyAudioProvider: AudioProvider {
                 AudioUnitGetProperty(inputUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &inputDescription, &size)
                 size = UInt32(sizeof(AudioStreamBasicDescription))
 //                var descPointer = UnsafePointer<AudioStreamBasicDescription>(&inputDescription)
-                AudioUnitSetProperty(audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &inputDescription, size)
-                AudioUnitSetProperty(audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, inFormatDescription!.streamDescription, size)
+                AudioUnitSetProperty(genericUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &inputDescription, size)
+                AudioUnitSetProperty(genericUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, inFormatDescription!.streamDescription, size)
                 AUGraphConnectNodeInput(graph, sourceNode, sourceOutputBusNumber, genericNode, 0)
                 
                 let callback:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: { (inRefCon, acitonFlags, timeStamp, inBusNumber, inNumberFrames, buffer) -> OSStatus in
@@ -255,7 +255,7 @@ class SpotifyAudioProvider: AudioProvider {
                     return 0
                     }, inputProcRefCon: nil)
                 
-                var contextInfo = RenderContextInfo(delegate: self.providerDelegate!, outputUnit: audioUnit, formatDescription:inFormatDescription!)
+                var contextInfo = RenderContextInfo(delegate: self.providerDelegate!, outputUnit: genericUnit, formatDescription:inFormatDescription!)
 
                 AUGraphAddRenderNotify(graph, callback.inputProc, &contextInfo)
             }
