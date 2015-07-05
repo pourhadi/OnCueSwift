@@ -110,7 +110,7 @@ class StackedImageView : UIView, StackedLayerDelegate {
         }
     }
     
-    var imageViews = [UIImageView(), UIImageView(), UIImageView(), UIImageView(), UIImageView()]
+    var imageViews = [UIImageView(), UIImageView(), UIImageView(), UIImageView(), UIImageView(), UIImageView(), UIImageView()]
     
     var image:UIImage? {
         didSet {
