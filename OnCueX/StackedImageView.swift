@@ -16,6 +16,10 @@ protocol StackedLayerDelegate:class {
 
 class StackedImageViewLayer : CALayer {
     
+    override init() {
+        super.init()
+    }
+    
     override init(layer: AnyObject) {
         super.init(layer: layer)
         if let layer = layer as? StackedImageViewLayer {
