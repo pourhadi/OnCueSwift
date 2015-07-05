@@ -46,7 +46,7 @@ class StackedImageView : UIView {
                 UIGraphicsEndImageContext()
                 
                 UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.mainScreen().scale)
-                CGContextSetShadowWithColor(UIGraphicsGetCurrentContext(), CGSizeMake(0, 2), 3, UIColor.blackColor().colorWithAlphaComponent(1).CGColor)
+                CGContextSetShadowWithColor(UIGraphicsGetCurrentContext(), CGSizeMake(0, 0), 3, UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor)
                 drawn.drawInRect(CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height))
                 let withShadow = UIGraphicsGetImageFromCurrentImageContext()
                 UIGraphicsEndImageContext()
