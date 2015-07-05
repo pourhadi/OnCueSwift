@@ -35,7 +35,7 @@ class StackedImageView : UIView {
         if let image = self.image {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
                 UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.mainScreen().scale)
-                var scaledFrame = CGRectApplyAffineTransform(self.bounds, CGAffineTransformMakeScale(0.8, 0.8))
+                var scaledFrame = CGRectApplyAffineTransform(self.bounds, CGAffineTransformMakeScale(0.7, 0.7))
                 scaledFrame.origin.x = (self.bounds.size.width - scaledFrame.size.width) / 2
                 scaledFrame.origin.y = (self.bounds.size.height - scaledFrame.size.height) / 2
                 let bez = UIBezierPath(ovalInRect: scaledFrame)
@@ -58,7 +58,7 @@ class StackedImageView : UIView {
                         imageView.transform = CGAffineTransformIdentity
                         imageView.frame = self.bounds
                         imageView.image = withShadow
-                        let scale:CGFloat = 1 - (CGFloat(x) * 0.025)
+                        let scale:CGFloat = 1 - (CGFloat(x) * 0.03)
                         imageView.transform = CGAffineTransformMakeScale(scale, scale)
                         
                         x += 1
@@ -77,7 +77,7 @@ class StackedImageView : UIView {
             let yTranslate = ExtrapolateValue(max, min, yAdjustment)
             
             let imgView = self.imageViews[x]
-            let scale:CGFloat = 1 - (CGFloat(x) * 0.025)
+            let scale:CGFloat = 1 - (CGFloat(x) * 0.03)
             imgView.transform = CGAffineTransformIdentity
             imgView.transform = CGAffineTransformMakeScale(scale, scale)
             imgView.transform = CGAffineTransformTranslate(imgView.transform, xTranslate, yTranslate)
