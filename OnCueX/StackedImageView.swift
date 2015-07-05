@@ -12,8 +12,16 @@ import CoreMotion
 
 class StackedImageView : UIView {
     
-    var xAdjustment:CGFloat = 0.3
-    var yAdjustment:CGFloat = 0.8
+    var xAdjustment:CGFloat = 0.3 {
+        didSet {
+            self.adjustOffsets()
+        }
+    }
+    var yAdjustment:CGFloat = 0.8 {
+        didSet {
+            self.adjustOffsets()
+        }
+    }
     
     var imageViews = [UIImageView(), UIImageView(), UIImageView(), UIImageView()]
     
