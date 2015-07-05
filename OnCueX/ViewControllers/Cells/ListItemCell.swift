@@ -121,6 +121,15 @@ class ListItemTextCell: ListItemCell {
         }
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        if let item = self.item {
+            if item.isTrackCollection {
+                self.imageView.image = nil
+            }
+        }
+    }
+    
     let indexView = ListCellIndexView()
     let itemLabelsView = ItemLabelsView(frame:CGRectZero)
     var leftConstraint:Constraint?
