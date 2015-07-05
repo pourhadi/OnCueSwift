@@ -44,6 +44,11 @@ protocol ArtistItem : TrackCollection {
 
 protocol PlaylistItem : TrackCollection {}
 
+extension TrackCollection {
+    var isTrackCollection:Bool {
+        return true
+    }
+}
 
 /* identifying items */
 protocol Identifiable {
@@ -65,11 +70,13 @@ protocol ImageSource:Identifiable {
 protocol DisplayContext:ImageSource {
     var title:String? { get }
     var subtitle:String? { get }
+    var isTrackCollection:Bool { get }
 }
 
 struct CustomDisplayContext: DisplayContext {
     var title:String?
     var subtitle:String?
+    var isTrackCollection = false
     func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {}
     
      init(_ title:String) {
@@ -151,6 +158,7 @@ class ItemViewModel: DisplayContext, QueueObserver {
     
     var title:String? { return self.item.title }
     var subtitle:String? { return self.item.subtitle }
+    var isTrackCollection:Bool { return self.item.isTrackCollection }
     func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {
         self.item.getImage(forSize, complete: complete)
     }

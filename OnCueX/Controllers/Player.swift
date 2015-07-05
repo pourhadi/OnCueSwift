@@ -209,8 +209,7 @@ class SpotifyAudioProvider: AudioProvider {
 
 
         override func connectOutputBus(sourceOutputBusNumber: UInt32, ofNode sourceNode: AUNode, toInputBus destinationInputBusNumber: UInt32, ofNode destinationNode: AUNode, inGraph graph: AUGraph) throws {
-//            do { try super.connectOutputBus(sourceOutputBusNumber, ofNode: sourceNode, toInputBus: destinationInputBusNumber, ofNode: destinationNode, inGraph: graph) } catch { print("error") }
-
+/*
             if self.genericNode == 0 {
                 var status = AUGraphAddNode(graph, &genericDescription, &genericNode)
                 print("add: \(status)")
@@ -258,8 +257,8 @@ class SpotifyAudioProvider: AudioProvider {
                 AudioOutputUnitStart(genericUnit)
                 AudioUnitAddRenderNotify(genericUnit, callback.inputProc, &contextInfo)
             }
-            
-//            do { try super.connectOutputBus(sourceOutputBusNumber, ofNode: sourceNode, toInputBus: destinationInputBusNumber, ofNode: destinationNode, inGraph: graph) } catch { print("error") }
+            */
+            do { try super.connectOutputBus(sourceOutputBusNumber, ofNode: sourceNode, toInputBus: destinationInputBusNumber, ofNode: destinationNode, inGraph: graph) } catch { print("error") }
 
             
         }

@@ -52,6 +52,7 @@ internal struct SpotifyTrack: TrackItem, Queueable {
         return subtitleString(artists, album: albumString)
     }
     
+    var isTrackCollection = false
     var identifier:String { return self.partialTrack.identifier }
     
     func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {

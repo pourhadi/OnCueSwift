@@ -113,4 +113,8 @@ extension QueuedItem:DisplayContext, Identifiable, ImageSource {
     func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {
         self.queueable.getImage(forSize, complete: complete)
     }
+    
+    var isTrackCollection:Bool {
+        return self.queueable.isTrackCollection
+    }
 }

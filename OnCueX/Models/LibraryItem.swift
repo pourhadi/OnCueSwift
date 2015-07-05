@@ -44,6 +44,8 @@ internal struct LibraryTrack: TrackItem, Queueable {
         return subtitleString(artist == nil ? nil : [artist!], album: album)
     }
     
+    var isTrackCollection = false
+    
     var identifier:String { return "\(self.mediaItem.persistentID)" }
     
     func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {
@@ -82,6 +84,8 @@ internal struct LibraryAlbum : AlbumItem {
     var title:String? { return self.representativeItem.albumTitle }
     var subtitle:String? { return nil }
     
+    var isTrackCollection = true
+    
     var identifier:String { return "\(self.representativeItem.albumPersistentID)" }
     var cellReuseID:String { return "textCell" }
     
@@ -115,6 +119,8 @@ internal struct LibraryArtist : ArtistItem {
     
     var title:String? { return self.representativeItem.artist }
     var subtitle:String? { return nil }
+    
+    var isTrackCollection = true
     
     var identifier:String { return "\(self.representativeItem.artistPersistentID)" }
     var cellReuseID:String { return "textCell" }
@@ -159,6 +165,8 @@ internal struct LibraryPlaylist : PlaylistItem {
     
     var title:String? { return self.playlist.name }
     var subtitle:String? { return nil }
+    
+    var isTrackCollection = true
     
     var identifier:String { return "\(self.playlist.persistentID)" }
     var cellReuseID:String { return "textCell" }

@@ -68,6 +68,8 @@ class ListLayout: UICollectionViewFlowLayout {
         self.attributes.removeAll()
         let offset = self.collectionView!.contentOffset.y  - self.collectionView!.contentInset.top
         
+        let maxY:CGFloat = offset + self.collectionView!.frame.size.height
+        
         let numOfSections = self.collectionView!.numberOfSections()
         for x in 0..<numOfSections {
             var section:[UICollectionViewLayoutAttributes] = []
@@ -92,6 +94,10 @@ class ListLayout: UICollectionViewFlowLayout {
                     attr.zIndex = 10
                     attr.transform3D = CATransform3DIdentity
                 }
+                
+                let percentDown = CalculatePercentComplete(offset, end: maxY, current: attr.frame.origin.y)
+                attr.zIndex = Int(ExtrapolateValue(0, 1000, percentDown))
+                
                 section.append(attr)
 
                 

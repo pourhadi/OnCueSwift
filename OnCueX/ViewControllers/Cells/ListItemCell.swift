@@ -114,6 +114,8 @@ class ListItemTextCell: ListItemCell {
     let itemLabelsView = ItemLabelsView(frame:CGRectZero)
     var leftConstraint:Constraint?
 
+    lazy var imageView:StackedImageView = StackedImageView()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -163,6 +165,32 @@ class ListItemTextCell: ListItemCell {
                     self.setIndexViewVisible(true, animated: false)
                 } else {
                     self.setIndexViewVisible(false, animated: false)
+                }
+                
+                if item.isTrackCollection {
+                    if self.imageView.superview == nil {
+                        self.contentView.addSubview(self.imageView)
+                        if let left = self.leftConstraint {
+                            left.uninstall()
+                        }
+                        
+                        self.imageView.snp_makeConstraints({ (make) -> Void in
+                            make.width.equalTo(self.contentView.snp_height)
+                            make.height.equalTo(self.contentView.snp_height)
+                            make.left.equalTo(self.contentView)
+                            make.centerY.equalTo(self.contentView)
+                        })
+                        
+                        self.itemLabelsView.snp_updateConstraints {  (make) -> Void in
+                            self.leftConstraint = make.left.equalTo(self.imageView.snp_right).offset(10).constraint
+                        }
+                    }
+                    
+                    item.getImage(CGSizeMake(self.bounds.size.height, self.bounds.size.height), complete: { (context, image) -> Void in
+                        if item.isEqual(context) {
+                            self.imageView.image = image
+                        }
+                    })
                 }
             }
         }
