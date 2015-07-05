@@ -25,35 +25,38 @@ class StackedImageView : UIView {
     
     func redraw() {
         if let image = self.image {
-            UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.mainScreen().scale)
-            var scaledFrame = CGRectApplyAffineTransform(self.bounds, CGAffineTransformMakeScale(0.5, 0.5))
-            scaledFrame.origin.x = (self.bounds.size.width - scaledFrame.size.width) / 2
-            scaledFrame.origin.y = (self.bounds.size.height - scaledFrame.size.height) / 2
-            let bez = UIBezierPath(ovalInRect: scaledFrame)
-            CGContextAddPath(UIGraphicsGetCurrentContext(), bez.CGPath)
-            bez.addClip()
-            image.drawInRect(scaledFrame)
-            let drawn = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            
-            UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.mainScreen().scale)
-            CGContextSetShadowWithColor(UIGraphicsGetCurrentContext(), CGSizeMake(0, 2), 4, UIColor.blackColor().colorWithAlphaComponent(0.5).CGColor)
-            drawn.drawInRect(CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height))
-            let withShadow = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            
-            var x = 0
-            for imageView in self.imageViews {
-                self.insertSubview(imageView, atIndex: 0)
-                imageView.transform = CGAffineTransformIdentity
-                imageView.frame = self.bounds
-                imageView.image = withShadow
-                let scale:CGFloat = 1 - (CGFloat(x) * 0.025)
-                imageView.transform = CGAffineTransformMakeScale(scale, scale)
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
+                UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.mainScreen().scale)
+                var scaledFrame = CGRectApplyAffineTransform(self.bounds, CGAffineTransformMakeScale(0.5, 0.5))
+                scaledFrame.origin.x = (self.bounds.size.width - scaledFrame.size.width) / 2
+                scaledFrame.origin.y = (self.bounds.size.height - scaledFrame.size.height) / 2
+                let bez = UIBezierPath(ovalInRect: scaledFrame)
+                CGContextAddPath(UIGraphicsGetCurrentContext(), bez.CGPath)
+                bez.addClip()
+                image.drawInRect(scaledFrame)
+                let drawn = UIGraphicsGetImageFromCurrentImageContext()
+                UIGraphicsEndImageContext()
                 
-                x += 1
-            }
-            
+                UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.mainScreen().scale)
+                CGContextSetShadowWithColor(UIGraphicsGetCurrentContext(), CGSizeMake(0, 2), 4, UIColor.blackColor().colorWithAlphaComponent(0.5).CGColor)
+                drawn.drawInRect(CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height))
+                let withShadow = UIGraphicsGetImageFromCurrentImageContext()
+                UIGraphicsEndImageContext()
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    var x = 0
+                    for imageView in self.imageViews {
+                        self.insertSubview(imageView, atIndex: 0)
+                        imageView.transform = CGAffineTransformIdentity
+                        imageView.frame = self.bounds
+                        imageView.image = withShadow
+                        let scale:CGFloat = 1 - (CGFloat(x) * 0.025)
+                        imageView.transform = CGAffineTransformMakeScale(scale, scale)
+                        
+                        x += 1
+                    }
+                })
+            })
         }
     }
     
