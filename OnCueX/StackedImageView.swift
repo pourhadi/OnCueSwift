@@ -110,7 +110,7 @@ class StackedImageView : UIView, StackedLayerDelegate {
         }
     }
     
-    var imageViews = [UIImageView(), UIImageView(), UIImageView(), UIImageView()]
+    var imageViews = [UIImageView(), UIImageView(), UIImageView(), UIImageView(), UIImageView(), UIImageView()]
     
     var image:UIImage? {
         didSet {
@@ -145,7 +145,7 @@ class StackedImageView : UIView, StackedLayerDelegate {
                         imageView.transform = CGAffineTransformIdentity
                         imageView.frame = self.bounds
                         imageView.image = withShadow
-                        let scale:CGFloat = 1 - (CGFloat(x) * 0.03)
+                        let scale:CGFloat = 1 - (CGFloat(x) * 0.02)
                         imageView.transform = CGAffineTransformMakeScale(scale, scale)
                         
                         x += 1
@@ -162,13 +162,13 @@ class StackedImageView : UIView, StackedLayerDelegate {
     func adjustOffsets() {
 
         for var x = self.imageViews.count-1; x >= 0; x-- {
-            let min:CGFloat = -(CGFloat(x) * 7)
+            let min:CGFloat = -(CGFloat(x) * 5)
             let max = -min
             let xTranslate = ExtrapolateValue(max, min, xAdjustment+motionX)
             let yTranslate = ExtrapolateValue(max, min, yAdjustment+motionY)
             
             let imgView = self.imageViews[x]
-            let scale:CGFloat = 1 - (CGFloat(x) * 0.03)
+            let scale:CGFloat = 1 - (CGFloat(x) * 0.02)
             imgView.transform = CGAffineTransformIdentity
             imgView.transform = CGAffineTransformMakeScale(scale, scale)
             imgView.transform = CGAffineTransformTranslate(imgView.transform, xTranslate, yTranslate)
