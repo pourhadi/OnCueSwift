@@ -10,24 +10,25 @@ import UIKit
 import CoreMotion
 import ReactiveCocoa
 
+protocol StackedLayerDelegate:class {
+    func motionUpdated()
+}
+
 class StackedImageViewLayer : CALayer {
     
-    let xAdjustmentSubject:RACSignal = RACSubject()
-    let yAdjustmentSubject:RACSignal = RACSubject()
-    
+    weak var motionDelegate:StackedLayerDelegate!
+
     @objc
     dynamic var xAdjustment:CGFloat = 0 {
         didSet {
-            let sub = xAdjustmentSubject as! RACSubject
-            sub.sendNext(self.xAdjustment)
+            self.motionDelegate.motionUpdated()
         }
     }
     
     @objc
     dynamic var yAdjustment:CGFloat = 0 {
         didSet {
-            let sub = yAdjustmentSubject as! RACSubject
-            sub.sendNext(self.yAdjustment)
+            self.motionDelegate.motionUpdated()
         }
     }
     
@@ -39,7 +40,12 @@ class StackedImageViewLayer : CALayer {
     }
 }
 
-class StackedImageView : UIView {
+class StackedImageView : UIView, StackedLayerDelegate {
+    
+    func motionUpdated() {
+        self.xAdjustment += (self.layer as! StackedImageViewLayer).xAdjustment
+        self.yAdjustment += (self.layer as! StackedImageViewLayer).yAdjustment
+    }
     
     override class func layerClass() -> AnyClass {
         return StackedImageViewLayer.self
@@ -58,6 +64,8 @@ class StackedImageView : UIView {
         let group = UIMotionEffectGroup()
         group.motionEffects = [xMotion, yMotion]
         self.addMotionEffect(group)
+        
+        (self.layer as! StackedImageViewLayer).motionDelegate = self
     }
 
     required init(coder aDecoder: NSCoder) {
