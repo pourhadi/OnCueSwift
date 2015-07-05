@@ -31,6 +31,15 @@ class StackedImageView : UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func setValue(value: AnyObject?, forKeyPath keyPath: String) {
+        super.setValue(value, forKey: keyPath)
+        if keyPath == "xAdjustment" {
+            self.xAdjustment = self.xAdjustment + (value as! CGFloat)
+        } else if keyPath == "yAdjustment" {
+            self.yAdjustment += value as! CGFloat
+        }
+    }
+    
     var xAdjustment:CGFloat = 0.5 {
         didSet {
             self.adjustOffsets()
