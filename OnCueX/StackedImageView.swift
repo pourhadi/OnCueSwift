@@ -35,7 +35,7 @@ class StackedImageView : UIView {
         if let image = self.image {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
                 UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.mainScreen().scale)
-                var scaledFrame = CGRectApplyAffineTransform(self.bounds, CGAffineTransformMakeScale(0.5, 0.5))
+                var scaledFrame = CGRectApplyAffineTransform(self.bounds, CGAffineTransformMakeScale(0.8, 0.8))
                 scaledFrame.origin.x = (self.bounds.size.width - scaledFrame.size.width) / 2
                 scaledFrame.origin.y = (self.bounds.size.height - scaledFrame.size.height) / 2
                 let bez = UIBezierPath(ovalInRect: scaledFrame)
@@ -46,7 +46,7 @@ class StackedImageView : UIView {
                 UIGraphicsEndImageContext()
                 
                 UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.mainScreen().scale)
-                CGContextSetShadowWithColor(UIGraphicsGetCurrentContext(), CGSizeMake(0, 0), 3, UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor)
+                CGContextSetShadowWithColor(UIGraphicsGetCurrentContext(), CGSizeMake(0, 0), 5, UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor)
                 drawn.drawInRect(CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height))
                 let withShadow = UIGraphicsGetImageFromCurrentImageContext()
                 UIGraphicsEndImageContext()
@@ -71,7 +71,7 @@ class StackedImageView : UIView {
     func adjustOffsets() {
 
         for var x = self.imageViews.count-1; x >= 0; x-- {
-            let min:CGFloat = -(CGFloat(x) * 5)
+            let min:CGFloat = -(CGFloat(x) * 7)
             let max = -min
             let xTranslate = ExtrapolateValue(max, min, xAdjustment)
             let yTranslate = ExtrapolateValue(max, min, yAdjustment)

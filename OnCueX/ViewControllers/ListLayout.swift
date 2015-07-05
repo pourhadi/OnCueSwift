@@ -68,7 +68,7 @@ class ListLayout: UICollectionViewFlowLayout {
         self.attributes.removeAll()
         let offset = self.collectionView!.contentOffset.y  - self.collectionView!.contentInset.top
         
-        let maxY:CGFloat = offset + self.collectionView!.frame.size.height
+        let maxY:CGFloat = offset + (self.collectionView!.frame.size.height - self.collectionView!.contentInset.top)
         
         let numOfSections = self.collectionView!.numberOfSections()
         for x in 0..<numOfSections {
