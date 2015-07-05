@@ -187,9 +187,7 @@ class ListItemTextCell: ListItemCell {
                     }
                     
                     item.getImage(CGSizeMake(self.bounds.size.height, self.bounds.size.height), complete: { (context, image) -> Void in
-                        if item.isEqual(context) {
-                            self.imageView.image = image
-                        }
+                        self.imageView.image = image
                     })
                 }
             }
