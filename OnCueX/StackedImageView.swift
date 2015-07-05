@@ -139,22 +139,26 @@ class StackedImageView : UIView, StackedLayerDelegate {
                 UIGraphicsEndImageContext()
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    var x = 0
-                    for imageView in self.imageViews {
-                        self.insertSubview(imageView, atIndex: 0)
-                        imageView.transform = CGAffineTransformIdentity
-                        imageView.frame = self.bounds
-                        imageView.image = withShadow
-                        let scale:CGFloat = 1 - (CGFloat(x) * 0.02)
-                        imageView.transform = CGAffineTransformMakeScale(scale, scale)
-                        
-                        x += 1
-                    }
+                    UIView.animateWithDuration(0.2, animations: { () -> Void in
+                        var x = 0
+                        for imageView in self.imageViews {
+                            self.insertSubview(imageView, atIndex: 0)
+                            imageView.transform = CGAffineTransformIdentity
+                            imageView.frame = self.bounds
+                            imageView.image = withShadow
+                            let scale:CGFloat = 1 - (CGFloat(x) * 0.02)
+                            imageView.transform = CGAffineTransformMakeScale(scale, scale)
+                            imageView.alpha = 1
+                            x += 1
+                        }
+                        self.adjustOffsets()
+                    })
                 })
             })
         } else {
             for imageView in self.imageViews {
                 imageView.image = nil
+                imageView.alpha = 0
             }
         }
     }
