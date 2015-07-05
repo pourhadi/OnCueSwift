@@ -71,7 +71,7 @@ class StackedImageView : UIView {
     func adjustOffsets() {
 
         for var x = self.imageViews.count-1; x >= 0; x-- {
-            let min:CGFloat = -(CGFloat(x) * 10)
+            let min:CGFloat = -(CGFloat(x) * 0.5)
             let max = -min
             let xTranslate = ExtrapolateValue(min, max, xAdjustment)
             let yTranslate = ExtrapolateValue(min, max, yAdjustment)
