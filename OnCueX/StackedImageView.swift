@@ -77,7 +77,7 @@ class StackedImageView : UIView, StackedLayerDelegate {
         
         let yMotion = UIInterpolatingMotionEffect(keyPath: "yAdjustment", type: .TiltAlongVerticalAxis)
         yMotion.minimumRelativeValue = 0
-        yMotion.maximumRelativeValue = 1
+        yMotion.maximumRelativeValue = 0.5
         
         let group = UIMotionEffectGroup()
         group.motionEffects = [xMotion, yMotion]
@@ -133,7 +133,7 @@ class StackedImageView : UIView, StackedLayerDelegate {
                 UIGraphicsEndImageContext()
                 
                 UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.mainScreen().scale)
-                CGContextSetShadowWithColor(UIGraphicsGetCurrentContext(), CGSizeMake(0, 0), 5, UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor)
+                CGContextSetShadowWithColor(UIGraphicsGetCurrentContext(), CGSizeMake(0, 0), 10, UIColor.blackColor().colorWithAlphaComponent(0.8).CGColor)
                 drawn.drawInRect(CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height))
                 let withShadow = UIGraphicsGetImageFromCurrentImageContext()
                 UIGraphicsEndImageContext()
@@ -152,6 +152,10 @@ class StackedImageView : UIView, StackedLayerDelegate {
                     }
                 })
             })
+        } else {
+            for imageView in self.imageViews {
+                imageView.image = nil
+            }
         }
     }
     
