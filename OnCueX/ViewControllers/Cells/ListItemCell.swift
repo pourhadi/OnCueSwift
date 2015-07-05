@@ -104,13 +104,6 @@ class ListItemCell : UICollectionViewCell {
     override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
         super.applyLayoutAttributes(layoutAttributes)
         self.layer.anchorPoint = CGPointMake(0.5, ExtrapolateValue(0.5, 0, ExtrapolateValue(1, 0, layoutAttributes.alpha)))
-        
-        if let item = self.item {
-            if item.isTrackCollection {
-                let yAdj = CalculatePercentComplete(0, end: 1000, current: CGFloat(layoutAttributes.zIndex))
-                
-            }
-        }
     }
     
 }
@@ -124,6 +117,8 @@ class ListItemTextCell: ListItemCell {
             if item.isTrackCollection {
                 let yAdj = CalculatePercentComplete(0, end: 1000, current: CGFloat(layoutAttributes.zIndex))
                 self.imageView.yAdjustment = yAdj
+                print("yAdj: \(yAdj)")
+                print("z: \(layoutAttributes.zIndex)")
             }
         }
     }
