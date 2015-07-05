@@ -61,4 +61,12 @@ class ListVM {
     deinit {
         print("ListVM deinit")
     }
+    
+    var cellHeight:CGFloat {
+        let item = self.item(NSIndexPath(forItem: 0, inSection: 0))
+        if item.isTrackCollection {
+            return 110
+        }
+        return 70
+    }
 }

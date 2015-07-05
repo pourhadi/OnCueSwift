@@ -36,7 +36,7 @@ class ListVCDataSource:NSObject, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSizeMake(self.listVC.view.bounds.size.width, 70)
+        return CGSizeMake(self.listVC.view.bounds.size.width, self.listVC.listVM.cellHeight)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
