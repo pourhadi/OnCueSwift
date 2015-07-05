@@ -8,9 +8,36 @@
 
 import UIKit
 import CoreMotion
+import ReactiveCocoa
 
+class StackedImageViewLayer : CALayer {
+    
+    let xAdjustmentSubject:RACSignal = RACSubject()
+    let yAdjustmentSubject:RACSignal = RACSubject()
+    
+    @objc
+    dynamic var xAdjustment:CGFloat = 0 {
+        didSet {
+            let sub = xAdjustmentSubject as! RACSubject
+            sub.sendNext(self.xAdjustment)
+        }
+    }
+    
+    @objc
+    dynamic var yAdjustment:CGFloat = 0 {
+        didSet {
+            let sub = yAdjustmentSubject as! RACSubject
+            sub.sendNext(self.yAdjustment)
+        }
+    }
+    
+}
 
 class StackedImageView : UIView {
+    
+    override class func layerClass() -> AnyClass {
+        return StackedImageViewLayer.self
+    }
     
     init() {
         super.init(frame:CGRectZero)
@@ -25,19 +52,23 @@ class StackedImageView : UIView {
         let group = UIMotionEffectGroup()
         group.motionEffects = [xMotion, yMotion]
         self.addMotionEffect(group)
+        
+        let stackedLayer = self.layer as! StackedImageViewLayer
+        stackedLayer.xAdjustmentSubject.subscribeNext { [weak self] (val) -> Void in
+            if let this = self {
+                this.xAdjustment += stackedLayer.xAdjustment
+            }
+        }
+        
+        stackedLayer.yAdjustmentSubject.subscribeNext { [weak self] (val) -> Void in
+            if let this = self {
+                this.yAdjustment += stackedLayer.yAdjustment
+            }
+        }
     }
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func setValue(value: AnyObject?, forKeyPath keyPath: String) {
-        super.setValue(value, forKey: keyPath)
-        if keyPath == "xAdjustment" {
-            self.xAdjustment = self.xAdjustment + (value as! CGFloat)
-        } else if keyPath == "yAdjustment" {
-            self.yAdjustment += value as! CGFloat
-        }
     }
     
     var xAdjustment:CGFloat = 0.5 {
