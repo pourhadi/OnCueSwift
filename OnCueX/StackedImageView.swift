@@ -16,6 +16,17 @@ protocol StackedLayerDelegate:class {
 
 class StackedImageViewLayer : CALayer {
     
+    override init(layer: AnyObject) {
+        super.init(layer: layer)
+        if let layer = layer as? StackedImageViewLayer {
+            self.motionDelegate = layer.motionDelegate
+        }
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     weak var motionDelegate:StackedLayerDelegate!
 
     @objc
