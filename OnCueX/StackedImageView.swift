@@ -12,6 +12,25 @@ import CoreMotion
 
 class StackedImageView : UIView {
     
+    init() {
+        super.init(frame:CGRectZero)
+        let xMotion = UIInterpolatingMotionEffect(keyPath: "xAdjustment", type: .TiltAlongHorizontalAxis)
+        xMotion.minimumRelativeValue = 0
+        xMotion.maximumRelativeValue = 1
+        
+        let yMotion = UIInterpolatingMotionEffect(keyPath: "yAdjustment", type: .TiltAlongVerticalAxis)
+        yMotion.minimumRelativeValue = 0
+        yMotion.maximumRelativeValue = 1
+        
+        let group = UIMotionEffectGroup()
+        group.motionEffects = [xMotion, yMotion]
+        self.addMotionEffect(group)
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     var xAdjustment:CGFloat = 0.5 {
         didSet {
             self.adjustOffsets()
