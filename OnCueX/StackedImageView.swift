@@ -58,10 +58,11 @@ class StackedImageViewLayer : CALayer {
 class StackedImageView : UIView, StackedLayerDelegate {
     
     func motionUpdated() {
-        print("layer x: \((self.layer as! StackedImageViewLayer).xAdjustment)")
-        print("layer y: \((self.layer as! StackedImageViewLayer).yAdjustment)")
-        self.xAdjustment += (self.layer as! StackedImageViewLayer).xAdjustment
-        self.yAdjustment += (self.layer as! StackedImageViewLayer).yAdjustment
+        guard let presLayer = self.layer.presentationLayer() else { return }
+        print("layer x: \((presLayer as! StackedImageViewLayer).xAdjustment)")
+        print("layer y: \((presLayer as! StackedImageViewLayer).yAdjustment)")
+        self.xAdjustment += (presLayer as! StackedImageViewLayer).xAdjustment
+        self.yAdjustment += (presLayer as! StackedImageViewLayer).yAdjustment
     }
     
     override class func layerClass() -> AnyClass {
