@@ -12,7 +12,7 @@ import CoreMotion
 
 class StackedImageView : UIView {
     
-    var xAdjustment:CGFloat = 0 {
+    var xAdjustment:CGFloat = 0.5 {
         didSet {
             self.adjustOffsets()
         }
@@ -77,6 +77,9 @@ class StackedImageView : UIView {
             let yTranslate = ExtrapolateValue(min, max, yAdjustment)
             
             let imgView = self.imageViews[x]
+            let scale:CGFloat = 1 - (CGFloat(x) * 0.025)
+            imgView.transform = CGAffineTransformIdentity
+            imgView.transform = CGAffineTransformMakeScale(scale, scale)
             imgView.transform = CGAffineTransformTranslate(imgView.transform, xTranslate, yTranslate)
         }
     }
