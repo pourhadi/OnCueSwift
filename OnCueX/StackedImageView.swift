@@ -60,8 +60,8 @@ class StackedImageView : UIView, StackedLayerDelegate {
     func motionUpdated(layer:StackedImageViewLayer) {
         print("layer x: \(layer.xAdjustment)")
         print("layer y: \(layer.yAdjustment)")
-        self.xAdjustment += layer.xAdjustment
-        self.yAdjustment += layer.yAdjustment
+        self.motionX = layer.xAdjustment
+        self.motionY = layer.yAdjustment
     }
     
     override class func layerClass() -> AnyClass {
@@ -90,6 +90,16 @@ class StackedImageView : UIView, StackedLayerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    var motionX:CGFloat = 0 {
+        didSet {
+            self.adjustOffsets()
+        }
+    }
+    var motionY:CGFloat = 0 {
+        didSet {
+            self.adjustOffsets()
+        }
+    }
     var xAdjustment:CGFloat = 0.5 {
         didSet {
             self.adjustOffsets()
@@ -151,8 +161,8 @@ class StackedImageView : UIView, StackedLayerDelegate {
         for var x = self.imageViews.count-1; x >= 0; x-- {
             let min:CGFloat = -(CGFloat(x) * 7)
             let max = -min
-            let xTranslate = ExtrapolateValue(max, min, xAdjustment)
-            let yTranslate = ExtrapolateValue(max, min, yAdjustment)
+            let xTranslate = ExtrapolateValue(max, min, xAdjustment+motionX)
+            let yTranslate = ExtrapolateValue(max, min, yAdjustment+motionY)
             
             let imgView = self.imageViews[x]
             let scale:CGFloat = 1 - (CGFloat(x) * 0.03)
