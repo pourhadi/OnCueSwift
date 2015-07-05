@@ -31,6 +31,12 @@ class StackedImageViewLayer : CALayer {
         }
     }
     
+    override class func needsDisplayForKey(key:String) -> Bool {
+        if key == "xAdjustment" || key == "yAdjustment" {
+            return true
+        }
+        return super.needsDisplayForKey(key)
+    }
 }
 
 class StackedImageView : UIView {
@@ -52,19 +58,6 @@ class StackedImageView : UIView {
         let group = UIMotionEffectGroup()
         group.motionEffects = [xMotion, yMotion]
         self.addMotionEffect(group)
-        
-        let stackedLayer = self.layer.presentationLayer() as! StackedImageViewLayer
-        stackedLayer.xAdjustmentSubject.subscribeNext { [weak self] (val) -> Void in
-            if let this = self {
-                this.xAdjustment += stackedLayer.xAdjustment
-            }
-        }
-        
-        stackedLayer.yAdjustmentSubject.subscribeNext { [weak self] (val) -> Void in
-            if let this = self {
-                this.yAdjustment += stackedLayer.yAdjustment
-            }
-        }
     }
 
     required init(coder aDecoder: NSCoder) {
