@@ -11,7 +11,7 @@ import CoreMotion
 import ReactiveCocoa
 
 protocol StackedLayerDelegate:class {
-    func motionUpdated()
+    func motionUpdated(layer:StackedImageViewLayer)
 }
 
 class StackedImageViewLayer : CALayer {
@@ -36,14 +36,14 @@ class StackedImageViewLayer : CALayer {
     @objc
     dynamic var xAdjustment:CGFloat = 0 {
         didSet {
-            self.motionDelegate.motionUpdated()
+            self.motionDelegate.motionUpdated(self)
         }
     }
     
     @objc
     dynamic var yAdjustment:CGFloat = 0 {
         didSet {
-            self.motionDelegate.motionUpdated()
+            self.motionDelegate.motionUpdated(self)
         }
     }
     
@@ -57,12 +57,11 @@ class StackedImageViewLayer : CALayer {
 
 class StackedImageView : UIView, StackedLayerDelegate {
     
-    func motionUpdated() {
-        guard let presLayer = self.layer.presentationLayer() else { return }
-        print("layer x: \((presLayer as! StackedImageViewLayer).xAdjustment)")
-        print("layer y: \((presLayer as! StackedImageViewLayer).yAdjustment)")
-        self.xAdjustment += (presLayer as! StackedImageViewLayer).xAdjustment
-        self.yAdjustment += (presLayer as! StackedImageViewLayer).yAdjustment
+    func motionUpdated(layer:StackedImageViewLayer) {
+        print("layer x: \(layer.xAdjustment)")
+        print("layer y: \(layer.yAdjustment)")
+        self.xAdjustment += layer.xAdjustment
+        self.yAdjustment += layer.yAdjustment
     }
     
     override class func layerClass() -> AnyClass {
