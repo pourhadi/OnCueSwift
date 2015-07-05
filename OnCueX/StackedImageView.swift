@@ -53,7 +53,7 @@ class StackedImageView : UIView {
         group.motionEffects = [xMotion, yMotion]
         self.addMotionEffect(group)
         
-        let stackedLayer = self.layer as! StackedImageViewLayer
+        let stackedLayer = self.layer.presentationLayer() as! StackedImageViewLayer
         stackedLayer.xAdjustmentSubject.subscribeNext { [weak self] (val) -> Void in
             if let this = self {
                 this.xAdjustment += stackedLayer.xAdjustment
