@@ -125,7 +125,7 @@ class ListItemTextCell: ListItemCell {
         super.prepareForReuse()
         if let item = self.item {
             if item.isTrackCollection {
-                self.imageView.image = nil
+                self.imageView.dataSource = nil
             }
         }
     }
@@ -206,9 +206,7 @@ class ListItemTextCell: ListItemCell {
                         }
                     }
                     
-                    item.getImage(CGSizeMake(self.bounds.size.height, self.bounds.size.height), complete: { (context, image) -> Void in
-                        self.imageView.image = image
-                    })
+                    self.imageView.dataSource = item as? StackedImageViewDataSource
                 }
             }
         }

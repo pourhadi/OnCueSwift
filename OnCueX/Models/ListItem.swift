@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ReactiveCocoa
 
 enum ItemSource:String {
     case Library = "Library"
@@ -31,7 +32,7 @@ protocol Item:DisplayContext, Identifiable {
 protocol TrackItem : Item, Playable { var duration:NSTimeInterval { get } }
 
 /* for groups of tracks */
-protocol TrackCollection: Item {
+protocol TrackCollection: Item, StackedImageViewDataSource {
     func getTracks(page:Int, complete:(list:List<protocol<TrackItem>>?)->Void)
 }
 
@@ -65,6 +66,18 @@ extension Identifiable {
 /* for displaying */
 protocol ImageSource:Identifiable {
     func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void)
+}
+
+extension ImageSource {
+    func getImage(forSize:CGSize) -> SignalProducer<UIImage, NoError> {
+        return SignalProducer {
+            sink, disposable in
+            self.getImage(forSize, complete: { (context, image) -> Void in
+                sendNext(sink, image != nil ? image! : UIImage())
+                sendCompleted(sink)
+            })
+        }
+    }
 }
 
 protocol DisplayContext:ImageSource {

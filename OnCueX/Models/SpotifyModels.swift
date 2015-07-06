@@ -125,7 +125,11 @@ internal struct SpotifyAlbum : AlbumItem {
     func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {
         
     }
-
+    func getImagesForStack(size:CGSize, complete:(context:StackedImageViewDataSource, images:[UIImage])->Void) {
+        
+    }
+    
+    var numberOfItemsInStack:Int = 0
 }
 
 internal struct SpotifyArtist : ArtistItem {
@@ -167,6 +171,12 @@ internal struct SpotifyArtist : ArtistItem {
     func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {
         
     }
+    
+    func getImagesForStack(size:CGSize, complete:(context:StackedImageViewDataSource, images:[UIImage])->Void) {
+        
+    }
+    
+    var numberOfItemsInStack:Int = 0
 }
 
 internal struct SpotifyPlaylist : PlaylistItem {
@@ -205,6 +215,11 @@ internal struct SpotifyPlaylist : PlaylistItem {
     func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {
         
     }
+    func getImagesForStack(size:CGSize, complete:(context:StackedImageViewDataSource, images:[UIImage])->Void) {
+        
+    }
+    
+    var numberOfItemsInStack:Int = 0
 }
 
 

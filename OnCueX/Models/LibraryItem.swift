@@ -8,6 +8,7 @@
 
 import UIKit
 import MediaPlayer
+import ReactiveCocoa
 
 extension MPMediaItem {
     func getImage(forSize:CGSize, complete:(image:UIImage?)->Void) {
@@ -102,6 +103,12 @@ internal struct LibraryAlbum : AlbumItem {
             complete(context:self, image:image)
         }
     }
+    
+    func getImagesForStack(size:CGSize, complete:(context:StackedImageViewDataSource, images:[UIImage])->Void) {
+        
+    }
+    
+    var numberOfItemsInStack:Int = 0
 }
 
 internal struct LibraryArtist : ArtistItem {
@@ -151,6 +158,30 @@ internal struct LibraryArtist : ArtistItem {
             complete(albums: List(items: albums, totalCount: UInt(albums.count), pageNumber: 0))
         }
     }
+    
+    
+    func getImagesForStack(size:CGSize, complete:(context:StackedImageViewDataSource, images:[UIImage])->Void) {
+        self.getAlbums(0) { (albums) -> Void in
+            guard let albums = albums else { complete(context: self, images: []); return }
+            let sp:SignalProducer = SignalProducer<SignalProducer<UIImage, NoError>, NoError> { event, _ in
+                for album in albums.items {
+                    sendNext(event, album.getImage(size))
+                }
+                sendCompleted(event)
+            }
+            
+            sp
+            |> flatten(FlattenStrategy.Concat)
+            |> collect
+            |> on(started: nil, event: nil, error: nil, completed: { () -> () in
+                
+                }, interrupted: nil, terminated: nil, disposed: nil, next: { (images) -> () in
+                    print(images)
+            })
+        }
+    }
+
+    var numberOfItemsInStack:Int = 0
 }
 
 internal struct LibraryPlaylist : PlaylistItem {
@@ -182,6 +213,12 @@ internal struct LibraryPlaylist : PlaylistItem {
     func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {
         
     }
+    
+    func getImagesForStack(size:CGSize, complete:(context:StackedImageViewDataSource, images:[UIImage])->Void) {
+        
+    }
+    
+    var numberOfItemsInStack:Int = 0
 }
 
 

@@ -10,6 +10,11 @@ import UIKit
 import CoreMotion
 import ReactiveCocoa
 
+protocol StackedImageViewDataSource:Identifiable {
+    var numberOfItemsInStack:Int { get }
+    func getImagesForStack(size:CGSize, complete:(context:StackedImageViewDataSource, images:[UIImage])->Void)
+}
+
 protocol StackedLayerDelegate:class {
     func motionUpdated(layer:StackedImageViewLayer)
 }
@@ -110,12 +115,93 @@ class StackedImageView : UIView, StackedLayerDelegate {
         }
     }
     
-    var imageViews = [UIImageView(), UIImageView(), UIImageView(), UIImageView(), UIImageView(), UIImageView(), UIImageView()]
+    func resetImageViews() {
+        self.imageViews.removeAll()
+        for imgView in self.disabledImageViews {
+            imgView.alpha = 0
+        }
+    }
+    
+    var dataSource:StackedImageViewDataSource? {
+        didSet {
+            self.resetImageViews()
+            if let dataSource = self.dataSource {
+                let numOfItems = max(self.disabledImageViews.count, dataSource.numberOfItemsInStack)
+                for x in 0..<numOfItems {
+                    let imgView = self.disabledImageViews[x]
+                    self.imageViews.append(imgView)
+                }
+                
+                dataSource.getImagesForStack(self.imageSize, complete: { (context, images) -> Void in
+                    guard dataSource.isEqual(context) else { return }
+                    
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
+                        var croppedImages:[UIImage] = images.map({ (image) -> UIImage in
+                            return self.cropped(image)
+                        })
+                        
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                                var x = 0
+                                for imageView in self.imageViews {
+                                    var thisImage:UIImage
+                                    if x < croppedImages.count {
+                                        thisImage = croppedImages[x]
+                                    } else {
+                                        thisImage = croppedImages.last!
+                                    }
+                                    self.insertSubview(imageView, atIndex: 0)
+                                    imageView.transform = CGAffineTransformIdentity
+                                    imageView.frame = self.bounds
+                                    imageView.image = thisImage
+                                    let scale:CGFloat = 1 - (CGFloat(x) * 0.02)
+                                    imageView.transform = CGAffineTransformMakeScale(scale, scale)
+                                    imageView.alpha = 1
+                                    x += 1
+                                }
+                                self.adjustOffsets()
+                            })
+                        })
+
+                    })
+                    
+                })
+            }
+        }
+    }
+    
+    var disabledImageViews:[UIImageView] = [UIImageView(), UIImageView(), UIImageView(), UIImageView(), UIImageView(), UIImageView(), UIImageView()]
+    var imageViews = [UIImageView]()
     
     var image:UIImage? {
         didSet {
             self.redraw()
         }
+    }
+    
+    var imageSize:CGSize {
+        let scaledFrame = CGRectApplyAffineTransform(self.bounds, CGAffineTransformMakeScale(0.7, 0.7))
+        return scaledFrame.size
+    }
+    
+    func cropped(image:UIImage)->UIImage {
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.mainScreen().scale)
+        var scaledFrame = CGRectApplyAffineTransform(self.bounds, CGAffineTransformMakeScale(0.7, 0.7))
+        scaledFrame.origin.x = (self.bounds.size.width - scaledFrame.size.width) / 2
+        scaledFrame.origin.y = (self.bounds.size.height - scaledFrame.size.height) / 2
+        let bez = UIBezierPath(ovalInRect: scaledFrame)
+        CGContextAddPath(UIGraphicsGetCurrentContext(), bez.CGPath)
+        bez.addClip()
+        image.drawInRect(scaledFrame)
+        let drawn = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.mainScreen().scale)
+        CGContextSetShadowWithColor(UIGraphicsGetCurrentContext(), CGSizeMake(0, 0), 20, UIColor.blackColor().colorWithAlphaComponent(1).CGColor)
+        drawn.drawInRect(CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height))
+        let withShadow = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return withShadow
     }
     
     func redraw() {
