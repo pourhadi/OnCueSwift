@@ -278,8 +278,8 @@ class StackedImageView : UIView, StackedLayerDelegate {
         for var x = self.imageViews.count-1; x >= 0; x-- {
             let min:CGFloat = -(CGFloat(x) * 4)
             let max = -min
-            let xTranslate = ExtrapolateValue(max, min, (xAdjustment+motionX)/2)
-            let yTranslate = ExtrapolateValue(max, min, (yAdjustment+motionY)/2)
+            let xTranslate = ExtrapolateValue(max, min, (motionX))
+            let yTranslate = ExtrapolateValue(max, min, (yAdjustment+motionY))
             
             let imgView = self.imageViews[x]
             let scale:CGFloat = 1 - (CGFloat(x) * 0.01)
