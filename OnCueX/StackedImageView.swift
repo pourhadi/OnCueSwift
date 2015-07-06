@@ -41,7 +41,7 @@ class StackedImageViewLayer : CALayer {
     weak var motionDelegate:StackedLayerDelegate!
 
     @objc
-    dynamic var xAdjustment:CGFloat = 0.5 {
+    dynamic var xAdjustment:CGFloat = 0.25 {
         didSet {
             self.motionDelegate.motionUpdated(self)
         }
@@ -108,7 +108,7 @@ class StackedImageView : UIView, StackedLayerDelegate {
             self.adjustOffsets()
         }
     }
-    var xAdjustment:CGFloat = 0.5 {
+    var xAdjustment:CGFloat = 0 {
         didSet {
             self.adjustOffsets()
         }
@@ -280,7 +280,7 @@ class StackedImageView : UIView, StackedLayerDelegate {
         for var x = self.imageViews.count-1; x >= 0; x-- {
             let min:CGFloat = -(CGFloat(x) * 4)
             let max = -min
-            let xTranslate = ExtrapolateValue(max, min, (motionX))
+            let xTranslate = ExtrapolateValue(max, min, (xAdjustment+motionX))
             let yTranslate = ExtrapolateValue(max, min, (yAdjustment+motionY))
             
             let imgView = self.imageViews[x]
