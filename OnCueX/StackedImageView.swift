@@ -193,10 +193,11 @@ class StackedImageView : UIView, StackedLayerDelegate {
         scaledFrame.origin.x = (self.bounds.size.width - scaledFrame.size.width) / 2
         scaledFrame.origin.y = (self.bounds.size.height - scaledFrame.size.height) / 2
         let bez = UIBezierPath(ovalInRect: scaledFrame)
-        CGContextSaveGState(UIGraphicsGetCurrentContext())
+//        CGContextSaveGState(UIGraphicsGetCurrentContext())
       //  bez.addClip()
+        CGContextClipToRect(UIGraphicsGetCurrentContext(), scaledFrame)
         image.drawInRect(scaledFrame)
-        CGContextRestoreGState(UIGraphicsGetCurrentContext())
+//        CGContextRestoreGState(UIGraphicsGetCurrentContext())
 
         CGContextAddPath(UIGraphicsGetCurrentContext(), bez.CGPath)
         CGContextSetStrokeColorWithColor(UIGraphicsGetCurrentContext(), UIColor.whiteColor().colorWithAlphaComponent(0.5).CGColor)
