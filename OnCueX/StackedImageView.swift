@@ -41,7 +41,7 @@ class StackedImageViewLayer : CALayer {
     weak var motionDelegate:StackedLayerDelegate!
 
     @objc
-    dynamic var xAdjustment:CGFloat = 0.25 {
+    dynamic var xAdjustment:CGFloat = 0.5 {
         didSet {
             self.motionDelegate.motionUpdated(self)
         }
