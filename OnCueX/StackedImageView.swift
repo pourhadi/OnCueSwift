@@ -48,7 +48,7 @@ class StackedImageViewLayer : CALayer {
     }
     
     @objc
-    dynamic var yAdjustment:CGFloat = 0.5 {
+    dynamic var yAdjustment:CGFloat = 0 {
         didSet {
             self.motionDelegate.motionUpdated(self)
         }
@@ -79,12 +79,12 @@ class StackedImageView : UIView, StackedLayerDelegate {
     init() {
 
         let xMotion = UIInterpolatingMotionEffect(keyPath: "xAdjustment", type: .TiltAlongHorizontalAxis)
-        xMotion.minimumRelativeValue = 0
-        xMotion.maximumRelativeValue = 1
+        xMotion.minimumRelativeValue = -0.5
+        xMotion.maximumRelativeValue = 0.5
         
         let yMotion = UIInterpolatingMotionEffect(keyPath: "yAdjustment", type: .TiltAlongVerticalAxis)
-        yMotion.minimumRelativeValue = 0
-        yMotion.maximumRelativeValue = 1
+        yMotion.minimumRelativeValue = -0.5
+        yMotion.maximumRelativeValue = 0.5
         
         let group = UIMotionEffectGroup()
         group.motionEffects = [xMotion, yMotion]
