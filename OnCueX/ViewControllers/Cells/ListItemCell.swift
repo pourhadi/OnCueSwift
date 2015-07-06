@@ -117,6 +117,12 @@ class ListItemTextCell: ListItemCell {
             if item.isTrackCollection {
                 let yAdj = CalculatePercentComplete(0, end: 1000, current: CGFloat(layoutAttributes.zIndex))
                 self.imageView.yAdjustment = yAdj
+                
+                if layoutAttributes.alpha < 1 {
+                    let adj = ExtrapolateValue(yAdj, 0.5, layoutAttributes.alpha)
+                    self.imageView.yAdjustment = adj
+                    self.imageView.xAdjustment = adj
+                }
             }
         }
     }
