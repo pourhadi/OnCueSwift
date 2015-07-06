@@ -197,7 +197,7 @@ class StackedImageView : UIView, StackedLayerDelegate {
         image.drawInRect(scaledFrame)
         CGContextAddPath(UIGraphicsGetCurrentContext(), bez.CGPath)
         CGContextSetStrokeColorWithColor(UIGraphicsGetCurrentContext(), UIColor.whiteColor().colorWithAlphaComponent(0.5).CGColor)
-        CGContextSetLineWidth(UIGraphicsGetCurrentContext(), 1)
+        CGContextSetLineWidth(UIGraphicsGetCurrentContext(), 2)
         CGContextStrokePath(UIGraphicsGetCurrentContext())
         let drawn = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
