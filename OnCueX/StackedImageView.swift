@@ -140,6 +140,9 @@ class StackedImageView : UIView, StackedLayerDelegate {
                             return self.cropped(image)
                         })
                         
+                        if croppedImages.count == 0 {
+                            return
+                        }
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             UIView.animateWithDuration(0.2, animations: { () -> Void in
                                 var x = 0
