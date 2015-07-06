@@ -71,10 +71,10 @@ class StackedImageView : UIView, StackedLayerDelegate {
     override class func layerClass() -> AnyClass {
         return StackedImageViewLayer.self
     }
+   
+    var motionGroup:UIMotionEffectGroup
     
     init() {
-        super.init(frame:CGRectZero)
-        (self.layer as! StackedImageViewLayer).motionDelegate = self
 
         let xMotion = UIInterpolatingMotionEffect(keyPath: "xAdjustment", type: .TiltAlongHorizontalAxis)
         xMotion.minimumRelativeValue = 0
@@ -86,8 +86,10 @@ class StackedImageView : UIView, StackedLayerDelegate {
         
         let group = UIMotionEffectGroup()
         group.motionEffects = [xMotion, yMotion]
+        self.motionGroup = group
+        super.init(frame:CGRectZero)
+        (self.layer as! StackedImageViewLayer).motionDelegate = self
         self.addMotionEffect(group)
-        
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -112,6 +114,18 @@ class StackedImageView : UIView, StackedLayerDelegate {
     var yAdjustment:CGFloat = 0 {
         didSet {
             self.adjustOffsets()
+        }
+    }
+    
+    var disableMotion:Bool = false {
+        didSet {
+            if self.disableMotion {
+                self.removeMotionEffect(self.motionGroup)
+            } else {
+                if oldValue == true {
+                    self.addMotionEffect(self.motionGroup)
+                }
+            }
         }
     }
     

@@ -119,9 +119,14 @@ class ListItemTextCell: ListItemCell {
                 self.imageView.yAdjustment = yAdj
                 
                 if layoutAttributes.alpha < 1 {
-                    let adj = ExtrapolateValue(yAdj, 0.5, layoutAttributes.alpha)
-                    self.imageView.yAdjustment = adj
-                    self.imageView.xAdjustment = adj
+                    self.imageView.disableMotion = true
+                    let percent = CalculatePercentComplete(layoutAttributes.alpha, end: 0, current: layoutAttributes.alpha)
+                    self.imageView.motionX = ExtrapolateValue(self.imageView.motionX, 0, percent)
+                    self.imageView.motionY = ExtrapolateValue(self.imageView.motionY, 0, percent)
+                    self.imageView.yAdjustment = ExtrapolateValue(self.imageView.yAdjustment, 0.5, percent)
+                    self.imageView.xAdjustment = ExtrapolateValue(self.imageView.xAdjustment, 0.5, percent)
+                } else {
+                    self.imageView.disableMotion = false
                 }
             }
         }
