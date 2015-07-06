@@ -82,7 +82,7 @@ class StackedImageView : UIView, StackedLayerDelegate {
         
         let yMotion = UIInterpolatingMotionEffect(keyPath: "yAdjustment", type: .TiltAlongVerticalAxis)
         yMotion.minimumRelativeValue = 0
-        yMotion.maximumRelativeValue = 0.75
+        yMotion.maximumRelativeValue = 1
         
         let group = UIMotionEffectGroup()
         group.motionEffects = [xMotion, yMotion]
@@ -278,8 +278,8 @@ class StackedImageView : UIView, StackedLayerDelegate {
         for var x = self.imageViews.count-1; x >= 0; x-- {
             let min:CGFloat = -(CGFloat(x) * 4)
             let max = -min
-            let xTranslate = ExtrapolateValue(max, min, xAdjustment+motionX)
-            let yTranslate = ExtrapolateValue(max, min, yAdjustment+motionY)
+            let xTranslate = ExtrapolateValue(max, min, (xAdjustment+motionX)/2)
+            let yTranslate = ExtrapolateValue(max, min, (yAdjustment+motionY)/2)
             
             let imgView = self.imageViews[x]
             let scale:CGFloat = 1 - (CGFloat(x) * 0.01)
