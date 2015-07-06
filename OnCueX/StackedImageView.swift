@@ -126,7 +126,7 @@ class StackedImageView : UIView, StackedLayerDelegate {
         didSet {
             self.resetImageViews()
             if let dataSource = self.dataSource {
-                let numOfItems = max(self.disabledImageViews.count, dataSource.numberOfItemsInStack)
+                let numOfItems = max(1, min(self.disabledImageViews.count, dataSource.numberOfItemsInStack))
                 for x in 0..<numOfItems {
                     let imgView = self.disabledImageViews[x]
                     self.imageViews.append(imgView)

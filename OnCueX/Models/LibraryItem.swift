@@ -179,7 +179,15 @@ internal struct LibraryArtist : ArtistItem {
         }
     }
 
-    var numberOfItemsInStack:Int = 0
+    var numberOfItemsInStack:Int {
+        let query = MPMediaQuery.albumsQuery()
+        query.addFilterPredicate(MPMediaPropertyPredicate(value: NSNumber(unsignedLongLong:  self.representativeItem.artistPersistentID), forProperty: MPMediaItemPropertyArtistPersistentID))
+        
+        if let collections = query.collections {
+            return collections.count
+        }
+        return 0
+    }
 }
 
 internal struct LibraryPlaylist : PlaylistItem {
