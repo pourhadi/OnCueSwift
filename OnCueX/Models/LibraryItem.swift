@@ -173,11 +173,9 @@ internal struct LibraryArtist : ArtistItem {
             sp
             |> flatten(FlattenStrategy.Concat)
             |> collect
-            |> on(started: nil, event: nil, error: nil, completed: { () -> () in
-                
-                }, interrupted: nil, terminated: nil, disposed: nil, next: { (images) -> () in
-                    print(images)
-            })
+                |> start(next: { event in
+                    print(event)
+                })
         }
     }
 
