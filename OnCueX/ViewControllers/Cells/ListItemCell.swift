@@ -206,7 +206,7 @@ class ListItemTextCell: ListItemCell {
                         }
                     }
                     
-                    self.imageView.dataSource = item as? StackedImageViewDataSource
+                    self.imageView.dataSource = item.item as? StackedImageViewDataSource
                 }
             }
         }
