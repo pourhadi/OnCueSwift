@@ -173,7 +173,7 @@ class StackedImageView : UIView, StackedLayerDelegate {
         }
     }
     
-    var disabledImageViews:[UIImageView] = [UIImageView(), UIImageView(), UIImageView(), UIImageView(), UIImageView(), UIImageView(), UIImageView()]
+    var disabledImageViews:[UIImageView] = [UIImageView(), UIImageView(), UIImageView(), UIImageView(), UIImageView()]
     var imageViews = [UIImageView]()
     
     var image:UIImage? {
@@ -222,7 +222,7 @@ class StackedImageView : UIView, StackedLayerDelegate {
                 UIGraphicsEndImageContext()
                 
                 UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.mainScreen().scale)
-                CGContextSetShadowWithColor(UIGraphicsGetCurrentContext(), CGSizeMake(0, 0), 20, UIColor.blackColor().colorWithAlphaComponent(1).CGColor)
+                CGContextSetShadowWithColor(UIGraphicsGetCurrentContext(), CGSizeMake(0, 0), 20, UIColor.blackColor().colorWithAlphaComponent(0.5).CGColor)
                 drawn.drawInRect(CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height))
                 let withShadow = UIGraphicsGetImageFromCurrentImageContext()
                 UIGraphicsEndImageContext()
