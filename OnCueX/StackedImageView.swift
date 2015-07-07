@@ -210,16 +210,15 @@ class StackedImageView : UIView, StackedLayerDelegate {
         scaledFrame.origin.y = (self.bounds.size.height - scaledFrame.size.height) / 2
         let bez = UIBezierPath(ovalInRect: scaledFrame)
 //        CGContextSaveGState(UIGraphicsGetCurrentContext())
-        bez.addClip()
-//        CGContextClipToRect(UIGraphicsGetCurrentContext(), scaledFrame)
+      //  bez.addClip()
+        CGContextClipToRect(UIGraphicsGetCurrentContext(), scaledFrame)
         image.drawInRect(scaledFrame)
 //        CGContextRestoreGState(UIGraphicsGetCurrentContext())
 
         CGContextAddPath(UIGraphicsGetCurrentContext(), bez.CGPath)
         CGContextSetStrokeColorWithColor(UIGraphicsGetCurrentContext(), UIColor.whiteColor().colorWithAlphaComponent(0.5).CGColor)
         CGContextSetLineWidth(UIGraphicsGetCurrentContext(), 2)
-//        CGContextStrokeRect(UIGraphicsGetCurrentContext(), scaledFrame)
-        CGContextStrokePath(UIGraphicsGetCurrentContext())
+        CGContextStrokeRect(UIGraphicsGetCurrentContext(), scaledFrame)
         let drawn = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
@@ -301,7 +300,7 @@ class StackedImageView : UIView, StackedLayerDelegate {
         for var x = self.imageViews.count-1; x >= 0; x-- {
             let xmin:CGFloat = -(CGFloat(x) * 2)
             let xmax = -xmin
-            let ymin:CGFloat = -(CGFloat(x) * 6)
+            let ymin:CGFloat = -(CGFloat(x) * 5)
             let ymax = -ymin
             let xTranslate:CGFloat
             let yTranslate:CGFloat
