@@ -116,16 +116,16 @@ class ListItemTextCell: ListItemCell {
         if let item = self.item {
             if item.isTrackCollection {
                 let yAdj = CalculatePercentComplete(0, end: 1000, current: CGFloat(layoutAttributes.zIndex))
-                self.imageView.yAdjustment = yAdj
                 
-//                if layoutAttributes.alpha < 1 {
-////                    self.imageView.disableMotion = true
-//                    let percent = CalculatePercentComplete(1, end: 0, current: layoutAttributes.alpha)
-//                    self.imageView.xAdjustment = ExtrapolateValue(self.imageView.xAdjustment+self.imageView.motionX, 0.5, percent)
-//                    self.imageView.yAdjustment = ExtrapolateValue(self.imageView.yAdjustment+self.imageView.motionY, 0.5, percent)
-//                } else {
-////                    self.imageView.disableMotion = false
-//                }
+                if layoutAttributes.alpha < 1 {
+                    self.imageView.overrideAdjustments = true
+                    let percent = CalculatePercentComplete(1, end: 0, current: layoutAttributes.alpha)
+                    self.imageView.overrideXAdjustment = ExtrapolateValue(self.imageView.totalXAdjustment, 0.5, percent)
+                    self.imageView.overrideXAdjustment = ExtrapolateValue(self.imageView.totalYAdjustment, 0.5, percent)
+                } else {
+                    self.imageView.overrideAdjustments = false
+                    self.imageView.yAdjustment = yAdj
+                }
             }
         }
     }

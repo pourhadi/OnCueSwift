@@ -275,13 +275,43 @@ class StackedImageView : UIView, StackedLayerDelegate {
         }
     }
     
+    var totalXAdjustment:CGFloat {
+        return self.xAdjustment + self.motionX
+    }
+    
+    var totalYAdjustment:CGFloat {
+        return self.yAdjustment + self.motionY
+    }
+    
+    var overrideXAdjustment:CGFloat = 0 {
+        didSet {
+            self.adjustOffsets()
+        }
+    }
+    var overrideYAdjustment:CGFloat = 0 {
+        didSet {
+            self.adjustOffsets()
+        }
+    }
+    var overrideAdjustments = false
+    
     func adjustOffsets() {
 
         for var x = self.imageViews.count-1; x >= 0; x-- {
-            let min:CGFloat = -(CGFloat(x) * 4)
-            let max = -min
-            let xTranslate = ExtrapolateValue(max, min, (xAdjustment+motionX))
-            let yTranslate = ExtrapolateValue(max, min, (yAdjustment+motionY))
+            let xmin:CGFloat = -(CGFloat(x) * 4)
+            let xmax = -xmin
+            let ymin:CGFloat = -(CGFloat(x) * 5)
+            let ymax = -ymin
+            let xTranslate:CGFloat
+            let yTranslate:CGFloat
+            if self.overrideAdjustments {
+                xTranslate = ExtrapolateValue(xmax, xmin, overrideXAdjustment)
+                yTranslate = ExtrapolateValue(ymax, ymin, overrideYAdjustment)
+            } else {
+                xTranslate = ExtrapolateValue(xmax, xmin, (xAdjustment+motionX))
+                yTranslate = ExtrapolateValue(ymax, ymin, (yAdjustment+motionY))
+            }
+            
             
             let imgView = self.imageViews[x]
             let scale:CGFloat = 1 - (CGFloat(x) * 0.01)
