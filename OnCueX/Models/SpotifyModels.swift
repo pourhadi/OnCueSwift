@@ -123,12 +123,12 @@ internal struct SpotifyAlbum : AlbumItem {
     }
     
     func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {
-        
+        let cover = self.partialAlbum.getClosestCoverImage(forSize)
+        _imageController.getImage(cover.imageURL) { (url, image) -> Void in
+            complete(context:self, image:image)
+        }
     }
-    func getImagesForStack(size:CGSize, complete:(context:StackedImageViewDataSource, images:[UIImage])->Void) {
-        
-    }
-    
+
     var numberOfItemsInStack:Int = 0
 }
 

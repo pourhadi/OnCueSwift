@@ -104,14 +104,16 @@ internal struct LibraryAlbum : AlbumItem {
         }
     }
     
+    var numberOfItemsInStack:Int = 0
+}
+
+extension AlbumItem {
     func getImagesForStack(size:CGSize, complete:(context:StackedImageViewDataSource, images:[UIImage])->Void) {
         self.getImage(size) { (context, image) -> Void in
             guard let image = image else { return }
             complete(context: self, images: [image])
         }
     }
-    
-    var numberOfItemsInStack:Int = 0
 }
 
 internal struct LibraryArtist : ArtistItem {
