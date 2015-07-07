@@ -105,7 +105,10 @@ internal struct LibraryAlbum : AlbumItem {
     }
     
     func getImagesForStack(size:CGSize, complete:(context:StackedImageViewDataSource, images:[UIImage])->Void) {
-        
+        self.getImage(size) { (context, image) -> Void in
+            guard let image = image else { return }
+            complete(context: self, images: [image])
+        }
     }
     
     var numberOfItemsInStack:Int = 0
@@ -160,6 +163,20 @@ internal struct LibraryArtist : ArtistItem {
     }
     
     
+    
+
+    var numberOfItemsInStack:Int {
+        let query = MPMediaQuery.albumsQuery()
+        query.addFilterPredicate(MPMediaPropertyPredicate(value: NSNumber(unsignedLongLong:  self.representativeItem.artistPersistentID), forProperty: MPMediaItemPropertyArtistPersistentID))
+        
+        if let collections = query.collections {
+            return collections.count
+        }
+        return 0
+    }
+}
+
+extension ArtistItem {
     func getImagesForStack(size:CGSize, complete:(context:StackedImageViewDataSource, images:[UIImage])->Void) {
         self.getAlbums(0) { (albums) -> Void in
             guard let albums = albums else { complete(context: self, images: []); return }
@@ -171,22 +188,12 @@ internal struct LibraryArtist : ArtistItem {
             }
             
             sp
-            |> flatten(FlattenStrategy.Concat)
-            |> collect
+                |> flatten(FlattenStrategy.Concat)
+                |> collect
                 |> start({ event in
                     complete(context:self, images:event.value != nil ? event.value! : [])
                 })
         }
-    }
-
-    var numberOfItemsInStack:Int {
-        let query = MPMediaQuery.albumsQuery()
-        query.addFilterPredicate(MPMediaPropertyPredicate(value: NSNumber(unsignedLongLong:  self.representativeItem.artistPersistentID), forProperty: MPMediaItemPropertyArtistPersistentID))
-        
-        if let collections = query.collections {
-            return collections.count
-        }
-        return 0
     }
 }
 
