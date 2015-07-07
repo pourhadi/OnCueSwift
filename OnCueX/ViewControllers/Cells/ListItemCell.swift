@@ -122,7 +122,7 @@ class ListItemTextCell: ListItemCell {
                     self.imageView.overrideAdjustments = true
                     let percent = CalculatePercentComplete(1, end: 0, current: layoutAttributes.alpha)
                     self.imageView.overrideXAdjustment = ExtrapolateValue(self.imageView.totalXAdjustment, 0.5, percent)
-                    self.imageView.overrideYAdjustment = ExtrapolateValue(self.imageView.totalYAdjustment, 0.5, percent)
+                    self.imageView.overrideYAdjustment = ExtrapolateValue(self.imageView.totalYAdjustment, 0, percent)
                 } else {
                     self.imageView.overrideAdjustments = false
                 }
