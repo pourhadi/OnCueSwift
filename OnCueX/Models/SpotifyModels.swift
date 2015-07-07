@@ -164,17 +164,42 @@ internal struct SpotifyArtist : ArtistItem {
         }
     }
     
+    func getFullArtist(complete:(artist:SPTArtist)->Void) {
+        spotify { (token) -> Void in
+            SPTArtist.artistWithURI(self.partialArtist.uri, accessToken: token, callback: { (error, artist) -> Void in
+                if let artist = artist as? SPTArtist {
+                    complete(artist:artist)
+                }
+            })
+        }
+    }
+    
     func getAlbums(page: Int, complete: (albums: List<TrackCollection>?) -> Void) {
-        
+        self.getFullArtist { (artist) -> Void in
+            SPTUser.requestCurrentUserWithAccessToken(_spotifyController.token!, callback: { (errro, user) -> Void in
+                if let user = user as? SPTUser {
+                    artist.requestAlbumsOfType(.Album, withAccessToken: _spotifyController.token!, availableInTerritory: user.territory, callback: { (error, page) -> Void in
+                        if let page = page as? SPTListPage {
+                            let array:[TrackCollection] = page.items.map({ (item) -> TrackCollection in
+                                let item = item as! SPTPartialAlbum
+                                return SpotifyAlbum(partialAlbum: item)
+                            })
+                            
+                            let list = List(items: array, totalCount: UInt(array.count), pageNumber: 0)
+                            complete(albums: list)
+                        }
+                    })
+                }
+            })
+        }
     }
     
     func getImage(forSize:CGSize, complete:(context:Identifiable, image:UIImage?)->Void) {
-        
+        self.getAlbums(0) { (albums) -> Void in
+            
+        }
     }
     
-    func getImagesForStack(size:CGSize, complete:(context:StackedImageViewDataSource, images:[UIImage])->Void) {
-        
-    }
     
     var numberOfItemsInStack:Int = 0
 }

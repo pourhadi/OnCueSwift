@@ -115,6 +115,10 @@ class List<T> {
         self.totalCount = totalCount
         self.pageNumber = pageNumber
     }
+
+    convenience init(items:[T], totalCount:Int, pageNumber:Int) {
+        self.init(items:items, totalCount:UInt(totalCount), pageNumber:pageNumber)
+    }
     
     func objectAtIndexPath(path:NSIndexPath) -> T {
         return self.items[path.row]
