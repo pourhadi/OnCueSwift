@@ -298,7 +298,7 @@ class StackedImageView : UIView, StackedLayerDelegate {
     func adjustOffsets() {
 
         for var x = self.imageViews.count-1; x >= 0; x-- {
-            let xmin:CGFloat = -(CGFloat(x) * 3)
+            let xmin:CGFloat = -(CGFloat(x) * 2)
             let xmax = -xmin
             let ymin:CGFloat = -(CGFloat(x) * 5)
             let ymax = -ymin
