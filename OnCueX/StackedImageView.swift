@@ -300,7 +300,7 @@ class StackedImageView : UIView, StackedLayerDelegate {
         for var x = self.imageViews.count-1; x >= 0; x-- {
             let xmin:CGFloat = -(CGFloat(x) * 2)
             let xmax = -xmin
-            let ymin:CGFloat = -(CGFloat(x) * 5)
+            let ymin:CGFloat = -(CGFloat(x) * 6)
             let ymax = -ymin
             let xTranslate:CGFloat
             let yTranslate:CGFloat
