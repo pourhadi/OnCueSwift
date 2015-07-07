@@ -116,7 +116,8 @@ class ListItemTextCell: ListItemCell {
         if let item = self.item {
             if item.isTrackCollection {
                 let yAdj = CalculatePercentComplete(0, end: 1000, current: CGFloat(layoutAttributes.zIndex))
-                
+                self.imageView.yAdjustment = yAdj
+
                 if layoutAttributes.alpha < 1 {
                     self.imageView.overrideAdjustments = true
                     let percent = CalculatePercentComplete(1, end: 0, current: layoutAttributes.alpha)
@@ -124,7 +125,6 @@ class ListItemTextCell: ListItemCell {
                     self.imageView.overrideYAdjustment = ExtrapolateValue(self.imageView.totalYAdjustment, 0.5, percent)
                 } else {
                     self.imageView.overrideAdjustments = false
-                    self.imageView.yAdjustment = yAdj
                 }
             }
         }
