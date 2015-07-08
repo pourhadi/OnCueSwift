@@ -361,8 +361,10 @@ class SpotifyAudioProvider: AudioProvider {
                 var inDescription = audioDescription
                 let inBuf = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &inDescription), frameCapacity: AVAudioFrameCount(frameCount))
                 if inBuf.int16ChannelData != nil {
-                    var pointer = inBuf.int16ChannelData.memory
-                    pointer = UnsafeMutablePointer<Int16>(audioFrames)
+                    for x in 0..<frameCount {
+                        var data = inBuf.int16ChannelData[x].memory
+                        data = Int16(audioFrames[x])
+                    }
                 }
                 inBuf.frameLength = AVAudioFrameCount(frameCount)
 //                var outSize:UInt32 = 0
