@@ -222,9 +222,20 @@ class SpotifyAudioProvider: AudioProvider {
     func readFrames(frames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>, bufferSize:UnsafeMutablePointer<UInt32>) {
         if let output = self.outputFormat {
             
-            let buf = self.buffer.getNextBuffer()
-            bufferList.initialize(buf.memory)
-            self.buffer.consumeBufferList()
+            self.buffer.getFrames(frames, format: output, buffer: bufferList);
+            
+            /*
+            for ( int i=0; i<list->mNumberBuffers; i++ ) {
+                list->mBuffers[0].mNumberChannels = audioFormat.mFormatFlags & kAudioFormatFlagIsNonInterleaved ? 1 : audioFormat.mChannelsPerFrame;
+                list->mBuffers[0].mData = (char*)data + (i * (dataSize/list->mNumberBuffers));
+                list->mBuffers[0].mDataByteSize = dataSize/list->mNumberBuffers;
+            }*/
+            /*
+            for ( int i=0; i<bufferList->mNumberBuffers; i++ ) {
+                memcpy(bufferList->mBuffers[i].mData, inBufferList->mBuffers[i].mData, byteCount);
+            }*/
+            
+            
             /*
             let outSample = bufferList.memory.mBuffers.mData
             memset(outSample, 0, Int(frames * output.mBytesPerFrame * 2));
@@ -367,7 +378,7 @@ class SpotifyAudioProvider: AudioProvider {
                     }
                 }
                 inBuf.frameLength = AVAudioFrameCount(frameCount)
-//                var outSize:UInt32 = 0
+                var outSize:UInt32 = 0
 //                var outBuff:Void = Void()
 //                
 //                var inAudioBufferList = AudioBufferList.allocate(maximumBuffers: Int(audioDescription.numberOfChannelStreams()))
@@ -375,12 +386,14 @@ class SpotifyAudioProvider: AudioProvider {
                 var format = format
                 let outBufferList = AudioBufferList.allocate(maximumBuffers: Int(format.numberOfChannelStreams()))
                 let outBuf = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &format), frameCapacity: AVAudioFrameCount(frameCount))
-                checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), inBuf.mutableAudioBufferList, outBuf.mutableAudioBufferList), "converting audio")
+//                checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), inBuf.mutableAudioBufferList, outBuf.mutableAudioBufferList), "converting audio")
+                
+                checkError(AudioConverterConvertBuffer(self.audioConverter!, UInt32(frameCount) * UInt32(audioDescription.mBytesPerFrame), audioFrames, &outSize, outBuf.floatChannelData.memory), "converting audio")
+
                 outBuf.frameLength = AVAudioFrameCount(frameCount)
 
-                self.buffer.add(outBuf.mutableAudioBufferList, frames: UInt32(frameCount), description: format)
-//                checkError(AudioConverterConvertBuffer(self.audioConverter!, UInt32(frameCount) * UInt32(audioDescription.mBytesPerFrame) * 2, audioFrames, &outSize, &outBuff), "converting audio")
-//                self.buffer.add(outBufferList.memory.mBuffers.mData, length: Int32(outBufferList.memory.mBuffers.mDataByteSize))
+//                self.buffer.add(outBuf.mutableAudioBufferList, frames: UInt32(frameCount), description: format)
+                self.buffer.add(outBuf.floatChannelData.memory, length: Int32(outSize))
             }
             return frameCount
         }

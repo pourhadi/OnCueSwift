@@ -28,6 +28,12 @@
     TPCircularBufferCopyAudioBufferList(&_buffer, bufferList, nil, frames, &description);
 }
 
+- (UInt32)getFrames:(UInt32)numOfFrames format:(AudioStreamBasicDescription)format buffer:(AudioBufferList*)buffer {
+    UInt32 frames = numOfFrames;
+    TPCircularBufferDequeueBufferListFrames(&_buffer, &frames, buffer, NULL, &format);
+    return frames;
+}
+
 - (AudioBufferList*)getNextBuffer {
     AudioBufferList *list = TPCircularBufferNextBufferList(&_buffer, nil);
     return list;
