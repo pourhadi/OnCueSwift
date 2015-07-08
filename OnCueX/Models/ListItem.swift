@@ -9,9 +9,13 @@
 import UIKit
 import ReactiveCocoa
 
-enum ItemSource:String {
+enum ItemSource:String, Identifiable {
     case Library = "Library"
     case Spotify = "Spotify"
+    
+    var identifier:String {
+        return self.rawValue
+    }
 }
 
 enum ItemType:String {

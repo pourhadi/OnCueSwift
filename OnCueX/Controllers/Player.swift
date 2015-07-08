@@ -37,6 +37,10 @@ class Player: AudioProviderDelegate {
         self.startSession()
     }
     
+    func provider(provider:AudioProvider?, var format:AudioStreamBasicDescription) {
+        
+    }
+    
     func configure() {
         let mainMixer = self.engine.mainMixerNode
         
@@ -45,7 +49,7 @@ class Player: AudioProviderDelegate {
         inFormatDescription = mainMixer.inputFormatForBus(0)
     }
     
-    
+    let audioPlayer = CoreAudioPlayer()
     
     var frameIndex = 0
     var audioFile = ExtAudioFileRef()
@@ -59,14 +63,16 @@ class Player: AudioProviderDelegate {
 //            self.playerNode.scheduleBuffer(buffer, completionHandler: nil)
 ////            
 
-            if !self.engine.running {
-                try self.engine.start()
-            }
-            if track.source == .Spotify {
-                self.spotifyProvider.startProvidingAudio(track)
-            } else {
-                self.libraryProvider.startProvidingAudio(track)
-            }
+            audioPlayer.currentTrack = track
+            audioPlayer.playing = true
+//            if !self.engine.running {
+//                try self.engine.start()
+//            }
+//            if track.source == .Spotify {
+//                self.spotifyProvider.startProvidingAudio(track)
+//            } else {
+//                self.libraryProvider.startProvidingAudio(track)
+//            }
             
         } catch { print("error") }
     }
@@ -117,17 +123,19 @@ class Player: AudioProviderDelegate {
 }
 
 protocol AudioProviderDelegate:class {
-    func provider(provider:AudioProvider?, hasNewBuffer:AVAudioPCMBuffer)
+    func provider(provider:AudioProvider?, var format:AudioStreamBasicDescription)
 }
 
 protocol AudioProvider: Identifiable {
     weak var delegate:AudioProviderDelegate? { get set }
     func startProvidingAudio(track:Playable)
-    
+    var ready:Bool { get }
     func readFrames(var frames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>, bufferSize:UnsafeMutablePointer<UInt32>)
 }
 
 class LibraryAudioProvider: AudioProvider {
+    var ready = false
+    
     func readFrames(var frames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>, bufferSize:UnsafeMutablePointer<UInt32>) {
         ExtAudioFileSeek(audioFile, self.frameIndex)
         ExtAudioFileRead(self.audioFile, &frames, bufferList)
@@ -147,37 +155,42 @@ class LibraryAudioProvider: AudioProvider {
     var clientFormat = AudioStreamBasicDescription()
     var frameIndex:Int64 = 0
     func startProvidingAudio(track: Playable) {
-            ExtAudioFileOpenURL(track.assetURL, &audioFile)
-            
-            var totalFrames:Int64 = 0
-            var dataSize:UInt32 = UInt32(sizeof(Int64))
-            ExtAudioFileGetProperty(audioFile, kExtAudioFileProperty_FileLengthFrames, &dataSize, &totalFrames)
-            
-            var asbd = AudioStreamBasicDescription()
-            dataSize = UInt32(sizeof(AudioStreamBasicDescription))
-            
-            ExtAudioFileGetProperty(audioFile, kExtAudioFileProperty_FileDataFormat, &dataSize, &asbd)
-            
-            var clientFormat = AudioStreamBasicDescription()
-            clientFormat.mFormatID = kAudioFormatLinearPCM;
-            clientFormat.mFormatFlags       = kAudioFormatFlagIsBigEndian | kAudioFormatFlagIsPacked | kAudioFormatFlagIsFloat;
-            clientFormat.mSampleRate        = 44100;
-            clientFormat.mChannelsPerFrame  = 2;
-            clientFormat.mBitsPerChannel    = 32;
-            clientFormat.mBytesPerPacket    = (clientFormat.mBitsPerChannel / 8) * clientFormat.mChannelsPerFrame;
-            clientFormat.mFramesPerPacket   = 1;
-            clientFormat.mBytesPerFrame     = clientFormat.mBytesPerPacket;
-  
-            ExtAudioFileSetProperty(audioFile, kExtAudioFileProperty_ClientDataFormat, UInt32(sizeof(AudioStreamBasicDescription)), &clientFormat)
-            self.clientFormat = clientFormat
-            
-            self.frameIndex = 0
-            
+        ExtAudioFileOpenURL(track.assetURL, &audioFile)
+        
+        var totalFrames:Int64 = 0
+        var dataSize:UInt32 = UInt32(sizeof(Int64))
+        ExtAudioFileGetProperty(audioFile, kExtAudioFileProperty_FileLengthFrames, &dataSize, &totalFrames)
+        
+        var asbd = AudioStreamBasicDescription()
+        dataSize = UInt32(sizeof(AudioStreamBasicDescription))
+        
+        ExtAudioFileGetProperty(audioFile, kExtAudioFileProperty_FileDataFormat, &dataSize, &asbd)
+        
+        var clientFormat = AudioStreamBasicDescription()
+        clientFormat.mFormatID = kAudioFormatLinearPCM;
+        clientFormat.mFormatFlags       = kAudioFormatFlagIsBigEndian | kAudioFormatFlagIsPacked | kAudioFormatFlagIsFloat;
+        clientFormat.mSampleRate        = 44100;
+        clientFormat.mChannelsPerFrame  = 2;
+        clientFormat.mBitsPerChannel    = 32;
+        clientFormat.mBytesPerPacket    = (clientFormat.mBitsPerChannel / 8) * clientFormat.mChannelsPerFrame;
+        clientFormat.mFramesPerPacket   = 1;
+        clientFormat.mBytesPerFrame     = clientFormat.mBytesPerPacket;
+        
+        if let delegate = self.delegate {
+            delegate.provider(self, format: clientFormat)
         }
+        ExtAudioFileSetProperty(audioFile, kExtAudioFileProperty_ClientDataFormat, UInt32(sizeof(AudioStreamBasicDescription)), &clientFormat)
+        self.clientFormat = clientFormat
+        
+        self.frameIndex = 0
+        self.ready = true
+    }
     
 }
 
 class SpotifyAudioProvider: AudioProvider {
+    
+    var ready = false
     func readFrames(var frames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>, bufferSize:UnsafeMutablePointer<UInt32>) {
         
     }
@@ -352,7 +365,32 @@ list.mBuffers[0] = buf;*/
 }
 
 
-class CoreAudioPlayer {
+class CoreAudioPlayer:AudioProviderDelegate {
+    
+    var playing:Bool = false {
+        didSet {
+            var isPlaying:Boolean = 0
+            AUGraphIsRunning(self.graph, &isPlaying)
+            if self.playing && isPlaying == 0 {
+                AUGraphOpen(self.graph)
+            } else if !self.playing && isPlaying != 0 {
+                AUGraphStop(self.graph)
+            }
+        }
+    }
+    
+    var currentTrack:TrackItem? {
+        didSet {
+            if let track = self.currentTrack {
+                if let providerIndex = self.providers.index(track.source) {
+                    let provider = self.providers[providerIndex]
+                    provider.startProvidingAudio(track as Playable)
+                }
+            }
+        }
+    }
+    
+    var providers:[AudioProvider] = [LibraryAudioProvider(), SpotifyAudioProvider()]
     
     var graph:AUGraph
     var ioUnit:AudioUnit
@@ -407,6 +445,45 @@ class CoreAudioPlayer {
             &maxFramesSlice,
             UInt32(sizeof (UInt32))
         )
+        
+        // set mixer output to io input
+        var mixerOutput = AudioStreamBasicDescription()
+        var valSize:UInt32 = UInt32(sizeof(AudioStreamBasicDescription))
+        AudioUnitGetProperty(self.mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &mixerOutput, &valSize)
+        AudioUnitSetProperty(self.ioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &mixerOutput, valSize)
+        
+        let callback:AURenderCallback = { (inRefCon, renderFlags, timeStamp, outputBus, numFrames, bufferList) -> OSStatus in
+            
+            let pointer = UnsafePointer<AudioProvider>(inRefCon)
+            guard pointer.memory.ready else { return 0 }
+            var bufSize:UInt32 = 0
+            
+            pointer.memory.readFrames(numFrames, bufferList: bufferList, bufferSize: &bufSize)
+            
+            return 0
+        }
+        
+        var x:UInt32 = 0
+        for provider in self.providers {
+            var provider = provider
+            provider.delegate = self
+            var callback:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: callback, inputProcRefCon: &provider)
+            AUGraphSetNodeInputCallback(self.graph, self.mixerNode, x, &callback)
+            x += 1
+        }
+        
+        AudioUnitInitialize(self.ioUnit)
+        AudioUnitInitialize(self.mixerUnit)
+        
+        AudioOutputUnitStart(self.ioUnit)
+    }
+    
+    func provider(provider:AudioProvider?, var format:AudioStreamBasicDescription) {
+        if let provider = provider {
+            if let index = self.providers.index(provider) {
+                AudioUnitSetProperty(self.mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, AudioUnitElement(index), &format, UInt32(sizeof(AudioStreamBasicDescription)))
+            }
+        }
     }
     
 }
