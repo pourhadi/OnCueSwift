@@ -222,7 +222,7 @@ class SpotifyAudioProvider: AudioProvider {
     func readFrames(frames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>, bufferSize:UnsafeMutablePointer<UInt32>) {
         if let output = self.outputFormat {
             
-            var buf = self.buffer.getNextBuffer()
+            let buf = self.buffer.getNextBuffer()
             bufferList.initialize(buf.memory)
             self.buffer.consumeBufferList()
             /*
