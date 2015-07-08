@@ -499,7 +499,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
         status = AudioUnitInitialize(self.mixerUnit)
         checkError(status, "init mixerUnit")
 
-        AudioOutputUnitStart(self.ioUnit)
+        status = AudioOutputUnitStart(self.ioUnit)
         checkError(status, "start ioUnit")
 
     }
