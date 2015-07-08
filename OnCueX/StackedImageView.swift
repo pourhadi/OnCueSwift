@@ -297,7 +297,7 @@ class StackedImageView : UIView, StackedLayerDelegate {
     
     func adjustOffsets() {
 
-        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: .CurveEaseIn, animations: { () -> Void in
+//        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: .CurveEaseIn, animations: { () -> Void in
             for var x = self.imageViews.count-1; x >= 0; x-- {
                 let xmin:CGFloat = -(CGFloat(x) * 2)
                 let xmax = -xmin
@@ -320,7 +320,7 @@ class StackedImageView : UIView, StackedLayerDelegate {
                 imgView.transform = CGAffineTransformMakeScale(scale, scale)
                 imgView.transform = CGAffineTransformTranslate(imgView.transform, xTranslate, yTranslate)
             }
-            }, completion: nil)
+//            }, completion: nil)
         
     }
 }
