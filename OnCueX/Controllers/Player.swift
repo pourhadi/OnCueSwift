@@ -410,7 +410,7 @@ class SpotifyAudioProvider: AudioProvider {
             checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), buffer.audioBufferList, floatBuffer.mutableAudioBufferList), "error converting")
             
 //            do { try self.avConverter!.convertToBuffer(floatBuffer, fromBuffer: buffer) } catch { "error converting" }
-            
+            floatBuffer.frameLength = AVAudioFrameCount(frameCount)
             if let delegate = self.engineDelegate {
                 delegate.provider(self.provider!, hasNewBuffer: floatBuffer)
             }
