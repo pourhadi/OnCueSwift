@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>BD771344-F83C-490F-806F-A9026948B388</string>
+	<key>IDESourceControlProjectName</key>
+	<string>OnCueX</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>3AF18F9C6F5D633BAA0B3F935459E0C777C82047</key>
+		<string>https://github.com/SnapKit/SnapKit</string>
+		<key>80F9BCE4C70FEBC4F8C9D5E36F4E8EEE4C72D647</key>
+		<string>https://github.com/pourhadi/OnCueX.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>OnCueX.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>3AF18F9C6F5D633BAA0B3F935459E0C777C82047</key>
+		<string>..SnapKit/</string>
+		<key>80F9BCE4C70FEBC4F8C9D5E36F4E8EEE4C72D647</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/pourhadi/OnCueX.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>80F9BCE4C70FEBC4F8C9D5E36F4E8EEE4C72D647</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>80F9BCE4C70FEBC4F8C9D5E36F4E8EEE4C72D647</string>
+			<key>IDESourceControlWCCName</key>
+			<string>OnCueX</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>3AF18F9C6F5D633BAA0B3F935459E0C777C82047</string>
+			<key>IDESourceControlWCCName</key>
+			<string>SnapKit</string>
+		</dict>
+	</array>
+</dict>
+</plist>
