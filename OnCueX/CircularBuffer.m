@@ -31,15 +31,18 @@
 }
 
 - (void)add:(const void*)bytes length:(int32_t)length {
-    TPCircularBufferProduceBytes(&_buffer, bytes, length);
+    if (!(TPCircularBufferProduceBytes(&_buffer, bytes, length))) {
+        NSLog(@"error reading into buffer");
+    }
 }
 
-- (void)copy:(int32_t)length intoBuffer:(void*)buffer {
+- (int32_t)copy:(int32_t)length intoBuffer:(void*)buffer {
     int32_t availableBytes;
     void *bufferTail     = TPCircularBufferTail(&_buffer, &availableBytes);
 //    memcpy(outSample, bufferTail, MIN(availableBytes, inNumberFrames * kUnitSize * 2) );
     memcpy(buffer, bufferTail, MIN(availableBytes, length) );
     TPCircularBufferConsume(&_buffer, MIN(availableBytes, length) );
+    return MIN(availableBytes, length);
 }
 
 - (void)reset

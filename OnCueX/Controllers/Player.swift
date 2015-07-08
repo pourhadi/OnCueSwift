@@ -15,7 +15,7 @@ import TheAmazingAudioEngine
 let _player = Player()
 
 func checkError(error:OSStatus, _ operation:String?) {
-    print("status:\(error) for: \(operation)")
+//    print("status:\(error) for: \(operation)")
     guard error != noErr else { return }
     
     print("error: \(operation)")
@@ -221,7 +221,10 @@ class SpotifyAudioProvider: AudioProvider {
     var ready = false
     func readFrames(frames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>, bufferSize:UnsafeMutablePointer<UInt32>) {
         if let output = self.outputFormat {
-            self.buffer.copy(Int32(frames)*Int32(output.mBytesPerFrame), intoBuffer: bufferList.memory.mBuffers.mData)
+            let outSample = bufferList.memory.mBuffers.mData
+            memset(outSample, 0, Int(frames * output.mBytesPerFrame * 2));
+            let copiedSize = self.buffer.copy(Int32(frames)*Int32(output.mBytesPerFrame) * 2, intoBuffer: outSample)
+            bufferList.memory.mBuffers.mDataByteSize = UInt32(copiedSize)
         }
     }
     var buffer:CircularBuffer {
@@ -525,7 +528,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
         // set mixer output to io input
         var mixerOutput = AudioStreamBasicDescription()
         var valSize:UInt32 = UInt32(sizeof(AudioStreamBasicDescription))
-        checkError(AudioUnitSetProperty(self.mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &clientFormat, valSize), "set mixer input format")
+//        checkError(AudioUnitSetProperty(self.mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &clientFormat, valSize), "set mixer input format")
 
         checkError(AudioUnitGetProperty(self.mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &mixerOutput, &valSize), "get mixer output format")
         status = AudioUnitSetProperty(self.ioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &mixerOutput, valSize)

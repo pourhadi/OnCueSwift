@@ -11,7 +11,7 @@
 @interface CircularBuffer : NSObject
 
 - (void)add:(const void*)bytes length:(int32_t)length;
-- (void)copy:(int32_t)length intoBuffer:(void*)buffer;
+- (int32_t)copy:(int32_t)length intoBuffer:(void*)buffer;
 
 - (void)reset;
 
