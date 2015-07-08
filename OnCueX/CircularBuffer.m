@@ -30,8 +30,11 @@
 
 - (AudioBufferList*)getNextBuffer {
     AudioBufferList *list = TPCircularBufferNextBufferList(&_buffer, nil);
-    TPCircularBufferConsumeNextBufferList(&_buffer);
     return list;
+}
+
+- (void)consumeBufferList {
+    TPCircularBufferConsumeNextBufferList(&_buffer);
 }
 
 - (id)init

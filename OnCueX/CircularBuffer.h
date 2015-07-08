@@ -15,7 +15,7 @@
 
 - (void)add:(AudioBufferList*)bufferList frames:(UInt32)frames description:(AudioStreamBasicDescription)description;
 - (AudioBufferList*)getNextBuffer;
-
+- (void)consumeBufferList;
 - (void)reset;
 
 @end

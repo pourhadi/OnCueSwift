@@ -221,10 +221,15 @@ class SpotifyAudioProvider: AudioProvider {
     var ready = false
     func readFrames(frames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>, bufferSize:UnsafeMutablePointer<UInt32>) {
         if let output = self.outputFormat {
+            
+            var buf = self.buffer.getNextBuffer()
+            bufferList.memory = buf.memory
+            self.buffer.consumeBufferList()
+            /*
             let outSample = bufferList.memory.mBuffers.mData
             memset(outSample, 0, Int(frames * output.mBytesPerFrame * 2));
             let copiedSize = self.buffer.copy(Int32(frames)*Int32(output.mBytesPerFrame) * 2, intoBuffer: outSample)
-            bufferList.memory.mBuffers.mDataByteSize = UInt32(copiedSize)
+            bufferList.memory.mBuffers.mDataByteSize = UInt32(copiedSize)*/
         }
     }
     var buffer:CircularBuffer {
