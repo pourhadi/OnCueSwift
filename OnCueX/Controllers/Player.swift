@@ -144,10 +144,11 @@ class LibraryAudioProvider: AudioProvider {
     var ready = false
     
     func readFrames(var frames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>, bufferSize:UnsafeMutablePointer<UInt32>) {
-        ExtAudioFileSeek(audioFile, self.frameIndex)
+        checkError(ExtAudioFileSeek(audioFile, self.frameIndex), "seek audio file")
+
+        checkError(ExtAudioFileRead(self.audioFile, &frames, bufferList), "read audio file")
         self.frameIndex += Int64(frames)
 
-        ExtAudioFileRead(self.audioFile, &frames, bufferList)
         bufferSize.memory = bufferList.memory.mBuffers.mDataByteSize / UInt32(sizeof(Float32))
     }
     
