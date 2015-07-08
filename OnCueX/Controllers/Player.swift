@@ -354,8 +354,15 @@ class SpotifyAudioProvider: AudioProvider {
                 }
                 var outSize:UInt32 = 0
                 var outBuff:Void = Void()
-                checkError(AudioConverterConvertBuffer(self.audioConverter!, UInt32(frameCount) * UInt32(audioDescription.mBytesPerFrame) * 2, audioFrames, &outSize, &outBuff), "converting audio")
-                self.buffer.add(&outBuff, length: Int32(outSize))
+                
+                var inAudioBufferList:AudioBufferList = AudioBufferList()
+                AEInitAudioBufferList(&inAudioBufferList, Int32(sizeof(AudioBufferList)), audioDescription, UnsafeMutablePointer<Void>(audioFrames), Int32(audioDescription.mBytesPerFrame) * Int32(frameCount) * 2)
+                let outBufferList = AEAllocateAndInitAudioBufferList(format, Int32(frameCount))
+                
+                checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), &inAudioBufferList, outBufferList), "converting audio")
+                
+//                checkError(AudioConverterConvertBuffer(self.audioConverter!, UInt32(frameCount) * UInt32(audioDescription.mBytesPerFrame) * 2, audioFrames, &outSize, &outBuff), "converting audio")
+                self.buffer.add(outBufferList.memory.mBuffers.mData, length: Int32(outBufferList.memory.mBuffers.mDataByteSize))
             }
             return frameCount
         }
