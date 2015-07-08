@@ -10,28 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OnCueX/Controllers/Player.swift"
-            timestampString = "458072500.783819"
+            timestampString = "458044054.702192"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "109"
-            endingLineNumber = "109"
-            landmarkName = "startSession()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "OnCueX/Controllers/Player.swift"
-            timestampString = "458079608.19336"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "422"
-            endingLineNumber = "422"
-            landmarkName = "attemptToDeliverAudioFrames(_:ofCount:streamDescription:)"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "startProvidingAudio(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
