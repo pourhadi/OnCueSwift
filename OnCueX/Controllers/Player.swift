@@ -406,6 +406,16 @@ class CoreAudioPlayer:AudioProviderDelegate {
     var mixerUnit:AudioUnit
     var mixerNode:AUNode
 
+    let callback:AURenderCallback = { (inRefCon, renderFlags, timeStamp, outputBus, numFrames, bufferList) -> OSStatus in
+        
+        let pointer = UnsafePointer<AudioProvider>(inRefCon)
+        guard pointer.memory.ready else { return 0 }
+        var bufSize:UInt32 = 0
+        
+        pointer.memory.readFrames(numFrames, bufferList: bufferList, bufferSize: &bufSize)
+        
+        return 0
+    }
     
     init() {
         self.graph = AUGraph()
@@ -469,23 +479,14 @@ class CoreAudioPlayer:AudioProviderDelegate {
         status = AudioUnitSetProperty(self.ioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &mixerOutput, valSize)
         checkError(status, "set ioUnit input format")
 
-        let callback:AURenderCallback = { (inRefCon, renderFlags, timeStamp, outputBus, numFrames, bufferList) -> OSStatus in
-            
-            let pointer = UnsafePointer<AudioProvider>(inRefCon)
-            guard pointer.memory.ready else { return 0 }
-            var bufSize:UInt32 = 0
-            
-            pointer.memory.readFrames(numFrames, bufferList: bufferList, bufferSize: &bufSize)
-            
-            return 0
-        }
+        
         
         var x:UInt32 = 0
         for provider in self.providers {
             var provider = provider
             provider.delegate = self
-            var callback:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: callback, inputProcRefCon: &provider)
-            status = AUGraphSetNodeInputCallback(self.graph, self.mixerNode, x, &callback)
+            var callbackStruct:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: callback, inputProcRefCon: &provider)
+            status = AUGraphSetNodeInputCallback(self.graph, self.mixerNode, x, &callbackStruct)
             checkError(status, "add node input callback: \(provider.identifier)")
             x += 1
         }
