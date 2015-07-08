@@ -14,6 +14,12 @@ import TheAmazingAudioEngine
 
 let _player = Player()
 
+func checkError(error:OSStatus, _ operation:String?) {
+    guard error != noErr else { return }
+    
+    print("error: \(operation)")
+}
+
 var FloatDescription:AudioStreamBasicDescription = {
     var outputFormat = AudioStreamBasicDescription()
     outputFormat.mFormatID = kAudioFormatLinearPCM;
@@ -155,16 +161,16 @@ class LibraryAudioProvider: AudioProvider {
     var clientFormat = AudioStreamBasicDescription()
     var frameIndex:Int64 = 0
     func startProvidingAudio(track: Playable) {
-        ExtAudioFileOpenURL(track.assetURL, &audioFile)
+        checkError(ExtAudioFileOpenURL(track.assetURL, &audioFile), "open url")
         
         var totalFrames:Int64 = 0
         var dataSize:UInt32 = UInt32(sizeof(Int64))
-        ExtAudioFileGetProperty(audioFile, kExtAudioFileProperty_FileLengthFrames, &dataSize, &totalFrames)
+        checkError(ExtAudioFileGetProperty(audioFile, kExtAudioFileProperty_FileLengthFrames, &dataSize, &totalFrames), "get file frames")
         
         var asbd = AudioStreamBasicDescription()
         dataSize = UInt32(sizeof(AudioStreamBasicDescription))
         
-        ExtAudioFileGetProperty(audioFile, kExtAudioFileProperty_FileDataFormat, &dataSize, &asbd)
+        checkError(ExtAudioFileGetProperty(audioFile, kExtAudioFileProperty_FileDataFormat, &dataSize, &asbd), "get file data format")
         
         var clientFormat = AudioStreamBasicDescription()
         clientFormat.mFormatID = kAudioFormatLinearPCM;
@@ -179,7 +185,7 @@ class LibraryAudioProvider: AudioProvider {
         if let delegate = self.delegate {
             delegate.provider(self, format: clientFormat)
         }
-        ExtAudioFileSetProperty(audioFile, kExtAudioFileProperty_ClientDataFormat, UInt32(sizeof(AudioStreamBasicDescription)), &clientFormat)
+        checkError(ExtAudioFileSetProperty(audioFile, kExtAudioFileProperty_ClientDataFormat, UInt32(sizeof(AudioStreamBasicDescription)), &clientFormat), "set file client format")
         self.clientFormat = clientFormat
         
         self.frameIndex = 0
@@ -370,9 +376,10 @@ class CoreAudioPlayer:AudioProviderDelegate {
     var playing:Bool = false {
         didSet {
             var isPlaying:Boolean = 0
-            AUGraphIsRunning(self.graph, &isPlaying)
+            checkError(AUGraphIsRunning(self.graph, &isPlaying), "check if graph is running")
             if self.playing && isPlaying == 0 {
-                AUGraphOpen(self.graph)
+                print("opening graph")
+                checkError(AUGraphOpen(self.graph), "open graph")
             } else if !self.playing && isPlaying != 0 {
                 AUGraphStop(self.graph)
             }
@@ -397,12 +404,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
     var ioNode:AUNode
     var mixerUnit:AudioUnit
     var mixerNode:AUNode
-    
-    func checkError(error:OSStatus, _ operation:String?) {
-        guard error != noErr else { return }
-        
-        print("error: \(operation)")
-    }
+
     
     init() {
         self.graph = AUGraph()
