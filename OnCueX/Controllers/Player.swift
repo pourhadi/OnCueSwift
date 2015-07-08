@@ -223,7 +223,7 @@ class SpotifyAudioProvider: AudioProvider {
         if let output = self.outputFormat {
             
             var buf = self.buffer.getNextBuffer()
-            bufferList.memory = buf.memory
+            bufferList.initialize(buf.memory)
             self.buffer.consumeBufferList()
             /*
             let outSample = bufferList.memory.mBuffers.mData
