@@ -382,16 +382,18 @@ class SpotifyAudioProvider: AudioProvider {
             
             if self.spotifyFormat.value == nil {
                 
-                let outFormat = AVAudioFormat(commonFormat: .PCMFormatFloat32, sampleRate: AVAudioSession.sharedInstance().sampleRate, channels: 2, interleaved: true)
+                let outFormat = AVAudioFormat(commonFormat: .PCMFormatFloat32, sampleRate: AVAudioSession.sharedInstance().sampleRate, channels: 2, interleaved: false)
                 self.avConverter = AVAudioConverter(fromFormat: format, toFormat: outFormat)
                 self.spotifyFormat.put(outFormat)
             }
             
             let buffer = AVAudioPCMBuffer(PCMFormat: format, frameCapacity: AVAudioFrameCount(frameCount))
             let bufferPointer = UnsafeBufferPointer(start:UnsafePointer<Int16>(audioFrames), count:frameCount)
-            let pointer = buffer.int16ChannelData[0]
+            let lpointer = buffer.int16ChannelData[0]
+            let rpointer = buffer.int16ChannelData[1]
             for x in 0..<frameCount {
-                pointer[x] = bufferPointer[x]
+                lpointer[x] = bufferPointer[x]
+                rpointer[x] = bufferPointer[x]
             }
             
             buffer.frameLength = AVAudioFrameCount(frameCount)
