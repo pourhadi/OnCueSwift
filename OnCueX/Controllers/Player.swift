@@ -382,7 +382,7 @@ class SpotifyAudioProvider: AudioProvider {
             
             if self.spotifyFormat.value == nil {
                 
-                let outFormat = AVAudioFormat(commonFormat: .PCMFormatFloat32, sampleRate: AVAudioSession.sharedInstance().sampleRate, channels: 2, interleaved: false)
+                let outFormat = AVAudioFormat(commonFormat: .PCMFormatFloat32, sampleRate: format.sampleRate, channels: 2, interleaved: false)
                 self.avConverter = AVAudioConverter(fromFormat: format, toFormat: outFormat)
                 self.spotifyFormat.put(outFormat)
             }
@@ -397,8 +397,6 @@ class SpotifyAudioProvider: AudioProvider {
             }
             
             buffer.frameLength = AVAudioFrameCount(frameCount)
-            
-            
             let floatBuffer = AVAudioPCMBuffer(PCMFormat: self.spotifyFormat.value!, frameCapacity: AVAudioFrameCount(frameCount))
             do { try self.avConverter!.convertToBuffer(floatBuffer, fromBuffer: buffer) } catch { "error converting" }
             
