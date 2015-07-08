@@ -408,7 +408,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
 
     let callback:AURenderCallback = { (inRefCon, renderFlags, timeStamp, outputBus, numFrames, bufferList) -> OSStatus in
         
-        var pointer = UnsafePointer<AudioProvider>(inRefCon)
+        var pointer = UnsafeMutablePointer<AudioProvider>(inRefCon)
         let provider = pointer[0]
         guard provider.ready else { return 0 }
         var bufSize:UInt32 = 0
