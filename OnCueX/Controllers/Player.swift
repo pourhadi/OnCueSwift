@@ -12,6 +12,7 @@ import MediaPlayer
 import CoreAudio
 import TheAmazingAudioEngine
 import ReactiveCocoa
+@available(iOS 9.0, *)
 let _player = Player()
 
 func checkError(error:OSStatus, _ operation:String?) {
@@ -48,6 +49,7 @@ var FloatDescription:AudioStreamBasicDescription = {
     }()
 
 var inFormatDescription:AVAudioFormat?
+@available(iOS 9.0, *)
 class Player: AudioProviderDelegate {
     var engine:AVAudioEngine = AVAudioEngine()
     let playerNode = AVAudioPlayerNode()
@@ -240,6 +242,7 @@ class LibraryAudioProvider: AudioProvider {
     
 }
 
+@available(iOS 9.0, *)
 class SpotifyAudioProvider: AudioProvider {
     var outputFormat:AudioStreamBasicDescription? {
         get {
@@ -340,6 +343,7 @@ class SpotifyAudioProvider: AudioProvider {
         }
     }
 
+    @available(iOS 9.0, *)
     class SpotifyCoreAudioController : SPTCoreAudioController {
         var engineDelegate:AudioProviderEngineDelegate?
 
@@ -357,10 +361,7 @@ class SpotifyAudioProvider: AudioProvider {
         weak var providerDelegate:AudioProviderDelegate?
         weak var provider:SpotifyAudioProvider?
         
-         @available(iOS 9.0, *)
-        lazy var avConverter:AVAudioConverter = {
-            return AVAudioConverter(fromFormat: self.inFormat!, toFormat: inFormatDescription!)
-        }()
+        var avConverter:AVAudioConverter?
         
         var audioConverter:AudioConverterRef?
         var inFormat:AVAudioFormat?
@@ -371,13 +372,17 @@ class SpotifyAudioProvider: AudioProvider {
         var genericDescription: AudioComponentDescription  =  AudioComponentDescription(componentType: OSType(kAudioUnitType_Output),componentSubType: OSType(kAudioUnitSubType_GenericOutput),componentManufacturer: OSType(kAudioUnitManufacturer_Apple),componentFlags: 0,componentFlagsMask: 0)
         
         override func attemptToDeliverAudioFrames(audioFrames: UnsafePointer<Void>, ofCount frameCount: Int, streamDescription audioDescription: AudioStreamBasicDescription) -> Int {
+            var audioDescription = audioDescription
+            let format = AVAudioFormat(streamDescription: &audioDescription)
+            
             if self.spotifyFormat.value == nil {
-                var audioDescription = audioDescription
-                let format = AVAudioFormat(streamDescription: &audioDescription)
-                self.spotifyFormat.put(format)
+                
+                let outFormat = AVAudioFormat(commonFormat: .PCMFormatFloat32, sampleRate: AVAudioSession.sharedInstance().sampleRate, channels: 2, interleaved: false)
+                self.avConverter = AVAudioConverter(fromFormat: format, toFormat: outFormat)
+                self.spotifyFormat.put(outFormat)
             }
             
-            let buffer = AVAudioPCMBuffer(PCMFormat: self.spotifyFormat.value!, frameCapacity: AVAudioFrameCount(frameCount))
+            let buffer = AVAudioPCMBuffer(PCMFormat: format, frameCapacity: AVAudioFrameCount(frameCount))
             let bufferPointer = UnsafeBufferPointer(start:UnsafePointer<Int16>(audioFrames), count:frameCount)
             let pointer = buffer.int16ChannelData[0]
             for x in 0..<frameCount {
@@ -385,9 +390,15 @@ class SpotifyAudioProvider: AudioProvider {
             }
             
             buffer.frameLength = AVAudioFrameCount(frameCount)
+            
+            
+            let floatBuffer = AVAudioPCMBuffer(PCMFormat: self.spotifyFormat.value!, frameCapacity: AVAudioFrameCount(frameCount))
+            do { try self.avConverter!.convertToBuffer(floatBuffer, fromBuffer: buffer) } catch { "error converting" }
+            
             if let delegate = self.engineDelegate {
-                delegate.provider(self.provider!, hasNewBuffer: buffer)
+                delegate.provider(self.provider!, hasNewBuffer: floatBuffer)
             }
+            
             /*
             if let format = self.outputFormat {
                 if self.audioConverter == nil {
