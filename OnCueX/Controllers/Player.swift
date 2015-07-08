@@ -356,14 +356,7 @@ class SpotifyAudioProvider: AudioProvider {
                 var outBuff:Void = Void()
                 
                 var inAudioBufferList = AudioBufferList.allocate(maximumBuffers: Int(audioDescription.numberOfChannelStreams()))
-                var x = 0
-                for buf in inAudioBufferList {
-                    var buf = buf
-                    buf.mData = UnsafeMutablePointer<Void>(audioFrames)
-                    buf.mDataByteSize = UInt32(frameCount) * audioDescription.mBytesPerFrame
-                    buf.mNumberChannels = UInt32(audioDescription.numberOfInterleavedChannels())
-                    
-                }
+                AEInitAudioBufferList(inAudioBufferList.unsafeMutablePointer, Int32(AudioBufferList.sizeInBytes(maximumBuffers: Int(audioDescription.numberOfChannelStreams()))), audioDescription, UnsafeMutablePointer<Void>(audioFrames), Int32(audioDescription.mBytesPerFrame) * Int32(frameCount))
                 let outBufferList = AudioBufferList.allocate(maximumBuffers: Int(format.numberOfChannelStreams()))
                 
                 checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), inAudioBufferList.unsafeMutablePointer, outBufferList.unsafeMutablePointer), "converting audio")
