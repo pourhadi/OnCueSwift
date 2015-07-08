@@ -244,6 +244,11 @@ class LibraryAudioProvider: AudioProvider {
 
 @available(iOS 9.0, *)
 class SpotifyAudioProvider: AudioProvider {
+    
+    init() {
+        self.audioController.provider = self
+    }
+    
     var outputFormat:AudioStreamBasicDescription? {
         get {
             return self.audioController.outputFormat
