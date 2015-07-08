@@ -297,27 +297,30 @@ class StackedImageView : UIView, StackedLayerDelegate {
     
     func adjustOffsets() {
 
-        for var x = self.imageViews.count-1; x >= 0; x-- {
-            let xmin:CGFloat = -(CGFloat(x) * 2)
-            let xmax = -xmin
-            let ymin:CGFloat = -(CGFloat(x) * 5)
-            let ymax = -ymin
-            let xTranslate:CGFloat
-            let yTranslate:CGFloat
-            if self.overrideAdjustments {
-                xTranslate = ExtrapolateValue(xmax, xmin, overrideXAdjustment)
-                yTranslate = ExtrapolateValue(ymax, ymin, overrideYAdjustment)
-            } else {
-                xTranslate = ExtrapolateValue(xmax, xmin, (xAdjustment+motionX))
-                yTranslate = ExtrapolateValue(ymax, ymin, (yAdjustment+motionY))
+        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: .CurveEaseIn, animations: { () -> Void in
+            for var x = self.imageViews.count-1; x >= 0; x-- {
+                let xmin:CGFloat = -(CGFloat(x) * 2)
+                let xmax = -xmin
+                let ymin:CGFloat = -(CGFloat(x) * 5)
+                let ymax = -ymin
+                let xTranslate:CGFloat
+                let yTranslate:CGFloat
+                if self.overrideAdjustments {
+                    xTranslate = ExtrapolateValue(xmax, xmin, self.overrideXAdjustment)
+                    yTranslate = ExtrapolateValue(ymax, ymin, self.overrideYAdjustment)
+                } else {
+                    xTranslate = ExtrapolateValue(xmax, xmin, (self.xAdjustment+self.motionX))
+                    yTranslate = ExtrapolateValue(ymax, ymin, (self.yAdjustment+self.motionY))
+                }
+                
+                
+                let imgView = self.imageViews[x]
+                let scale:CGFloat = 1 - (CGFloat(x) * 0.01)
+                imgView.transform = CGAffineTransformIdentity
+                imgView.transform = CGAffineTransformMakeScale(scale, scale)
+                imgView.transform = CGAffineTransformTranslate(imgView.transform, xTranslate, yTranslate)
             }
-            
-            
-            let imgView = self.imageViews[x]
-            let scale:CGFloat = 1 - (CGFloat(x) * 0.01)
-            imgView.transform = CGAffineTransformIdentity
-            imgView.transform = CGAffineTransformMakeScale(scale, scale)
-            imgView.transform = CGAffineTransformTranslate(imgView.transform, xTranslate, yTranslate)
-        }
+            }, completion: nil)
+        
     }
 }
