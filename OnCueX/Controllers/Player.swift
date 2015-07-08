@@ -371,6 +371,9 @@ list.mBuffers[0] = buf;*/
     lazy var streamController:SPTAudioStreamingController = SPTAudioStreamingController(clientId: _spotifyController.clientID, audioController: self.audioController)
 }
 
+struct ProviderPointer {
+    unowned var provider:AudioProvider
+}
 
 class CoreAudioPlayer:AudioProviderDelegate {
     
@@ -408,12 +411,12 @@ class CoreAudioPlayer:AudioProviderDelegate {
 
     let callback:AURenderCallback = { (inRefCon, renderFlags, timeStamp, outputBus, numFrames, bufferList) -> OSStatus in
         
-        var pointer = UnsafeMutablePointer<AudioProvider>(inRefCon)
-        let provider = pointer[0]
+        var pointer = UnsafeMutablePointer<ProviderPointer>(inRefCon)
+        let provider = pointer.memory.provider
         guard provider.ready else { return 0 }
         var bufSize:UInt32 = 0
         
-        pointer.memory.readFrames(numFrames, bufferList: bufferList, bufferSize: &bufSize)
+        provider.readFrames(numFrames, bufferList: bufferList, bufferSize: &bufSize)
         
         return 0
     }
@@ -488,7 +491,8 @@ class CoreAudioPlayer:AudioProviderDelegate {
         for provider in self.providers {
             var provider = provider
             provider.delegate = self
-            var callbackStruct:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: callback, inputProcRefCon: &provider)
+            var providerPointer = ProviderPointer(provider: provider)
+            var callbackStruct:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: callback, inputProcRefCon: &providerPointer)
             status = AudioUnitSetProperty(self.mixerUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, AudioUnitElement(x), &callbackStruct, UInt32(sizeof(AURenderCallbackStruct)))
             checkError(status, "add node input callback: \(provider.identifier)")
             x += 1
