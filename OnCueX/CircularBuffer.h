@@ -13,7 +13,7 @@
 - (void)add:(const void*)bytes length:(int32_t)length;
 - (int32_t)copy:(int32_t)length intoBuffer:(void*)buffer;
 
-- (void)add:(AudioBufferList)bufferList;
+- (void)add:(AudioBufferList*)bufferList frames:(UInt32)frames description:(AudioStreamBasicDescription)description;
 - (AudioBufferList*)getNextBuffer;
 
 - (void)reset;

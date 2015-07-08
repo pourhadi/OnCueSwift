@@ -361,8 +361,9 @@ class SpotifyAudioProvider: AudioProvider {
                 
                 checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), &inAudioBufferList, outBufferList), "converting audio")
                 
+                self.buffer.add(outBufferList, frames: UInt32(frameCount), description: format)
 //                checkError(AudioConverterConvertBuffer(self.audioConverter!, UInt32(frameCount) * UInt32(audioDescription.mBytesPerFrame) * 2, audioFrames, &outSize, &outBuff), "converting audio")
-                self.buffer.add(outBufferList.memory.mBuffers.mData, length: Int32(outBufferList.memory.mBuffers.mDataByteSize))
+//                self.buffer.add(outBufferList.memory.mBuffers.mData, length: Int32(outBufferList.memory.mBuffers.mDataByteSize))
             }
             return frameCount
         }

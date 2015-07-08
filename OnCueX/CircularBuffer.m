@@ -8,6 +8,7 @@
 
 #import "CircularBuffer.h"
 #import "TPCircularBuffer.h"
+#import "TPCircularBuffer+AudioBufferList.h"
 @import CoreAudio;
 
 #define kUnitSize sizeof(Float32)
@@ -22,13 +23,15 @@
 
 @implementation CircularBuffer
 
-- (void)add:(AudioBufferList)bufferList
+- (void)add:(AudioBufferList*)bufferList frames:(UInt32)frames description:(AudioStreamBasicDescription)description
 {
-    
+    TPCircularBufferCopyAudioBufferList(&_buffer, bufferList, nil, frames, &description);
 }
 
 - (AudioBufferList*)getNextBuffer {
-    return nil;
+    AudioBufferList *list = TPCircularBufferNextBufferList(&_buffer, nil);
+    TPCircularBufferConsumeNextBufferList(&_buffer);
+    return list;
 }
 
 - (id)init
