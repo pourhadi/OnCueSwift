@@ -353,9 +353,9 @@ class SpotifyAudioProvider: AudioProvider {
                     self.audioConverter = ref
                 }
                 var outSize:UInt32 = 0
-                let outBuf = UnsafeMutablePointer<Void>.alloc(frameCount)
-                checkError(AudioConverterConvertBuffer(self.audioConverter!, UInt32(frameCount) * UInt32(audioDescription.mBytesPerFrame) * 2, audioFrames, &outSize, outBuf), "converting audio")
-                self.buffer.add(outBuf, length: Int32(outSize))
+                var outBuff:Void = Void()
+                checkError(AudioConverterConvertBuffer(self.audioConverter!, UInt32(frameCount) * UInt32(audioDescription.mBytesPerFrame) * 2, audioFrames, &outSize, &outBuff), "converting audio")
+                self.buffer.add(&outBuff, length: Int32(outSize))
             }
             return frameCount
         }
