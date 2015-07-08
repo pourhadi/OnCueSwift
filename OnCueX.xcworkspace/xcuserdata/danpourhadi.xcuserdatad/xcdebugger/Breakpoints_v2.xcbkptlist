@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OnCueX/Controllers/Player.swift"
-            timestampString = "458034210.465804"
+            timestampString = "458035945.348779"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "84"
-            endingLineNumber = "84"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
             landmarkName = "startSession()"
             landmarkType = "5">
          </BreakpointContent>
@@ -33,68 +33,22 @@
             endingLineNumber = "146"
             landmarkName = "readFrames(_:bufferList:bufferSize:)"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "OnCueX.LibraryAudioProvider.buffer.getter : ObjectiveC.CircularBuffer"
-                  moduleName = "OnCueX"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/danpourhadi/Projects/OnCueX/OnCueX/Controllers/Player.swift"
-                  timestampString = "458035870.633846"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "16">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "OnCueX.LibraryAudioProvider.buffer.setter : ObjectiveC.CircularBuffer"
-                  moduleName = "OnCueX"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/danpourhadi/Projects/OnCueX/OnCueX/Controllers/Player.swift"
-                  timestampString = "458035870.634072"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "20">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "OnCueX.LibraryAudioProvider.buffer.materializeForSet : ObjectiveC.CircularBuffer"
-                  moduleName = "OnCueX"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/danpourhadi/Projects/OnCueX/OnCueX/Controllers/Player.swift"
-                  timestampString = "458035870.63423"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "12">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "OnCueX.LibraryAudioProvider.init (OnCueX.LibraryAudioProvider.Type)() -&gt; OnCueX.LibraryAudioProvider"
-                  moduleName = "OnCueX"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/danpourhadi/Projects/OnCueX/OnCueX/Controllers/Player.swift"
-                  timestampString = "458035870.63439"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "146"
-                  endingLineNumber = "146"
-                  offsetFromSymbolStart = "20">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "OnCueX/Controllers/Player.swift"
+            timestampString = "458035983.586695"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "474"
+            endingLineNumber = "474"
+            landmarkName = "init()"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
