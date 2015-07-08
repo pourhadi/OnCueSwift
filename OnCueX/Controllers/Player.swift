@@ -133,7 +133,7 @@ protocol AudioProviderDelegate:class {
     func provider(provider:AudioProvider?, var format:AudioStreamBasicDescription)
 }
 
-protocol AudioProvider: Identifiable {
+protocol AudioProvider: class, Identifiable {
     weak var delegate:AudioProviderDelegate? { get set }
     func startProvidingAudio(track:Playable)
     var ready:Bool { get }
