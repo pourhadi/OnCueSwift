@@ -21,6 +21,19 @@ func checkError(error:OSStatus, _ operation:String?) {
     print("error: \(operation)")
 }
 
+var clientFormat:AudioStreamBasicDescription = {
+    var clientFormat = AudioStreamBasicDescription()
+    clientFormat.mFormatID = kAudioFormatLinearPCM;
+    clientFormat.mFormatFlags       = kAudioFormatFlagIsBigEndian | kAudioFormatFlagIsPacked | kAudioFormatFlagIsFloat;
+    clientFormat.mSampleRate        = 44100;
+    clientFormat.mChannelsPerFrame  = 2;
+    clientFormat.mBitsPerChannel    = 32;
+    clientFormat.mBytesPerPacket    = (clientFormat.mBitsPerChannel / 8) * clientFormat.mChannelsPerFrame;
+    clientFormat.mFramesPerPacket   = 1;
+    clientFormat.mBytesPerFrame     = clientFormat.mBytesPerPacket;
+    return clientFormat
+}()
+
 var FloatDescription:AudioStreamBasicDescription = {
     var outputFormat = AudioStreamBasicDescription()
     outputFormat.mFormatID = kAudioFormatLinearPCM;
@@ -176,21 +189,11 @@ class LibraryAudioProvider: AudioProvider {
         
         checkError(ExtAudioFileGetProperty(audioFile, kExtAudioFileProperty_FileDataFormat, &dataSize, &asbd), "get file data format")
         
-        var clientFormat = AudioStreamBasicDescription()
-        clientFormat.mFormatID = kAudioFormatLinearPCM;
-        clientFormat.mFormatFlags       = kAudioFormatFlagIsBigEndian | kAudioFormatFlagIsPacked | kAudioFormatFlagIsFloat;
-        clientFormat.mSampleRate        = 44100;
-        clientFormat.mChannelsPerFrame  = 2;
-        clientFormat.mBitsPerChannel    = 32;
-        clientFormat.mBytesPerPacket    = (clientFormat.mBitsPerChannel / 8) * clientFormat.mChannelsPerFrame;
-        clientFormat.mFramesPerPacket   = 1;
-        clientFormat.mBytesPerFrame     = clientFormat.mBytesPerPacket;
-        
         if let delegate = self.delegate {
             delegate.provider(self, format: clientFormat)
         }
         checkError(ExtAudioFileSetProperty(audioFile, kExtAudioFileProperty_ClientDataFormat, UInt32(sizeof(AudioStreamBasicDescription)), &clientFormat), "set file client format")
-        self.clientFormat = clientFormat
+//        self.clientFormat = clientFormat
         
         self.frameIndex = 0
         self.ready = true
@@ -490,10 +493,11 @@ class CoreAudioPlayer:AudioProviderDelegate {
         // set mixer output to io input
         var mixerOutput = AudioStreamBasicDescription()
         var valSize:UInt32 = UInt32(sizeof(AudioStreamBasicDescription))
-        AudioUnitGetProperty(self.mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &mixerOutput, &valSize)
+        checkError(AudioUnitSetProperty(self.mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &clientFormat, valSize), "set mixer input format")
+
+        checkError(AudioUnitGetProperty(self.mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &mixerOutput, &valSize), "get mixer output format")
         status = AudioUnitSetProperty(self.ioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &mixerOutput, valSize)
         checkError(status, "set ioUnit input format")
-
         
         
         var x:UInt32 = 0
@@ -523,7 +527,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
     func provider(provider:AudioProvider?, var format:AudioStreamBasicDescription) {
         if let provider = provider {
             if let index = self.providers.index(provider) {
-                checkError(AudioUnitSetProperty(self.mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, AudioUnitElement(index), &format, UInt32(sizeof(AudioStreamBasicDescription))), "set mixer input format")
+//                checkError(AudioUnitSetProperty(self.mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, AudioUnitElement(index), &format, UInt32(sizeof(AudioStreamBasicDescription))), "set mixer input format")
             }
         }
     }
