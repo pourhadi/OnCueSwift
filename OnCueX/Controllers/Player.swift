@@ -69,6 +69,7 @@ class Player: AudioProviderDelegate {
         inFormatDescription = mainMixer.inputFormatForBus(0)
     }
     
+    let enginePlayer = EnginePlayer()
     let audioPlayer = CoreAudioPlayer()
     
     var frameIndex = 0
@@ -83,8 +84,10 @@ class Player: AudioProviderDelegate {
 //            self.playerNode.scheduleBuffer(buffer, completionHandler: nil)
 ////            
 
-            audioPlayer.currentTrack = track
-            audioPlayer.playing = true
+            enginePlayer.currentTrack = track
+            
+//            audioPlayer.currentTrack = track
+//            audioPlayer.playing = true
 //            if !self.engine.running {
 //                try self.engine.start()
 //            }
@@ -443,6 +446,9 @@ class EnginePlayer:AudioProviderEngineDelegate {
 
     init() {
         self.engine.attachNode(self.playerNode)
+        for provider in self.providers {
+            provider.engineDelegate = self
+        }
     }
 }
 
