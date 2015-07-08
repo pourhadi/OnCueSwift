@@ -398,6 +398,12 @@ class CoreAudioPlayer:AudioProviderDelegate {
     var mixerUnit:AudioUnit
     var mixerNode:AUNode
     
+    func checkError(error:OSStatus, _ operation:String?) {
+        guard error != noErr else { return }
+        
+        print("error: \(operation)")
+    }
+    
     init() {
         self.graph = AUGraph()
         self.ioUnit = AudioUnit()
@@ -405,27 +411,34 @@ class CoreAudioPlayer:AudioProviderDelegate {
         self.mixerUnit = AudioUnit()
         self.mixerNode = AUNode()
         
-        NewAUGraph(&graph)
+        var status:OSStatus = 0
+        status = NewAUGraph(&graph)
         
         // node creation
         //io node
         var ioUnitDescription:AudioComponentDescription = AudioComponentDescription(componentType: OSType(kAudioUnitType_Output),componentSubType: OSType(kAudioUnitSubType_RemoteIO),componentManufacturer: OSType(kAudioUnitManufacturer_Apple),componentFlags: 0,componentFlagsMask: 0)
-        AUGraphAddNode(self.graph, &ioUnitDescription, &ioNode)
+        status = AUGraphAddNode(self.graph, &ioUnitDescription, &ioNode)
+        checkError(status, "add ioNode")
         
         //mixer node
         var mixerUnitDescription:AudioComponentDescription = AudioComponentDescription(componentType: OSType(kAudioUnitType_Mixer),componentSubType: OSType(kAudioUnitSubType_MultiChannelMixer),componentManufacturer: OSType(kAudioUnitManufacturer_Apple),componentFlags: 0,componentFlagsMask: 0)
-        AUGraphAddNode(self.graph, &mixerUnitDescription, &mixerNode)
+        status = AUGraphAddNode(self.graph, &mixerUnitDescription, &mixerNode)
+        checkError(status, "add mixer node")
         
         //open the graph
-        AUGraphOpen(self.graph)
+        status = AUGraphOpen(self.graph)
+        checkError(status, "open graph")
         
         //grab the audio units
-        AUGraphNodeInfo(self.graph, self.ioNode, nil, &ioUnit)
-        AUGraphNodeInfo(self.graph, self.mixerNode, nil, &mixerUnit)
-        
+        status = AUGraphNodeInfo(self.graph, self.ioNode, nil, &ioUnit)
+        checkError(status, "get ioUnit")
+        status = AUGraphNodeInfo(self.graph, self.mixerNode, nil, &mixerUnit)
+        checkError(status, "get mixerUnit")
+
         // connect mixer to IO
-        AUGraphConnectNodeInput(self.graph, self.mixerNode, 0, self.ioNode, 0)
-        
+        status = AUGraphConnectNodeInput(self.graph, self.mixerNode, 0, self.ioNode, 0)
+        checkError(status, "connect mixer out to node in")
+
         // set max frames / slice
         let val:UInt32 = 4096
         var maxFramesSlice:UInt32 = val
@@ -450,8 +463,9 @@ class CoreAudioPlayer:AudioProviderDelegate {
         var mixerOutput = AudioStreamBasicDescription()
         var valSize:UInt32 = UInt32(sizeof(AudioStreamBasicDescription))
         AudioUnitGetProperty(self.mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &mixerOutput, &valSize)
-        AudioUnitSetProperty(self.ioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &mixerOutput, valSize)
-        
+        status = AudioUnitSetProperty(self.ioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &mixerOutput, valSize)
+        checkError(status, "set ioUnit input format")
+
         let callback:AURenderCallback = { (inRefCon, renderFlags, timeStamp, outputBus, numFrames, bufferList) -> OSStatus in
             
             let pointer = UnsafePointer<AudioProvider>(inRefCon)
@@ -468,14 +482,19 @@ class CoreAudioPlayer:AudioProviderDelegate {
             var provider = provider
             provider.delegate = self
             var callback:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: callback, inputProcRefCon: &provider)
-            AUGraphSetNodeInputCallback(self.graph, self.mixerNode, x, &callback)
+            status = AUGraphSetNodeInputCallback(self.graph, self.mixerNode, x, &callback)
+            checkError(status, "add node input callback: \(provider.identifier)")
             x += 1
         }
         
-        AudioUnitInitialize(self.ioUnit)
-        AudioUnitInitialize(self.mixerUnit)
-        
+        status = AudioUnitInitialize(self.ioUnit)
+        checkError(status, "init ioUnit")
+        status = AudioUnitInitialize(self.mixerUnit)
+        checkError(status, "init mixerUnit")
+
         AudioOutputUnitStart(self.ioUnit)
+        checkError(status, "start ioUnit")
+
     }
     
     func provider(provider:AudioProvider?, var format:AudioStreamBasicDescription) {
