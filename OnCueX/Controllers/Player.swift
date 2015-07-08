@@ -523,7 +523,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
     func provider(provider:AudioProvider?, var format:AudioStreamBasicDescription) {
         if let provider = provider {
             if let index = self.providers.index(provider) {
-                AudioUnitSetProperty(self.mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, AudioUnitElement(index), &format, UInt32(sizeof(AudioStreamBasicDescription)))
+                checkError(AudioUnitSetProperty(self.mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, AudioUnitElement(index), &format, UInt32(sizeof(AudioStreamBasicDescription))), "set mixer input format")
             }
         }
     }
