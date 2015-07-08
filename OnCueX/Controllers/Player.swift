@@ -144,12 +144,17 @@ class LibraryAudioProvider: AudioProvider {
     var ready = false
     
     func readFrames(var frames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>, bufferSize:UnsafeMutablePointer<UInt32>) {
-        checkError(ExtAudioFileSeek(audioFile, self.frameIndex), "seek audio file")
-
-        checkError(ExtAudioFileRead(self.audioFile, &frames, bufferList), "read audio file")
-        self.frameIndex += Int64(frames)
-
-        bufferSize.memory = bufferList.memory.mBuffers.mDataByteSize / UInt32(sizeof(Float32))
+        
+        dispatch_sync(dispatch_get_main_queue()) { () -> Void in
+            
+            checkError(ExtAudioFileSeek(self.audioFile, self.frameIndex), "seek audio file")
+            
+            checkError(ExtAudioFileRead(self.audioFile, &frames, bufferList), "read audio file")
+            self.frameIndex += Int64(frames)
+            
+            bufferSize.memory = bufferList.memory.mBuffers.mDataByteSize / UInt32(sizeof(Float32))
+        }
+    
     }
     
     var buffer = CircularBuffer()
