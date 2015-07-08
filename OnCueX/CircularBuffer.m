@@ -22,6 +22,15 @@
 
 @implementation CircularBuffer
 
+- (void)add:(AudioBufferList)bufferList
+{
+    
+}
+
+- (AudioBufferList*)getNextBuffer {
+    return nil;
+}
+
 - (id)init
 {
     if (self = [super init]) {

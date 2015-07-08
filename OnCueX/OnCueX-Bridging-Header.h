@@ -4,4 +4,6 @@
 
 #import "Spotify/Spotify.h"
 #import "TheAmazingAudioEngine/TPCircularBuffer.h"
+#import "TheAmazingAudioEngine/TPCircularBuffer+AudioBufferList.h"
+
 #import "CircularBuffer.h"
