@@ -407,13 +407,13 @@ class SpotifyAudioProvider: AudioProvider {
             memcpy(buffer.audioBufferList[0].mBuffers.mData, audioFrames, (frameCount) * Int(audioDescription.mBytesPerFrame))
             buffer.frameLength = AVAudioFrameCount(frameCount)
 
-//            checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), buffer.audioBufferList, floatBuffer.mutableAudioBufferList), "error converting")
+            checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), buffer.audioBufferList, floatBuffer.mutableAudioBufferList), "error converting")
             
 //            self.avConverter!.convertToBuffer(floatBuffer, error: nil) { (count, status) -> AVAudioBuffer? in
 //                               status.memory = .HaveData
 //                return buffer
 //            }
-            do { try self.avConverter!.convertToBuffer(floatBuffer, fromBuffer: buffer) } catch { "error converting" }
+//            do { try self.avConverter!.convertToBuffer(floatBuffer, fromBuffer: buffer) } catch { "error converting" }
             floatBuffer.frameLength = AVAudioFrameCount(frameCount)
             if let delegate = self.engineDelegate {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
