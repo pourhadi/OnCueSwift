@@ -143,17 +143,13 @@ protocol AudioProvider: class, Identifiable {
 class LibraryAudioProvider: AudioProvider {
     var ready = false
     
-    func readFrames(var frames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>, bufferSize:UnsafeMutablePointer<UInt32>) {
+    func readFrames(frames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>, bufferSize:UnsafeMutablePointer<UInt32>) {
         
-        dispatch_sync(dispatch_get_main_queue()) { () -> Void in
-            
-            checkError(ExtAudioFileSeek(self.audioFile, self.frameIndex), "seek audio file")
-            
-            checkError(ExtAudioFileRead(self.audioFile, &frames, bufferList), "read audio file")
-            self.frameIndex += Int64(frames)
-            
-            bufferSize.memory = bufferList.memory.mBuffers.mDataByteSize / UInt32(sizeof(Float32))
-        }
+        checkError(ExtAudioFileSeek(self.audioFile, self.frameIndex), "seek audio file")
+        var readFrames:UInt32 = frames
+        checkError(ExtAudioFileRead(self.audioFile, &readFrames, bufferList), "read audio file")
+        self.frameIndex += Int64(readFrames)
+        bufferSize.memory = bufferList.memory.mBuffers.mDataByteSize / UInt32(sizeof(Float32))
     
     }
     
@@ -504,8 +500,8 @@ class CoreAudioPlayer:AudioProviderDelegate {
         for provider in self.providers {
             let provider = provider
             provider.delegate = self
-            var providerPointer = ProviderPointer(provider: provider)
-            var pointer = UnsafeMutablePointer<ProviderPointer>.alloc(0)
+            let providerPointer = ProviderPointer(provider: provider)
+            let pointer = UnsafeMutablePointer<ProviderPointer>.alloc(0)
             pointer.initialize(providerPointer)
             var callbackStruct:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: callback, inputProcRefCon:pointer)
             status = AudioUnitSetProperty(self.mixerUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, AudioUnitElement(x), &callbackStruct, UInt32(sizeof(AURenderCallbackStruct)))
