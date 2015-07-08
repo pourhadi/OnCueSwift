@@ -385,6 +385,14 @@ class SpotifyAudioProvider: AudioProvider {
                 let outFormat = AVAudioFormat(commonFormat: .PCMFormatInt16, sampleRate: format.sampleRate, channels: 2, interleaved: false)
                 self.avConverter = AVAudioConverter(fromFormat: format, toFormat: outFormat)
                 self.spotifyFormat.put(outFormat)
+                
+                if self.audioConverter == nil {
+                    let exportFormat = outFormat.streamDescription
+                    var ref:AudioConverterRef = AudioConverterRef()
+                    var inFormat = audioDescription
+                    checkError(AudioConverterNew(&inFormat, exportFormat, &ref), "Create audio converter")
+                    self.audioConverter = ref
+                }
             }
             
             let buffer = AVAudioPCMBuffer(PCMFormat: format, frameCapacity: AVAudioFrameCount(frameCount))
@@ -398,24 +406,15 @@ class SpotifyAudioProvider: AudioProvider {
             
             buffer.frameLength = AVAudioFrameCount(frameCount)
             let floatBuffer = AVAudioPCMBuffer(PCMFormat: self.spotifyFormat.value!, frameCapacity: AVAudioFrameCount(frameCount))
-            do { try self.avConverter!.convertToBuffer(floatBuffer, fromBuffer: buffer) } catch { "error converting" }
+            
+            checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), buffer.audioBufferList, floatBuffer.mutableAudioBufferList), "error converting")
+            
+//            do { try self.avConverter!.convertToBuffer(floatBuffer, fromBuffer: buffer) } catch { "error converting" }
             
             if let delegate = self.engineDelegate {
                 delegate.provider(self.provider!, hasNewBuffer: floatBuffer)
             }
             
-            /*
-            if let format = self.outputFormat {
-                if self.audioConverter == nil {
-                    var ref:AudioConverterRef = AudioConverterRef()
-                    var outFormat = format
-                    var inFormat = audioDescription
-                    checkError(AudioConverterNew(&inFormat, &outFormat, &ref), "Create audio converter")
-                    self.audioConverter = ref
-                }
-                
-               
-            }*/
             return frameCount
         }
     }
