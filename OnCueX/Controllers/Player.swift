@@ -404,7 +404,7 @@ class SpotifyAudioProvider: AudioProvider {
             
             let floatBuffer = AVAudioPCMBuffer(PCMFormat: self.spotifyFormat.value!, frameCapacity: AVAudioFrameCount(frameCount))
             let buffer = AVAudioPCMBuffer(PCMFormat: format, frameCapacity: AVAudioFrameCount(frameCount))
-            memcpy(buffer.audioBufferList[0].mBuffers.mData, audioFrames, (frameCount) * Int(audioDescription.mBytesPerFrame / 2))
+            memcpy(buffer.audioBufferList[0].mBuffers.mData, audioFrames, (frameCount) * Int(audioDescription.mBytesPerFrame))
             buffer.frameLength = AVAudioFrameCount(frameCount)
 
 //            checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), buffer.audioBufferList, floatBuffer.mutableAudioBufferList), "error converting")
