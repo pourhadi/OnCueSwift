@@ -403,20 +403,22 @@ class SpotifyAudioProvider: AudioProvider {
 //            buffer.audioBufferList.memory.mBuffers.mData = &frames
             
             let floatBuffer = AVAudioPCMBuffer(PCMFormat: self.spotifyFormat.value!, frameCapacity: AVAudioFrameCount(frameCount))
-            
+            let buffer = AVAudioPCMBuffer(PCMFormat: format, frameCapacity: AVAudioFrameCount(frameCount))
+            memcpy(buffer.audioBufferList[0].mBuffers.mData, audioFrames, (frameCount) * Int(audioDescription.mBytesPerFrame / 2))
+            buffer.frameLength = AVAudioFrameCount(frameCount)
+
 //            checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), buffer.audioBufferList, floatBuffer.mutableAudioBufferList), "error converting")
             
-            self.avConverter!.convertToBuffer(floatBuffer, error: nil) { (count, status) -> AVAudioBuffer? in
-                let buffer = AVAudioPCMBuffer(PCMFormat: format, frameCapacity: AVAudioFrameCount(frameCount))
-                memcpy(buffer.audioBufferList[0].mBuffers.mData, audioFrames, (frameCount) * Int(audioDescription.mBytesPerFrame / 2))
-                buffer.frameLength = AVAudioFrameCount(frameCount)
-                status.memory = .HaveData
-                return buffer
-            }
-//            do { try self.avConverter!.convertToBuffer(floatBuffer, fromBuffer: buffer) } catch { "error converting" }
+//            self.avConverter!.convertToBuffer(floatBuffer, error: nil) { (count, status) -> AVAudioBuffer? in
+//                               status.memory = .HaveData
+//                return buffer
+//            }
+            do { try self.avConverter!.convertToBuffer(floatBuffer, fromBuffer: buffer) } catch { "error converting" }
             floatBuffer.frameLength = AVAudioFrameCount(frameCount)
             if let delegate = self.engineDelegate {
-                delegate.provider(self.provider!, hasNewBuffer: floatBuffer)
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    delegate.provider(self.provider!, hasNewBuffer: floatBuffer)
+                })
             }
             
             return frameCount
