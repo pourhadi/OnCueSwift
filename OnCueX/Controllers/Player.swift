@@ -430,6 +430,8 @@ class CoreAudioPlayer:AudioProviderDelegate {
         // node creation
         //io node
         var ioUnitDescription:AudioComponentDescription = AudioComponentDescription(componentType: OSType(kAudioUnitType_Output),componentSubType: OSType(kAudioUnitSubType_RemoteIO),componentManufacturer: OSType(kAudioUnitManufacturer_Apple),componentFlags: 0,componentFlagsMask: 0)
+        let defaultOutput = AudioComponentFindNext(nil, &ioUnitDescription)
+        AudioComponentInstanceNew(defaultOutput, &ioUnit)
         status = AUGraphAddNode(self.graph, &ioUnitDescription, &ioNode)
         checkError(status, "add ioNode")
         
@@ -491,6 +493,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
             x += 1
         }
         
+        checkError(AUGraphInitialize(self.graph), "initialize graph")
         status = AudioUnitInitialize(self.ioUnit)
         checkError(status, "init ioUnit")
         status = AudioUnitInitialize(self.mixerUnit)
