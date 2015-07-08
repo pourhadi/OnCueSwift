@@ -151,6 +151,8 @@ protocol AudioProviderDelegate:class {
 }
 
 protocol AudioProvider: class, Identifiable {
+    var engineDelegate:AudioProviderEngineDelegate? { get set }
+
     weak var delegate:AudioProviderDelegate? { get set }
     func startProvidingAudio(track:Playable) -> SignalProducer<AVAudioFormat, NoError>
     var ready:Bool { get }
@@ -326,7 +328,18 @@ class SpotifyAudioProvider: AudioProvider {
         }
     }*/
     
+    var engineDelegate:AudioProviderEngineDelegate? {
+        get {
+            return self.audioController.engineDelegate
+        }
+        set {
+            self.audioController.engineDelegate = newValue
+        }
+    }
+
     class SpotifyCoreAudioController : SPTCoreAudioController {
+        var engineDelegate:AudioProviderEngineDelegate?
+
         var buffer = CircularBuffer()
         var outputFormat:AudioStreamBasicDescription?
 
@@ -360,6 +373,18 @@ class SpotifyAudioProvider: AudioProvider {
                 let format = AVAudioFormat(streamDescription: &audioDescription)
                 self.spotifyFormat.put(format)
             }
+            
+            let buffer = AVAudioPCMBuffer(PCMFormat: self.spotifyFormat.value!, frameCapacity: AVAudioFrameCount(frameCount))
+            let bufferPointer = UnsafeBufferPointer(start:UnsafePointer<Int16>(audioFrames), count:frameCount)
+            let pointer = buffer.int16ChannelData[0]
+            for x in 0..<frameCount {
+                pointer[x] = bufferPointer[x]
+            }
+            
+            buffer.frameLength = AVAudioFrameCount(frameCount)
+            if let delegate = self.engineDelegate {
+                delegate.provider(self.provider!, hasNewBuffer: buffer)
+            }
             /*
             if let format = self.outputFormat {
                 if self.audioConverter == nil {
@@ -387,17 +412,30 @@ struct ProviderPointer {
 class EnginePlayer:AudioProviderEngineDelegate {
     
     func provider(provider:AudioProvider, hasNewBuffer:AVAudioPCMBuffer) {
-        
+        self.playerNode.scheduleBuffer(hasNewBuffer, completionHandler: nil)
     }
 
     let engine = AVAudioEngine()
     var mixerNode:AVAudioMixerNode {
         return self.engine.mainMixerNode
     }
+    
     let playerNode = AVAudioPlayerNode()
     var currentTrack:TrackItem? {
         didSet {
-            
+            if let track = self.currentTrack {
+                if let providerIndex = self.providers.index(track.source) {
+                    let provider = self.providers[providerIndex]
+                    provider.startProvidingAudio(track)
+                    |> start(next: { (format) -> () in
+                        self.engine.connect(self.playerNode, to: self.mixerNode, format: format)
+                        self.engine.connect(self.mixerNode, to: self.engine.outputNode, format: format)
+                        
+                        self.playerNode.play()
+                    })
+                }
+            }
+
         }
     }
     
