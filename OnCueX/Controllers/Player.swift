@@ -12,7 +12,6 @@ import MediaPlayer
 import CoreAudio
 import TheAmazingAudioEngine
 import ReactiveCocoa
-@available(iOS 9.0, *)
 let _player = Player()
 
 func checkError(error:OSStatus, _ operation:String?) {
@@ -49,7 +48,6 @@ var FloatDescription:AudioStreamBasicDescription = {
     }()
 
 var inFormatDescription:AVAudioFormat?
-@available(iOS 9.0, *)
 class Player: AudioProviderDelegate {
     var engine:AVAudioEngine = AVAudioEngine()
     let playerNode = AVAudioPlayerNode()
@@ -242,7 +240,6 @@ class LibraryAudioProvider: AudioProvider {
     
 }
 
-@available(iOS 9.0, *)
 class SpotifyAudioProvider: AudioProvider {
     
     init() {
@@ -348,7 +345,6 @@ class SpotifyAudioProvider: AudioProvider {
         }
     }
 
-    @available(iOS 9.0, *)
     class SpotifyCoreAudioController : SPTCoreAudioController {
         var engineDelegate:AudioProviderEngineDelegate?
 
@@ -366,8 +362,6 @@ class SpotifyAudioProvider: AudioProvider {
         weak var providerDelegate:AudioProviderDelegate?
         weak var provider:SpotifyAudioProvider?
         
-        var avConverter:AVAudioConverter?
-        
         var audioConverter:AudioConverterRef?
         var inFormat:AVAudioFormat?
         var converter:AEFloatConverter?
@@ -383,7 +377,7 @@ class SpotifyAudioProvider: AudioProvider {
             if self.spotifyFormat.value == nil {
                 
                 let outFormat = AVAudioFormat(commonFormat: .PCMFormatFloat32, sampleRate: format.sampleRate, channels: 2, interleaved: false)
-                self.avConverter = AVAudioConverter(fromFormat: format, toFormat: outFormat)
+//                self.avConverter = AVAudioConverter(fromFormat: format, toFormat: outFormat)
                 self.spotifyFormat.put(outFormat)
                 
                 if self.audioConverter == nil {
