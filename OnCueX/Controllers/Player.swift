@@ -434,6 +434,9 @@ class EnginePlayer:AudioProviderEngineDelegate {
                         self.engine.connect(self.playerNode, to: self.mixerNode, format: format)
                         self.engine.connect(self.mixerNode, to: self.engine.outputNode, format: format)
                         
+                        if !self.engine.running {
+                            do { try self.engine.start() } catch { "error starting engine" }
+                        }
                         self.playerNode.play()
                     })
                 }
