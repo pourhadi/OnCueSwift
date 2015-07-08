@@ -15,7 +15,7 @@ import TheAmazingAudioEngine
 let _player = Player()
 
 func checkError(error:OSStatus, _ operation:String?) {
-    print("status:\(error)")
+    print("status:\(error) for: \(operation)")
     guard error != noErr else { return }
     
     print("error: \(operation)")
