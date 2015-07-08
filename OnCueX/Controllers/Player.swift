@@ -486,7 +486,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
             var provider = provider
             provider.delegate = self
             var callbackStruct:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: callback, inputProcRefCon: &provider)
-            status = AUGraphSetNodeInputCallback(self.graph, self.mixerNode, x, &callbackStruct)
+            status = AudioUnitSetProperty(self.mixerUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, AudioUnitElement(x), &callbackStruct, UInt32(sizeof(AURenderCallbackStruct)))
             checkError(status, "add node input callback: \(provider.identifier)")
             x += 1
         }
