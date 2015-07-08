@@ -363,8 +363,7 @@ class SpotifyAudioProvider: AudioProvider {
                 if inBuf.int16ChannelData != nil {
                     let chunk = inBuf.int16ChannelData[0]
                     for x in 0..<frameCount {
-                        var data = chunk[x]
-                        data = Int16(audioFrames[x])
+                        chunk[x] = Int16(audioFrames[x])
                     }
                 }
                 inBuf.frameLength = AVAudioFrameCount(frameCount)
