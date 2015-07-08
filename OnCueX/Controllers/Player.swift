@@ -123,32 +123,66 @@ protocol AudioProviderDelegate:class {
 protocol AudioProvider: Identifiable {
     weak var delegate:AudioProviderDelegate? { get set }
     func startProvidingAudio(track:Playable)
+    
+    func readFrames(var frames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>, bufferSize:UnsafeMutablePointer<UInt32>)
 }
 
 class LibraryAudioProvider: AudioProvider {
+    func readFrames(var frames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>, bufferSize:UnsafeMutablePointer<UInt32>) {
+        ExtAudioFileSeek(audioFile, self.frameIndex)
+        ExtAudioFileRead(self.audioFile, &frames, bufferList)
+        bufferSize.memory = bufferList.memory.mBuffers.mDataByteSize / UInt32(sizeof(Float32))
+        self.frameIndex += Int64(frames)
+    }
+    
+    var buffer = CircularBuffer()
+    
     var delegate:AudioProviderDelegate?
     
     var identifier:String {
         return "Library"
     }
     
+    var audioFile:ExtAudioFileRef = ExtAudioFileRef()
+    var clientFormat = AudioStreamBasicDescription()
+    var frameIndex:Int64 = 0
     func startProvidingAudio(track: Playable) {
-        do {
-            let file = try AVAudioFile(forReading: track.assetURL)
-            let buffer = AVAudioPCMBuffer(PCMFormat: file.processingFormat, frameCapacity: AVAudioFrameCount(file.length))
-            try  file.readIntoBuffer(buffer)
-            if let del = self.delegate {
-                del.provider(self, hasNewBuffer: buffer)
-            }
-        } catch {
-            print("error")
+            ExtAudioFileOpenURL(track.assetURL, &audioFile)
+            
+            var totalFrames:Int64 = 0
+            var dataSize:UInt32 = UInt32(sizeof(Int64))
+            ExtAudioFileGetProperty(audioFile, kExtAudioFileProperty_FileLengthFrames, &dataSize, &totalFrames)
+            
+            var asbd = AudioStreamBasicDescription()
+            dataSize = UInt32(sizeof(AudioStreamBasicDescription))
+            
+            ExtAudioFileGetProperty(audioFile, kExtAudioFileProperty_FileDataFormat, &dataSize, &asbd)
+            
+            var clientFormat = AudioStreamBasicDescription()
+            clientFormat.mFormatID = kAudioFormatLinearPCM;
+            clientFormat.mFormatFlags       = kAudioFormatFlagIsBigEndian | kAudioFormatFlagIsPacked | kAudioFormatFlagIsFloat;
+            clientFormat.mSampleRate        = 44100;
+            clientFormat.mChannelsPerFrame  = 2;
+            clientFormat.mBitsPerChannel    = 32;
+            clientFormat.mBytesPerPacket    = (clientFormat.mBitsPerChannel / 8) * clientFormat.mChannelsPerFrame;
+            clientFormat.mFramesPerPacket   = 1;
+            clientFormat.mBytesPerFrame     = clientFormat.mBytesPerPacket;
+  
+            ExtAudioFileSetProperty(audioFile, kExtAudioFileProperty_ClientDataFormat, UInt32(sizeof(AudioStreamBasicDescription)), &clientFormat)
+            self.clientFormat = clientFormat
+            
+            self.frameIndex = 0
+            
         }
-    }
     
 }
 
 class SpotifyAudioProvider: AudioProvider {
-    
+    func readFrames(var frames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>, bufferSize:UnsafeMutablePointer<UInt32>) {
+        
+    }
+    var buffer = CircularBuffer()
+
     var identifier:String {
         return "Spotify"
     }
