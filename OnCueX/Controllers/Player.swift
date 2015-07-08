@@ -352,16 +352,26 @@ class SpotifyAudioProvider: AudioProvider {
                     checkError(AudioConverterNew(&inFormat, &outFormat, &ref), "Create audio converter")
                     self.audioConverter = ref
                 }
-                var outSize:UInt32 = 0
-                var outBuff:Void = Void()
                 
-                var inAudioBufferList = AudioBufferList.allocate(maximumBuffers: Int(audioDescription.numberOfChannelStreams()))
-                AEInitAudioBufferList(inAudioBufferList.unsafeMutablePointer, Int32(AudioBufferList.sizeInBytes(maximumBuffers: Int(audioDescription.numberOfChannelStreams()))), audioDescription, UnsafeMutablePointer<Void>(audioFrames), Int32(audioDescription.mBytesPerFrame) * Int32(frameCount))
+                var inDescription = audioDescription
+                let inBuf = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &inDescription), frameCapacity: AVAudioFrameCount(frameCount))
+                if inBuf.int16ChannelData != nil {
+                    var pointer = inBuf.int16ChannelData.memory
+                    pointer = UnsafeMutablePointer<Int16>(audioFrames)
+                }
+                inBuf.frameLength = AVAudioFrameCount(frameCount)
+//                var outSize:UInt32 = 0
+//                var outBuff:Void = Void()
+//                
+//                var inAudioBufferList = AudioBufferList.allocate(maximumBuffers: Int(audioDescription.numberOfChannelStreams()))
+//                AEInitAudioBufferList(inAudioBufferList.unsafeMutablePointer, Int32(AudioBufferList.sizeInBytes(maximumBuffers: Int(audioDescription.numberOfChannelStreams()))), audioDescription, UnsafeMutablePointer<Void>(audioFrames), Int32(audioDescription.mBytesPerFrame) * Int32(frameCount))
+                var format = format
                 let outBufferList = AudioBufferList.allocate(maximumBuffers: Int(format.numberOfChannelStreams()))
-                
-                checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), inAudioBufferList.unsafeMutablePointer, outBufferList.unsafeMutablePointer), "converting audio")
-                
-                self.buffer.add(outBufferList.unsafeMutablePointer, frames: UInt32(frameCount), description: format)
+                let outBuf = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &format), frameCapacity: AVAudioFrameCount(frameCount))
+                checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), inBuf.mutableAudioBufferList, outBuf.mutableAudioBufferList), "converting audio")
+                outBuf.frameLength = AVAudioFrameCount(frameCount)
+
+                self.buffer.add(outBuf.mutableAudioBufferList, frames: UInt32(frameCount), description: format)
 //                checkError(AudioConverterConvertBuffer(self.audioConverter!, UInt32(frameCount) * UInt32(audioDescription.mBytesPerFrame) * 2, audioFrames, &outSize, &outBuff), "converting audio")
 //                self.buffer.add(outBufferList.memory.mBuffers.mData, length: Int32(outBufferList.memory.mBuffers.mDataByteSize))
             }
