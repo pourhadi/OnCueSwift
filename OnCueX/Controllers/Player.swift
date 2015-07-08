@@ -349,7 +349,7 @@ class SpotifyAudioProvider: AudioProvider {
                     var ref:AudioConverterRef = AudioConverterRef()
                     var outFormat = format
                     var inFormat = audioDescription
-                    AudioConverterNew(&inFormat, &outFormat, &ref)
+                    checkError(AudioConverterNew(&inFormat, &outFormat, &ref), "Create audio converter")
                     self.audioConverter = ref
                 }
                 var outSize:UInt32 = 0
