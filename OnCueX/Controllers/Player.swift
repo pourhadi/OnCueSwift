@@ -316,3 +316,64 @@ list.mBuffers[0] = buf;*/
     let audioController = SpotifyCoreAudioController()
     lazy var streamController:SPTAudioStreamingController = SPTAudioStreamingController(clientId: _spotifyController.clientID, audioController: self.audioController)
 }
+
+
+class CoreAudioPlayer {
+    
+    var graph:AUGraph
+    var ioUnit:AudioUnit
+    var ioNode:AUNode
+    var mixerUnit:AudioUnit
+    var mixerNode:AUNode
+    
+    init() {
+        self.graph = AUGraph()
+        self.ioUnit = AudioUnit()
+        self.ioNode = AUNode()
+        self.mixerUnit = AudioUnit()
+        self.mixerNode = AUNode()
+        
+        NewAUGraph(&graph)
+        
+        // node creation
+        //io node
+        var ioUnitDescription:AudioComponentDescription = AudioComponentDescription(componentType: OSType(kAudioUnitType_Output),componentSubType: OSType(kAudioUnitSubType_RemoteIO),componentManufacturer: OSType(kAudioUnitManufacturer_Apple),componentFlags: 0,componentFlagsMask: 0)
+        AUGraphAddNode(self.graph, &ioUnitDescription, &ioNode)
+        
+        //mixer node
+        var mixerUnitDescription:AudioComponentDescription = AudioComponentDescription(componentType: OSType(kAudioUnitType_Mixer),componentSubType: OSType(kAudioUnitSubType_MultiChannelMixer),componentManufacturer: OSType(kAudioUnitManufacturer_Apple),componentFlags: 0,componentFlagsMask: 0)
+        AUGraphAddNode(self.graph, &mixerUnitDescription, &mixerNode)
+        
+        //open the graph
+        AUGraphOpen(self.graph)
+        
+        //grab the audio units
+        AUGraphNodeInfo(self.graph, self.ioNode, nil, &ioUnit)
+        AUGraphNodeInfo(self.graph, self.mixerNode, nil, &mixerUnit)
+        
+        // connect mixer to IO
+        AUGraphConnectNodeInput(self.graph, self.mixerNode, 0, self.ioNode, 0)
+        
+        // set max frames / slice
+        let val:UInt32 = 4096
+        var maxFramesSlice:UInt32 = val
+        AudioUnitSetProperty (
+            self.ioUnit,
+            kAudioUnitProperty_MaximumFramesPerSlice,
+            kAudioUnitScope_Global,
+            0,
+            &maxFramesSlice,
+            UInt32(sizeof (UInt32))
+        )
+        AudioUnitSetProperty (
+            self.mixerUnit,
+            kAudioUnitProperty_MaximumFramesPerSlice,
+            kAudioUnitScope_Global,
+            0,
+            &maxFramesSlice,
+            UInt32(sizeof (UInt32))
+        )
+    }
+    
+}
+
