@@ -150,10 +150,14 @@ protocol AudioProvider: class, Identifiable {
     weak var delegate:AudioProviderDelegate? { get set }
     func startProvidingAudio(track:Playable)
     var ready:Bool { get }
+    var outputFormat:AudioStreamBasicDescription? { get set }
     func readFrames(var frames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>, bufferSize:UnsafeMutablePointer<UInt32>)
 }
 
 class LibraryAudioProvider: AudioProvider {
+    
+    var outputFormat:AudioStreamBasicDescription?
+    
     var ready = false
     
     func readFrames(frames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>, bufferSize:UnsafeMutablePointer<UInt32>) {
@@ -192,7 +196,10 @@ class LibraryAudioProvider: AudioProvider {
         if let delegate = self.delegate {
             delegate.provider(self, format: clientFormat)
         }
-        checkError(ExtAudioFileSetProperty(audioFile, kExtAudioFileProperty_ClientDataFormat, UInt32(sizeof(AudioStreamBasicDescription)), &clientFormat), "set file client format")
+        if let format = self.outputFormat {
+            var format = format
+            checkError(ExtAudioFileSetProperty(audioFile, kExtAudioFileProperty_ClientDataFormat, UInt32(sizeof(AudioStreamBasicDescription)), &format), "set file client format")
+        }
 //        self.clientFormat = clientFormat
         
         self.frameIndex = 0
@@ -202,12 +209,24 @@ class LibraryAudioProvider: AudioProvider {
 }
 
 class SpotifyAudioProvider: AudioProvider {
-    
-    var ready = false
-    func readFrames(var frames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>, bufferSize:UnsafeMutablePointer<UInt32>) {
-        
+    var outputFormat:AudioStreamBasicDescription? {
+        get {
+            return self.audioController.outputFormat
+        }
+        set {
+            self.audioController.outputFormat = newValue
+        }
     }
-    var buffer = CircularBuffer()
+
+    var ready = false
+    func readFrames(frames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>, bufferSize:UnsafeMutablePointer<UInt32>) {
+        if let output = self.outputFormat {
+            self.buffer.copy(Int32(frames)*Int32(output.mBytesPerFrame), intoBuffer: bufferList.memory.mBuffers.mData)
+        }
+    }
+    var buffer:CircularBuffer {
+        return self.audioController.buffer
+    }
 
     var identifier:String {
         return "Spotify"
@@ -227,17 +246,20 @@ class SpotifyAudioProvider: AudioProvider {
         if !self.streamController.loggedIn {
             self.streamController.loginWithSession(_spotifyController.session!, callback: { (error) -> Void in
                 self.streamController.playURIs([track.assetURL], withOptions: nil, callback: { (error) -> Void in
-                    
+                    self.ready = true
                 })
             })
         } else {
             self.streamController.playURIs([track.assetURL], withOptions: nil, callback: { (error) -> Void in
-                
+                self.ready = true
             })
         }
     }
     
     class SpotifyCoreAudioController : SPTCoreAudioController {
+        var buffer = CircularBuffer()
+        var outputFormat:AudioStreamBasicDescription?
+
         struct RenderContextInfo {
             var delegate:AudioProviderDelegate
             var outputUnit:AudioUnit
@@ -252,14 +274,7 @@ class SpotifyAudioProvider: AudioProvider {
             return AVAudioConverter(fromFormat: self.inFormat!, toFormat: inFormatDescription!)
         }()
         
-        lazy var audioConverter:AudioConverterRef = {
-            var ref:AudioConverterRef = nil
-            var outFormat = inFormatDescription!.streamDescription
-            var inFormat = self.inFormat!.streamDescription
-            AudioConverterNew(inFormat, outFormat, &ref)
-            
-            return ref
-            }()
+        var audioConverter:AudioConverterRef?
         var inFormat:AVAudioFormat?
         var converter:AEFloatConverter?
         
@@ -268,6 +283,7 @@ class SpotifyAudioProvider: AudioProvider {
         var genericDescription: AudioComponentDescription  =  AudioComponentDescription(componentType: OSType(kAudioUnitType_Output),componentSubType: OSType(kAudioUnitSubType_GenericOutput),componentManufacturer: OSType(kAudioUnitManufacturer_Apple),componentFlags: 0,componentFlagsMask: 0)
 
 
+        /*
         override func connectOutputBus(sourceOutputBusNumber: UInt32, ofNode sourceNode: AUNode, toInputBus destinationInputBusNumber: UInt32, ofNode destinationNode: AUNode, inGraph graph: AUGraph) throws {
 /*
             if self.genericNode == 0 {
@@ -322,10 +338,26 @@ class SpotifyAudioProvider: AudioProvider {
 
             
         }
+        */
         
-        /*
-        override func attemptToDeliverAudioFrames(audioFrames: UnsafePointer<Void>, ofCount frameCount: Int, var streamDescription audioDescription: AudioStreamBasicDescription) -> Int {
-            self.inFormat = AVAudioFormat(streamDescription: &audioDescription)
+        override func attemptToDeliverAudioFrames(audioFrames: UnsafePointer<Void>, ofCount frameCount: Int, streamDescription audioDescription: AudioStreamBasicDescription) -> Int {
+            if let format = self.outputFormat {
+                if self.audioConverter == nil {
+                    var ref:AudioConverterRef = AudioConverterRef()
+                    var outFormat = format
+                    var inFormat = audioDescription
+                    AudioConverterNew(&inFormat, &outFormat, &ref)
+                    self.audioConverter = ref
+                }
+                var outSize:UInt32 = 0
+                let outBuf = UnsafeMutablePointer<Void>.alloc(frameCount)
+                AudioConverterConvertBuffer(self.audioConverter!, UInt32(frameCount) * UInt32(audioDescription.mBytesPerFrame), audioFrames, &outSize, outBuf)
+                self.buffer.add(outBuf, length: Int32(outSize))
+            }
+            return frameCount
+        }
+        
+        /*self.inFormat = AVAudioFormat(streamDescription: &audioDescription)
             if let delegate = self.providerDelegate {
                 let buffer = AVAudioPCMBuffer(PCMFormat: AVAudioFormat(streamDescription: &audioDescription), frameCapacity: AVAudioFrameCount(frameCount))
                 
@@ -504,6 +536,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
         for provider in self.providers {
             let provider = provider
             provider.delegate = self
+            provider.outputFormat = mixerOutput
             let providerPointer = ProviderPointer(provider: provider)
             let pointer = UnsafeMutablePointer<ProviderPointer>.alloc(0)
             pointer.initialize(providerPointer)
