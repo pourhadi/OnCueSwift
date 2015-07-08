@@ -372,7 +372,7 @@ list.mBuffers[0] = buf;*/
 }
 
 struct ProviderPointer {
-    unowned var provider:AudioProvider
+    var provider:AudioProvider
 }
 
 class CoreAudioPlayer:AudioProviderDelegate {
@@ -409,13 +409,19 @@ class CoreAudioPlayer:AudioProviderDelegate {
     var mixerUnit:AudioUnit
     var mixerNode:AUNode
 
-    let callback:AURenderCallback = { (inRefCon, renderFlags, timeStamp, outputBus, numFrames, bufferList) -> OSStatus in
+    func callbackFunc(inRefCon:UnsafeMutablePointer<Void>, renderFlags:UnsafeMutablePointer<AudioUnitRenderActionFlags>, timeStamp:UnsafePointer<AudioTimeStamp>, outputBus:UInt32, numFrames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>) -> OSStatus {
+        
+        
+        return 0
+    }
+    
+    var callback:AURenderCallback = { (inRefCon, renderFlags, timeStamp, outputBus, numFrames, bufferList) -> OSStatus in
+        
         
         var pointer = UnsafeMutablePointer<ProviderPointer>(inRefCon)
         let provider = pointer.memory.provider
         guard provider.ready else { return 0 }
         var bufSize:UInt32 = 0
-        
         provider.readFrames(numFrames, bufferList: bufferList, bufferSize: &bufSize)
         
         return 0
@@ -489,10 +495,12 @@ class CoreAudioPlayer:AudioProviderDelegate {
         
         var x:UInt32 = 0
         for provider in self.providers {
-            var provider = provider
+            let provider = provider
             provider.delegate = self
             var providerPointer = ProviderPointer(provider: provider)
-            var callbackStruct:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: callback, inputProcRefCon: &providerPointer)
+            var pointer = UnsafeMutablePointer<ProviderPointer>.alloc(0)
+            pointer.initialize(providerPointer)
+            var callbackStruct:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: callback, inputProcRefCon:pointer)
             status = AudioUnitSetProperty(self.mixerUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, AudioUnitElement(x), &callbackStruct, UInt32(sizeof(AURenderCallbackStruct)))
             checkError(status, "add node input callback: \(provider.identifier)")
             x += 1
