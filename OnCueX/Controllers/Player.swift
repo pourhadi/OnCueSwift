@@ -355,13 +355,20 @@ class SpotifyAudioProvider: AudioProvider {
                 var outSize:UInt32 = 0
                 var outBuff:Void = Void()
                 
-                var inAudioBufferList:AudioBufferList = AudioBufferList()
-                AEInitAudioBufferList(&inAudioBufferList, Int32(sizeof(AudioBufferList)), audioDescription, UnsafeMutablePointer<Void>(audioFrames), Int32(audioDescription.mBytesPerFrame) * Int32(frameCount) * 2)
-                let outBufferList = AEAllocateAndInitAudioBufferList(format, Int32(frameCount))
+                var inAudioBufferList = AudioBufferList.allocate(maximumBuffers: Int(audioDescription.numberOfChannelStreams()))
+                var x = 0
+                for buf in inAudioBufferList {
+                    var buf = buf
+                    buf.mData = UnsafeMutablePointer<Void>(audioFrames)
+                    buf.mDataByteSize = UInt32(frameCount) * audioDescription.mBytesPerFrame
+                    buf.mNumberChannels = UInt32(audioDescription.numberOfInterleavedChannels())
+                    
+                }
+                let outBufferList = AudioBufferList.allocate(maximumBuffers: Int(format.numberOfChannelStreams()))
                 
-                checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), &inAudioBufferList, outBufferList), "converting audio")
+                checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), inAudioBufferList.unsafeMutablePointer, outBufferList.unsafeMutablePointer), "converting audio")
                 
-                self.buffer.add(outBufferList, frames: UInt32(frameCount), description: format)
+                self.buffer.add(outBufferList.unsafeMutablePointer, frames: UInt32(frameCount), description: format)
 //                checkError(AudioConverterConvertBuffer(self.audioConverter!, UInt32(frameCount) * UInt32(audioDescription.mBytesPerFrame) * 2, audioFrames, &outSize, &outBuff), "converting audio")
 //                self.buffer.add(outBufferList.memory.mBuffers.mData, length: Int32(outBufferList.memory.mBuffers.mDataByteSize))
             }

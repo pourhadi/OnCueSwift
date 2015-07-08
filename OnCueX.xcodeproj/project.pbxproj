@@ -44,6 +44,7 @@
 		44A53D3A1B3E948200C54160 /* ListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A53D391B3E948200C54160 /* ListLayout.swift */; };
 		44ABB8551B3F466D00C03130 /* LibraryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44ABB8541B3F466D00C03130 /* LibraryItem.swift */; };
 		44ABB85B1B3F4E9E00C03130 /* ItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44ABB85A1B3F4E9E00C03130 /* ItemProvider.swift */; };
+		44AC14B51B4D4F0300A95F64 /* CAHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AC14B41B4D4F0300A95F64 /* CAHelper.swift */; };
 		44B6F3C91B44FB3B0086FC7A /* TrackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B6F3C81B44FB3B0086FC7A /* TrackManager.swift */; };
 		44E5644E1B3D3079004CC5E3 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44E564471B3D301D004CC5E3 /* SnapKit.framework */; };
 		44E564501B3D308A004CC5E3 /* SnapKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 44E564471B3D301D004CC5E3 /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -148,6 +149,7 @@
 		44A53D391B3E948200C54160 /* ListLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListLayout.swift; path = ViewControllers/ListLayout.swift; sourceTree = "<group>"; };
 		44ABB8541B3F466D00C03130 /* LibraryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryItem.swift; path = Models/LibraryItem.swift; sourceTree = "<group>"; };
 		44ABB85A1B3F4E9E00C03130 /* ItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemProvider.swift; path = Controllers/ItemProvider.swift; sourceTree = "<group>"; };
+		44AC14B41B4D4F0300A95F64 /* CAHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAHelper.swift; sourceTree = "<group>"; };
 		44B6F3C81B44FB3B0086FC7A /* TrackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrackManager.swift; path = Controllers/TrackManager.swift; sourceTree = "<group>"; };
 		44E5643F1B3D301C004CC5E3 /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
 		D33C0BE0F17D33A1E54D273A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 				44B6F3C81B44FB3B0086FC7A /* TrackManager.swift */,
 				44499D2A1B4CFD1A00327120 /* CircularBuffer.h */,
 				44499D2B1B4CFD1A00327120 /* CircularBuffer.m */,
+				44AC14B41B4D4F0300A95F64 /* CAHelper.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -573,6 +576,7 @@
 				4400B9151B36785900E9E06D /* UIImageHelpers.swift in Sources */,
 				4428A1901B30CF4900708716 /* ViewController.swift in Sources */,
 				440545A31B429615003F720B /* StackedImageView.swift in Sources */,
+				44AC14B51B4D4F0300A95F64 /* CAHelper.swift in Sources */,
 				446EAA141B34CE770041B8C4 /* ListVC.swift in Sources */,
 				4400B9131B36327400E9E06D /* UIManager.swift in Sources */,
 				446F4A8E1B3F68F300EB1B7C /* Animator.swift in Sources */,
