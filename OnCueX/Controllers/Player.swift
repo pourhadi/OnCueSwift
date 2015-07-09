@@ -279,6 +279,7 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
             self.audioController.engineDelegate = newValue
         }
     }
+    
 
     class SpotifyCoreAudioController : SPTCoreAudioController {
         var outputFormat:AudioStreamBasicDescription?
@@ -287,7 +288,8 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
         var buffer = CircularBuffer()
         var spotifyFormat:MutableProperty<AVAudioFormat?> = MutableProperty(nil)
         weak var provider:SpotifyAudioProvider?
-        
+        var aeConverter:AEFloatConverter?
+
         var audioConverter:AudioConverterRef?
         override func attemptToDeliverAudioFrames(audioFrames: UnsafePointer<Void>, ofCount frameCount: Int, streamDescription audioDescription: AudioStreamBasicDescription) -> Int {
             self.provider!.ready = true
@@ -302,6 +304,10 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
                 self.audioConverter = ref
             }
             
+            if self.aeConverter == nil {
+                self.aeConverter = AEFloatConverter(sourceFormat: audioDescription)
+            }
+            
             if self.spotifyFormat.value == nil {
 //                let outFormat = AVAudioFormat(commonFormat: .PCMFormatFloat32, sampleRate: format.sampleRate, channels: 2, interleaved: false)
                 let outFormat = AVAudioFormat(streamDescription: &outputFormat!)
@@ -314,8 +320,10 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
             let abl = UnsafeMutableAudioBufferListPointer(buffer.mutableAudioBufferList)
             abl[0].mData = UnsafeMutablePointer<Void>(audioFrames)
             abl[0].mDataByteSize = UInt32(frameCount) * audioDescription.mBytesPerFrame
-            checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), abl.unsafePointer, floatBuffer.mutableAudioBufferList), "error converting")
+            abl[0].mNumberChannels = 2
+//            checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), abl.unsafePointer, floatBuffer.mutableAudioBufferList), "error converting")
 
+            AEFloatConverterToFloatBufferList(self.aeConverter!, abl.unsafeMutablePointer, floatBuffer.mutableAudioBufferList, UInt32(frameCount))
             floatBuffer.frameLength = AVAudioFrameCount(frameCount)
             if (!self.buffer.add(floatBuffer.mutableAudioBufferList, frames: UInt32(frameCount), description: floatBuffer.format.streamDescription.memory)) {
                 return 0
