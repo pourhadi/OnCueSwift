@@ -311,11 +311,13 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
 
             let floatBuffer = AVAudioPCMBuffer(PCMFormat: self.spotifyFormat.value!, frameCapacity: AVAudioFrameCount(frameCount))
             let buffer = AVAudioPCMBuffer(PCMFormat: format, frameCapacity: AVAudioFrameCount(frameCount))
-            let abl = UnsafeMutableAudioBufferListPointer(buffer.mutableAudioBufferList)
-            abl[0].mData = UnsafeMutablePointer<Void>(audioFrames)
+//            let abl = UnsafeMutableAudioBufferListPointer(buffer.mutableAudioBufferList)
+//            abl[0].mData = UnsafeMutablePointer<Void>(audioFrames)
+            var data = audioFrames.memory
+            var abl = AudioBufferList(mNumberBuffers: 1, mBuffers: AudioBuffer(mNumberChannels: 2, mDataByteSize: UInt32(frameCount) * audioDescription.mBytesPerFrame, mData: &data))
             buffer.frameLength = AVAudioFrameCount(frameCount)
 
-            checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), buffer.audioBufferList, floatBuffer.mutableAudioBufferList), "error converting")
+            checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), &abl, floatBuffer.mutableAudioBufferList), "error converting")
 
             floatBuffer.frameLength = AVAudioFrameCount(frameCount)
             if (!self.buffer.add(floatBuffer.mutableAudioBufferList, frames: UInt32(frameCount), description: floatBuffer.format.streamDescription.memory)) {
