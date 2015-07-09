@@ -32,10 +32,11 @@ class Player {
        
     }
     
-    let enginePlayer = EnginePlayer()
+    let audioPlayer = CoreAudioPlayer()
+//    let enginePlayer = EnginePlayer()
 
     func play(track:TrackItem) {
-        enginePlayer.currentTrack = track
+        audioPlayer.currentTrack = track
     }
     
     func startSession() {
@@ -50,24 +51,47 @@ class Player {
     }
 }
 
+protocol AudioProviderDelegate:class {
+    
+}
+
 protocol AudioProviderEngineDelegate:class {
     func provider(provider:AudioProvider, hasNewBuffer:AVAudioPCMBuffer)
 }
 
 protocol AudioProvider: class, Identifiable {
-    var engineDelegate:AudioProviderEngineDelegate? { get set }
-    func startProvidingAudio(track:Playable) -> SignalProducer<AVAudioFormat, NoError>
+    var delegate:AudioProviderDelegate? { get set }
     
+    var engineDelegate:AudioProviderEngineDelegate? { get set }
+//    func startProvidingAudio(track:Playable) -> SignalProducer<AVAudioFormat, NoError>
+    func startProvidingAudio(track:Playable)
     func seekToTime(time:NSTimeInterval)
     
     var buffering:Bool { get }
     var error:NSError? { get }
     
     func reset()
+    
+    func renderFrames(frameCount:UInt32, intoBuffer:UnsafeMutablePointer<AudioBufferList>)
+    var outputFormat:AudioStreamBasicDescription? { get set }
+    var ready:Bool { get }
 }
 
 class LibraryAudioProvider: AudioProvider {
+    var ready = false
     
+    var outputFormat:AudioStreamBasicDescription?
+    
+    func renderFrames(frameCount:UInt32, intoBuffer:UnsafeMutablePointer<AudioBufferList>) {
+        if self.ready {
+            checkError(ExtAudioFileSeek(extFile, self.currentFrame), "seek audio file")
+            var frames = frameCount
+            checkError(ExtAudioFileRead(extFile, &frames, intoBuffer), "reading audio file")
+            self.currentFrame += Int64(frames)
+        }
+    }
+    
+    var delegate:AudioProviderDelegate?
     func reset() {
         self.error = nil
         self.buffering = false
@@ -76,11 +100,7 @@ class LibraryAudioProvider: AudioProvider {
     
     var error:NSError?
     var buffering = false
-    
-    var outputFormat:AudioStreamBasicDescription?
-    
-    var ready = false
-    
+
     var buffer = CircularBuffer()
     
     var engineDelegate:AudioProviderEngineDelegate?
@@ -107,6 +127,20 @@ class LibraryAudioProvider: AudioProvider {
             }
         }
     }
+    
+    func startProvidingAudio(track:Playable) {
+        checkError(ExtAudioFileOpenURL(track.assetURL, &extFile), "open file URL")
+        var totalFrames:Int64 = 0
+        var dataSize:UInt32 = UInt32(sizeofValue(totalFrames))
+        checkError(ExtAudioFileGetProperty(extFile, kExtAudioFileProperty_FileLengthFrames, &dataSize, &totalFrames), "get total frames")
+        checkError(ExtAudioFileSetProperty(extFile, kExtAudioFileProperty_ClientDataFormat, UInt32(sizeofValue(outputFormat)), &outputFormat), "ExtAudioFileSetProperty ClientDataFormat failed")
+        self.currentFrame = 0
+        self.ready = true
+        self.buffering = true
+    }
+    
+    var extFile:ExtAudioFileRef = ExtAudioFileRef()
+    var currentFrame:Int64 = 0
     
     var file:AVAudioFile?
     func startProvidingAudio(track: Playable) -> SignalProducer<AVAudioFormat, NoError> {
@@ -135,6 +169,31 @@ class LibraryAudioProvider: AudioProvider {
 
 @objc
 class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDelegate {
+    var ready = false
+    
+    var outputFormat:AudioStreamBasicDescription? {
+        get {
+            return self.audioController.outputFormat
+        }
+        set {
+            self.audioController.outputFormat = newValue
+        }
+    }
+    
+    func renderFrames(frameCount:UInt32, intoBuffer:UnsafeMutablePointer<AudioBufferList>) {
+        if self.ready {
+            self.buffer.getFrames(frameCount, format: self.outputFormat!, buffer: intoBuffer)
+        }
+    }
+    
+    var delegate:AudioProviderDelegate? {
+        get {
+            return self.audioController.providerDelegate
+        }
+        set {
+            self.audioController.providerDelegate = newValue
+        }
+    }
     func reset() {
         self.error = nil
         self.buffering = false
@@ -162,8 +221,23 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
     
     func seekToTime(time: NSTimeInterval) {
         self.buffering = true
+        self.buffer.reset()
         self.streamController.seekToOffset(time) { (error) -> Void in
             print("error seeking spotify")
+        }
+    }
+    
+    func startProvidingAudio(track:Playable) {
+        if !self.streamController.loggedIn {
+            self.streamController.loginWithSession(_spotifyController.session!, callback: { (error) -> Void in
+                self.streamController.playURIs([track.assetURL], withOptions: nil, callback: { (error) -> Void in
+                    self.ready = true
+                })
+            })
+        } else {
+            self.streamController.playURIs([track.assetURL], withOptions: nil, callback: { (error) -> Void in
+                self.ready = true
+            })
         }
     }
     
@@ -199,6 +273,8 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
     }
 
     class SpotifyCoreAudioController : SPTCoreAudioController {
+        var outputFormat:AudioStreamBasicDescription?
+        var providerDelegate:AudioProviderDelegate?
         var engineDelegate:AudioProviderEngineDelegate?
         var buffer = CircularBuffer()
         var spotifyFormat:MutableProperty<AVAudioFormat?> = MutableProperty(nil)
@@ -209,17 +285,19 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
             var audioDescription = audioDescription
             let format = AVAudioFormat(streamDescription: &audioDescription)
             
-            if self.spotifyFormat.value == nil {
+            if self.audioConverter == nil {
+                var exportFormat = self.outputFormat!
+                var ref:AudioConverterRef = AudioConverterRef()
+                var inFormat = audioDescription
+                checkError(AudioConverterNew(&inFormat, &exportFormat, &ref), "Create audio converter")
+                self.audioConverter = ref
+            }
+            
+            /*if self.spotifyFormat.value == nil {
                 let outFormat = AVAudioFormat(commonFormat: .PCMFormatFloat32, sampleRate: format.sampleRate, channels: 2, interleaved: false)
                 self.spotifyFormat.put(outFormat)
-                if self.audioConverter == nil {
-                    let exportFormat = outFormat.streamDescription
-                    var ref:AudioConverterRef = AudioConverterRef()
-                    var inFormat = audioDescription
-                    checkError(AudioConverterNew(&inFormat, exportFormat, &ref), "Create audio converter")
-                    self.audioConverter = ref
-                }
-            }
+                
+            }*/
 
             let floatBuffer = AVAudioPCMBuffer(PCMFormat: self.spotifyFormat.value!, frameCapacity: AVAudioFrameCount(frameCount))
             let buffer = AVAudioPCMBuffer(PCMFormat: format, frameCapacity: AVAudioFrameCount(frameCount))
@@ -229,12 +307,7 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
             checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), buffer.audioBufferList, floatBuffer.mutableAudioBufferList), "error converting")
 
             floatBuffer.frameLength = AVAudioFrameCount(frameCount)
-            if let delegate = self.engineDelegate {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    delegate.provider(self.provider!, hasNewBuffer: floatBuffer)
-                })
-            }
-            
+            self.buffer.add(floatBuffer.mutableAudioBufferList, frames: UInt32(frameCount), description: floatBuffer.format.streamDescription.memory)
             return frameCount
         }
     }
@@ -256,6 +329,8 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
     
 }
 
+
+/*
 class EnginePlayer:AudioProviderEngineDelegate {
     
     var currentProvider:AudioProvider? {
@@ -337,8 +412,12 @@ class EnginePlayer:AudioProviderEngineDelegate {
         }
     }
 }
+*/
 
-/*
+struct ProviderPointer {
+    var provider:AudioProvider
+}
+
 class CoreAudioPlayer:AudioProviderDelegate {
     
     var playing:Bool = false {
@@ -373,20 +452,13 @@ class CoreAudioPlayer:AudioProviderDelegate {
     var mixerUnit:AudioUnit
     var mixerNode:AUNode
 
-    func callbackFunc(inRefCon:UnsafeMutablePointer<Void>, renderFlags:UnsafeMutablePointer<AudioUnitRenderActionFlags>, timeStamp:UnsafePointer<AudioTimeStamp>, outputBus:UInt32, numFrames:UInt32, bufferList:UnsafeMutablePointer<AudioBufferList>) -> OSStatus {
-        
-        
-        return 0
-    }
-    
     var callback:AURenderCallback = { (inRefCon, renderFlags, timeStamp, outputBus, numFrames, bufferList) -> OSStatus in
-        
-        
+
         var pointer = UnsafeMutablePointer<ProviderPointer>(inRefCon)
-        let provider = pointer.memory.provider
+        let provider:AudioProvider = pointer.memory.provider
         guard provider.ready else { return 0 }
         var bufSize:UInt32 = 0
-        provider.readFrames(numFrames, bufferList: bufferList, bufferSize: &bufSize)
+        provider.renderFrames(numFrames, intoBuffer: bufferList)
         
         return 0
     }
@@ -492,4 +564,4 @@ class CoreAudioPlayer:AudioProviderDelegate {
     }
     
 }
-*/
+
