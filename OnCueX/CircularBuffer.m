@@ -70,6 +70,7 @@
 {
     TPCircularBufferClear(&_buffer);
     TPCircularBufferCleanup(&_buffer);
+    TPCircularBufferInit(&_buffer, kTotalBufferSize);
 }
 
 @end
