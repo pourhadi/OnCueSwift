@@ -293,11 +293,12 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
                 self.audioConverter = ref
             }
             
-            /*if self.spotifyFormat.value == nil {
-                let outFormat = AVAudioFormat(commonFormat: .PCMFormatFloat32, sampleRate: format.sampleRate, channels: 2, interleaved: false)
+            if self.spotifyFormat.value == nil {
+//                let outFormat = AVAudioFormat(commonFormat: .PCMFormatFloat32, sampleRate: format.sampleRate, channels: 2, interleaved: false)
+                let outFormat = AVAudioFormat(streamDescription: &outputFormat!)
                 self.spotifyFormat.put(outFormat)
                 
-            }*/
+            }
 
             let floatBuffer = AVAudioPCMBuffer(PCMFormat: self.spotifyFormat.value!, frameCapacity: AVAudioFrameCount(frameCount))
             let buffer = AVAudioPCMBuffer(PCMFormat: format, frameCapacity: AVAudioFrameCount(frameCount))
