@@ -241,12 +241,10 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
         if !self.streamController.loggedIn {
             self.streamController.loginWithSession(_spotifyController.session!, callback: { (error) -> Void in
                 self.streamController.playURIs([track.assetURL], withOptions: nil, callback: { (error) -> Void in
-                    self.ready = true
                 })
             })
         } else {
             self.streamController.playURIs([track.assetURL], withOptions: nil, callback: { (error) -> Void in
-                self.ready = true
             })
         }
     }
@@ -292,7 +290,7 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
         
         var audioConverter:AudioConverterRef?
         override func attemptToDeliverAudioFrames(audioFrames: UnsafePointer<Void>, ofCount frameCount: Int, streamDescription audioDescription: AudioStreamBasicDescription) -> Int {
-            guard self.provider!.ready else { return 0 }
+            self.provider!.ready = true
             var audioDescription = audioDescription
             let format = AVAudioFormat(streamDescription: &audioDescription)
             
