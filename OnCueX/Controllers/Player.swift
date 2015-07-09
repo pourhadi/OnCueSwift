@@ -489,7 +489,10 @@ class CoreAudioPlayer:AudioProviderDelegate {
         if provider.ready {
             provider.renderFrames(numFrames, intoBuffer: bufferList)
         } else {
-            memset(bufferList.memory.mBuffers.mData, 0, Int(bufferList.memory.mBuffers.mDataByteSize))
+            let abl = UnsafeMutableAudioBufferListPointer(bufferList)
+            for buffer in abl {
+                memset(buffer.mData, 0, Int(buffer.mDataByteSize))
+            }
         }
         return 0
     }
@@ -579,9 +582,6 @@ class CoreAudioPlayer:AudioProviderDelegate {
         checkError(status, "init ioUnit")
         status = AudioUnitInitialize(self.mixerUnit)
         checkError(status, "init mixerUnit")
-
-//        status = AudioOutputUnitStart(self.ioUnit)
-//        checkError(status, "start ioUnit")
 
     }
 }
