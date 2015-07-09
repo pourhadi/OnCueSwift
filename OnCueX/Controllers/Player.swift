@@ -325,7 +325,11 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
     }
     
     let audioController = SpotifyCoreAudioController()
-    lazy var streamController:SPTAudioStreamingController = SPTAudioStreamingController(clientId: _spotifyController.clientID, audioController: self.audioController)
+    lazy var streamController:SPTAudioStreamingController = {
+        let x:SPTAudioStreamingController = SPTAudioStreamingController(clientId: _spotifyController.clientID, audioController: self.audioController)
+        x.setTargetBitrate(.High, callback: nil)
+        return x
+    }()
     
     func audioStreaming(audioStreaming: SPTAudioStreamingController!, didChangePlaybackStatus isPlaying: Bool) {
         if !isPlaying {
