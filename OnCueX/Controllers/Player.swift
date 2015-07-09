@@ -449,7 +449,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
             var isPlaying:Boolean = 0
             checkError(AUGraphIsRunning(self.graph, &isPlaying), "check if graph is running")
             if self.playing && isPlaying == 0 {
-                print("opening graph")
+                print("starting graph")
                 checkError(AUGraphStart(self.graph), "start graph")
             } else if !self.playing && isPlaying != 0 {
                 AUGraphStop(self.graph)
@@ -488,8 +488,11 @@ class CoreAudioPlayer:AudioProviderDelegate {
         let provider:AudioProvider = pointer.memory.provider
         guard provider.ready else { return 0 }
         var bufSize:UInt32 = 0
-        provider.renderFrames(numFrames, intoBuffer: bufferList)
-        
+        if provider.ready {
+            provider.renderFrames(numFrames, intoBuffer: bufferList)
+        } else {
+            memset(bufferList.memory.mBuffers.mData, 0, Int(bufferList.memory.mBuffers.mDataByteSize))
+        }
         return 0
     }
     
