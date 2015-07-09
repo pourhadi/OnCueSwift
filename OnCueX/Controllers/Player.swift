@@ -315,6 +315,10 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
                 
             }
 
+            print(AVAudioFormat(streamDescription: &audioDescription))
+//            let intBuffer = UnsafeBufferPointer(start:audioFrames, count:frameCount)
+            
+            
             let floatBuffer = AVAudioPCMBuffer(PCMFormat: self.spotifyFormat.value!, frameCapacity: AVAudioFrameCount(frameCount))
             let buffer = AVAudioPCMBuffer(PCMFormat: format, frameCapacity: AVAudioFrameCount(frameCount))
             let abl = UnsafeMutableAudioBufferListPointer(buffer.mutableAudioBufferList)
