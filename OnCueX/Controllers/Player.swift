@@ -311,7 +311,9 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
             checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), buffer.audioBufferList, floatBuffer.mutableAudioBufferList), "error converting")
 
             floatBuffer.frameLength = AVAudioFrameCount(frameCount)
-            self.buffer.add(floatBuffer.mutableAudioBufferList, frames: UInt32(frameCount), description: floatBuffer.format.streamDescription.memory)
+            if (!self.buffer.add(floatBuffer.mutableAudioBufferList, frames: UInt32(frameCount), description: floatBuffer.format.streamDescription.memory)) {
+                return 0
+            }
             return frameCount
         }
     }
