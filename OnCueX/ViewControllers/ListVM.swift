@@ -63,9 +63,11 @@ class ListVM {
     }
     
     var cellHeight:CGFloat {
-        let item = self.item(NSIndexPath(forItem: 0, inSection: 0))
-        if item.isTrackCollection {
-            return 110
+        if self.lists[0].items.count > 0 {
+            let item = self.item(NSIndexPath(forItem: 0, inSection: 0))
+            if item.isTrackCollection {
+                return 110
+            }
         }
         return 70
     }
