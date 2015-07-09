@@ -72,7 +72,7 @@ protocol AudioProvider: class, Identifiable {
     
     func reset()
     
-    func renderFrames(frameCount:UInt32, intoBuffer:UnsafeMutablePointer<AudioBufferList>)
+    func renderFrames(frameCount:UInt32, intoBuffer:UnsafeMutablePointer<AudioBufferList>) -> UInt32
     var outputFormat:AudioStreamBasicDescription? { get set }
     var ready:Bool { get }
 }
@@ -82,13 +82,15 @@ class LibraryAudioProvider: AudioProvider {
     
     var outputFormat:AudioStreamBasicDescription?
     
-    func renderFrames(frameCount:UInt32, intoBuffer:UnsafeMutablePointer<AudioBufferList>) {
+    func renderFrames(frameCount:UInt32, intoBuffer:UnsafeMutablePointer<AudioBufferList>) -> UInt32 {
         if self.ready {
             checkError(ExtAudioFileSeek(extFile, self.currentFrame), "seek audio file")
             var frames = frameCount
             checkError(ExtAudioFileRead(extFile, &frames, intoBuffer), "reading audio file")
             self.currentFrame += Int64(frames)
+            return frames
         }
+        return 0
     }
     
     var delegate:AudioProviderDelegate?
@@ -180,10 +182,11 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
         }
     }
     
-    func renderFrames(frameCount:UInt32, intoBuffer:UnsafeMutablePointer<AudioBufferList>) {
+    func renderFrames(frameCount:UInt32, intoBuffer:UnsafeMutablePointer<AudioBufferList>) -> UInt32 {
         if self.ready {
-            self.buffer.getFrames(frameCount, format: self.outputFormat!, buffer: intoBuffer)
+            return self.buffer.getFrames(frameCount, format: self.outputFormat!, buffer: intoBuffer)
         }
+        return 0
     }
     
     var delegate:AudioProviderDelegate? {

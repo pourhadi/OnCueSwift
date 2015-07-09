@@ -25,7 +25,9 @@
 
 - (void)add:(AudioBufferList*)bufferList frames:(UInt32)frames description:(AudioStreamBasicDescription)description
 {
-    TPCircularBufferCopyAudioBufferList(&_buffer, bufferList, nil, frames, &description);
+    if (!TPCircularBufferCopyAudioBufferList(&_buffer, bufferList, nil, frames, &description)) {
+        NSLog(@"insufficient buffer space");
+    }
 }
 
 - (UInt32)getFrames:(UInt32)numOfFrames format:(AudioStreamBasicDescription)format buffer:(AudioBufferList*)buffer {
