@@ -18,7 +18,7 @@ class TrackManager {
         
         _queue.queuedItemForQueueable(track as! Queueable, create: false) { (item) -> Void in
             if let index = item?.queueIndex {
-                if index.playhead == index.index || index.playhead == index.index + 1 {
+                if index.playhead == index.index || index.playhead == index.index - 1 {
                     _player.play(track)
                 } else { queueTrack() }
             } else { queueTrack() }

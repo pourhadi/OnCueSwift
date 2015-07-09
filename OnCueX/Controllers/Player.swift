@@ -37,6 +37,7 @@ class Player {
 
     func play(track:TrackItem) {
         audioPlayer.currentTrack = track
+        audioPlayer.playing = true
     }
     
     func startSession() {
@@ -95,9 +96,13 @@ class LibraryAudioProvider: AudioProvider {
     
     var delegate:AudioProviderDelegate?
     func reset() {
+        self.ready = false
         self.error = nil
         self.buffering = false
         self.file = nil
+        self.currentFrame = 0
+        ExtAudioFileDispose(self.extFile)
+        self.extFile = ExtAudioFileRef()
     }
     
     var error:NSError?
@@ -198,6 +203,8 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
         }
     }
     func reset() {
+        self.streamController.stop(nil)
+        self.ready = false
         self.error = nil
         self.buffering = false
         self.buffer.reset()
@@ -285,6 +292,7 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
         
         var audioConverter:AudioConverterRef?
         override func attemptToDeliverAudioFrames(audioFrames: UnsafePointer<Void>, ofCount frameCount: Int, streamDescription audioDescription: AudioStreamBasicDescription) -> Int {
+            guard self.provider!.ready else { return 0 }
             var audioDescription = audioDescription
             let format = AVAudioFormat(streamDescription: &audioDescription)
             
@@ -426,13 +434,23 @@ struct ProviderPointer {
 
 class CoreAudioPlayer:AudioProviderDelegate {
     
+    func providerForCurrentTrack() -> AudioProvider? {
+        if let track = self.currentTrack {
+            if let providerIndex = self.providers.index(track.source) {
+                let provider = self.providers[providerIndex]
+                return provider
+            }
+        }
+        return nil
+    }
+    
     var playing:Bool = false {
         didSet {
             var isPlaying:Boolean = 0
             checkError(AUGraphIsRunning(self.graph, &isPlaying), "check if graph is running")
             if self.playing && isPlaying == 0 {
                 print("opening graph")
-                checkError(AUGraphOpen(self.graph), "open graph")
+                checkError(AUGraphStart(self.graph), "start graph")
             } else if !self.playing && isPlaying != 0 {
                 AUGraphStop(self.graph)
             }
@@ -440,6 +458,12 @@ class CoreAudioPlayer:AudioProviderDelegate {
     }
     
     var currentTrack:TrackItem? {
+        willSet {
+            if let provider = self.providerForCurrentTrack() {
+                provider.reset()
+            }
+        }
+        
         didSet {
             if let track = self.currentTrack {
                 if let providerIndex = self.providers.index(track.source) {
@@ -529,7 +553,6 @@ class CoreAudioPlayer:AudioProviderDelegate {
         // set mixer output to io input
         var mixerOutput = AudioStreamBasicDescription()
         var valSize:UInt32 = UInt32(sizeof(AudioStreamBasicDescription))
-//        checkError(AudioUnitSetProperty(self.mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &clientFormat, valSize), "set mixer input format")
 
         checkError(AudioUnitGetProperty(self.mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &mixerOutput, &valSize), "get mixer output format")
         status = AudioUnitSetProperty(self.ioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &mixerOutput, valSize)
@@ -556,18 +579,9 @@ class CoreAudioPlayer:AudioProviderDelegate {
         status = AudioUnitInitialize(self.mixerUnit)
         checkError(status, "init mixerUnit")
 
-        status = AudioOutputUnitStart(self.ioUnit)
-        checkError(status, "start ioUnit")
+//        status = AudioOutputUnitStart(self.ioUnit)
+//        checkError(status, "start ioUnit")
 
     }
-    
-    func provider(provider:AudioProvider?, var format:AudioStreamBasicDescription) {
-        if let provider = provider {
-            if let index = self.providers.index(provider) {
-//                checkError(AudioUnitSetProperty(self.mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, AudioUnitElement(index), &format, UInt32(sizeof(AudioStreamBasicDescription))), "set mixer input format")
-            }
-        }
-    }
-    
 }
 
