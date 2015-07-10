@@ -25,7 +25,7 @@
 
 - (BOOL)add:(AudioBufferList*)bufferList frames:(UInt32)frames description:(AudioStreamBasicDescription)description
 {
-    return TPCircularBufferCopyAudioBufferList(&_buffer, bufferList, nil, frames, &description);
+    return TPCircularBufferCopyAudioBufferList(&_buffer, bufferList, nil, kTPCircularBufferCopyAll, NULL);
 }
 
 - (UInt32)getFrames:(UInt32)numOfFrames format:(AudioStreamBasicDescription)format buffer:(AudioBufferList*)buffer {
