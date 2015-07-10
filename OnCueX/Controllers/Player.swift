@@ -576,6 +576,9 @@ class CoreAudioPlayer:AudioProviderDelegate {
             UInt32(sizeof (UInt32))
         )
         
+        var sampleRate = AVAudioSession.sharedInstance().sampleRate
+        AudioUnitSetProperty(self.mixerUnit, kAudioUnitProperty_SampleRate, kAudioUnitScope_Output, 0, &sampleRate, UInt32(sizeofValue(sampleRate)))
+        
         // set mixer output to io input
         var mixerOutput = AudioStreamBasicDescription()
         var valSize:UInt32 = UInt32(sizeof(AudioStreamBasicDescription))
