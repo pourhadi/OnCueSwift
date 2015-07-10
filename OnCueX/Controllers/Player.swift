@@ -315,19 +315,40 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
                 
             }
 
-            print(AVAudioFormat(streamDescription: &audioDescription))
+//            print(AVAudioFormat(streamDescription: &audioDescription))
 //            let intBuffer = UnsafeBufferPointer(start:audioFrames, count:frameCount)
             
             
             let floatBuffer = AVAudioPCMBuffer(PCMFormat: self.spotifyFormat.value!, frameCapacity: AVAudioFrameCount(frameCount))
             let buffer = AVAudioPCMBuffer(PCMFormat: format, frameCapacity: AVAudioFrameCount(frameCount))
+            
+            let intArrayBuffer = UnsafeBufferPointer(start: UnsafePointer<Int>(audioFrames), count: frameCount)
+            let floatArrayBuffer = UnsafeMutableAudioBufferListPointer(floatBuffer.mutableAudioBufferList)
+            
+                for i in intArrayBuffer {
+                    var f:Float32 = 0
+                    f = Float32(i) / 32768
+                    if ( f > 1 ) {
+                        f = 1
+                    }
+                    if( f < -1 ) {
+                        f = -1
+                    }
+                    
+                    
+                    let ptr = UnsafeMutablePointer<Float32>.alloc(1)
+                    ptr.initialize(f)
+                    floatArrayBuffer[0].mData = UnsafeMutablePointer<Void>(ptr)
+                }
+            
+            
             let abl = UnsafeMutableAudioBufferListPointer(buffer.mutableAudioBufferList)
             abl[0].mData = UnsafeMutablePointer<Void>(audioFrames)
             abl[0].mDataByteSize = UInt32(frameCount) * audioDescription.mBytesPerFrame
             abl[0].mNumberChannels = 2
 //            checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), abl.unsafePointer, floatBuffer.mutableAudioBufferList), "error converting")
 
-            AEFloatConverterToFloatBufferList(self.aeConverter!, abl.unsafeMutablePointer, floatBuffer.mutableAudioBufferList, UInt32(frameCount))
+//            AEFloatConverterToFloatBufferList(self.aeConverter!, abl.unsafeMutablePointer, floatBuffer.mutableAudioBufferList, UInt32(frameCount))
             floatBuffer.frameLength = AVAudioFrameCount(frameCount)
             if (!self.buffer.add(floatBuffer.mutableAudioBufferList, frames: UInt32(frameCount), description: floatBuffer.format.streamDescription.memory)) {
                 return 0
