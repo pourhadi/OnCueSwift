@@ -324,7 +324,7 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
             
 //            let intArrayBuffer = UnsafeBufferPointer(start: UnsafePointer<Int>(audioFrames), count: frameCount)
             
-            var abl = AudioBufferList(mNumberBuffers: 1, mBuffers: AudioBuffer(mNumberChannels: 2, mDataByteSize: UInt32(frameCount)*2*UInt32(sizeof(Int16)), mData: UnsafeMutablePointer<Void>(audioFrames)))
+            var abl = AudioBufferList(mNumberBuffers: 1, mBuffers: AudioBuffer(mNumberChannels: 2, mDataByteSize: UInt32(frameCount)*UInt32(sizeof(Int16)), mData: UnsafeMutablePointer<Void>(audioFrames)))
             
             
 //            let abl = UnsafeMutableAudioBufferListPointer(buffer.mutableAudioBufferList)
