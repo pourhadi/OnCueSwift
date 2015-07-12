@@ -49,7 +49,7 @@ internal struct SpotifyTrack: TrackItem, Queueable {
         if self.partialTrack.album != nil {
             albumString = self.partialTrack.album.name
         }
-        return subtitleString(artists, album: albumString)
+        return "\(String(self.duration)) - " + subtitleString(artists, album: albumString)
     }
     
     var isTrackCollection = false
