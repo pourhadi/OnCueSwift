@@ -558,8 +558,10 @@ class CoreAudioPlayer:AudioProviderDelegate {
         if provider.ready {
             provider.renderFrames(numFrames, intoBuffer: bufferList)
         } else {
+//            kAudioUnitRenderAction_OutputIsSilence
             let abl = UnsafeMutableAudioBufferListPointer(bufferList)
             for buffer in abl {
+                renderFlags.memory = AudioUnitRenderActionFlags.UnitRenderAction_OutputIsSilence
                 memset(buffer.mData, 0, Int(buffer.mDataByteSize))
             }
         }
