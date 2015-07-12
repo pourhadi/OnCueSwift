@@ -11,4 +11,5 @@ import AVFoundation
 
 protocol Playable:Identifiable {
     var assetURL:NSURL { get }
+    var duration:NSTimeInterval { get }
 }

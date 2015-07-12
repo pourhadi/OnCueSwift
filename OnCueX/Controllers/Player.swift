@@ -81,9 +81,12 @@ protocol AudioProvider: class, Identifiable {
     var requiresConverter:Bool { get set }
     var callbackStruct:AURenderCallbackStruct? { get set }
     var busElement:Int32 { get set }
+    
+    var totalFramesForCurrentTrack:Int { get }
 }
 
 class LibraryAudioProvider: AudioProvider {
+    var totalFramesForCurrentTrack = 0
     var busElement:Int32 = 0
     var callbackStruct:AURenderCallbackStruct?
     var requiresConverter:Bool = false
@@ -186,6 +189,8 @@ class LibraryAudioProvider: AudioProvider {
 
 @objc
 class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDelegate {
+    var totalFramesForCurrentTrack = 0
+
     var busElement:Int32 = 0
     var callbackStruct:AURenderCallbackStruct?
     var requiresConverter = false
@@ -307,11 +312,7 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
 
         var audioConverter:AudioConverterRef?
         override func attemptToDeliverAudioFrames(audioFrames: UnsafePointer<Void>, ofCount frameCount: Int, streamDescription audioDescription: AudioStreamBasicDescription) -> Int {
-            self.provider!.ready = true
-            var audioDescription = audioDescription
-            let format = AVAudioFormat(streamDescription: &audioDescription)
-            
-            
+            let audioDescription = audioDescription
             
 //            if self.audioConverter == nil {
 //                var exportFormat = self.outputFormat!
@@ -326,38 +327,30 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
 //            }
             
             if self.spotifyFormat.value == nil {
-//                let outFormat = AVAudioFormat(commonFormat: .PCMFormatFloat32, sampleRate: format.sampleRate, channels: 2, interleaved: false)
                 let outFormat = AVAudioFormat(streamDescription: &outputFormat!)
                 self.spotifyFormat.put(outFormat)
                 
                 if let delegate = self.providerDelegate {
-                delegate.provider(self.provider!, format: audioDescription)
+                    delegate.provider(self.provider!, format: audioDescription)
                 }
-                
             }
-
-
-            let floatBuffer = AVAudioPCMBuffer(PCMFormat: self.spotifyFormat.value!, frameCapacity: AVAudioFrameCount(frameCount))
-
+            
             var abl = AudioBufferList(mNumberBuffers: 1, mBuffers: AudioBuffer(mNumberChannels: 2, mDataByteSize: UInt32(frameCount)*2*UInt32(sizeof(Int16)), mData: UnsafeMutablePointer<Void>(audioFrames)))
             if (!self.buffer.add(&abl, frames: UInt32(frameCount), description: audioDescription)) {
                 return 0
             }
-            return frameCount
-            
-            
-//            let abl = UnsafeMutableAudioBufferListPointer(buffer.mutableAudioBufferList)
-//            abl[0].mData = UnsafeMutablePointer<Void>(audioFrames)
-//            abl[0].mDataByteSize = UInt32(frameCount) * audioDescription.mBytesPerFrame
-//            abl[0].mNumberChannels = 2
-            checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), &abl, floatBuffer.mutableAudioBufferList), "error converting")
+            self.provider!.ready = true
 
-//            AEFloatConverterToFloatBufferList(self.aeConverter!, abl.unsafeMutablePointer, floatBuffer.mutableAudioBufferList, UInt32(frameCount))
+            return frameCount
+/*
+            let floatBuffer = AVAudioPCMBuffer(PCMFormat: self.spotifyFormat.value!, frameCapacity: AVAudioFrameCount(frameCount))
+            checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), &abl, floatBuffer.mutableAudioBufferList), "error converting")
             floatBuffer.frameLength = AVAudioFrameCount(frameCount)
             if (!self.buffer.add(floatBuffer.mutableAudioBufferList, frames: UInt32(frameCount), description: floatBuffer.format.streamDescription.memory)) {
                 return 0
             }
-            return frameCount
+
+            return frameCount*/
         }
     }
     
@@ -496,6 +489,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
             var updated:Boolean = 0
             AudioUnitInitialize(unit)
             AUGraphUpdate(self.graph, &updated)
+            provider.optionalConverters = (unit, node)
         }
     }
     
@@ -563,6 +557,8 @@ class CoreAudioPlayer:AudioProviderDelegate {
             for buffer in abl {
                 renderFlags.memory = AudioUnitRenderActionFlags.UnitRenderAction_OutputIsSilence
                 memset(buffer.mData, 0, Int(buffer.mDataByteSize))
+                var buffer = buffer
+                buffer.mDataByteSize = 0
             }
         }
         return 0

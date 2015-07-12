@@ -398,6 +398,11 @@
 					4428A1841B30CF4900708716 = {
 						CreatedOnToolsVersion = 6.3.2;
 						DevelopmentTeam = 84476NUWZH;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					4428A19C1B30CF4900708716 = {
 						CreatedOnToolsVersion = 6.3.2;
