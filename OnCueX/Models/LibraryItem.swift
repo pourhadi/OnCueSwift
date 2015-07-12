@@ -42,7 +42,7 @@ internal struct LibraryTrack: TrackItem, Queueable {
     var subtitle:String? {
         let artist = self.mediaItem.artist
         let album = self.mediaItem.albumTitle
-        return subtitleString(artist == nil ? nil : [artist!], album: album)
+        return "\(String(self.duration)) - " + subtitleString(artist == nil ? nil : [artist!], album: album)
     }
     
     var isTrackCollection = false
