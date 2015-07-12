@@ -331,7 +331,7 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
                 self.spotifyFormat.put(outFormat)
                 
                 if let delegate = self.providerDelegate {
-                    delegate.provider(delegate as! AudioProvider, format: audioDescription)
+                delegate.provider(self.provider!, format: audioDescription)
                 }
                 
             }
