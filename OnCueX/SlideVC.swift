@@ -178,6 +178,10 @@ class SlideVC: UIViewController, UIScrollViewDelegate {
         
     }
     
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
     }

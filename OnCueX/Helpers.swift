@@ -23,13 +23,8 @@ func uniq<S : SequenceType, T : Hashable where S.Generator.Element == T>(source:
 
 extension NSTimeInterval {
     
-    var description: String {
-/*int seconds = totalSeconds % 60;
-int minutes = (totalSeconds / 60) % 60;
-int hours = totalSeconds / 3600;
+    func toString() -> String {
 
-return [NSString stringWithFormat:@"%02d:%02d:%02d",hours, minutes, seconds];*/
-        
         let seconds = self % 60
         let minutes = (self / 60) % 60
         

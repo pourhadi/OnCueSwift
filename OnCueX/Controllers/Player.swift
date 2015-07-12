@@ -85,12 +85,13 @@ class Player:CoreAudioPlayerDelegate {
         
         if let track = self.audioPlayer.currentTrack {
             let info = NowPlayingInfo(track:track, currentTime:self.audioPlayer.currentTrackTime)
-            for observerWrapper in self.observers {
-                if let observer = observerWrapper.observer {
-                    observer.nowPlayingUpdated(info)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                for observerWrapper in self.observers {
+                    if let observer = observerWrapper.observer {
+                        observer.nowPlayingUpdated(info)
+                    }
                 }
-            }
-
+            })
         }
     }
 
