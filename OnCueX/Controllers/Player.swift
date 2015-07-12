@@ -53,7 +53,7 @@ class Player {
 }
 
 protocol AudioProviderDelegate:class {
-    
+    func provider(provider:AudioProvider, format:AudioStreamBasicDescription)
 }
 
 protocol AudioProviderEngineDelegate:class {
@@ -76,9 +76,19 @@ protocol AudioProvider: class, Identifiable {
     func renderFrames(frameCount:UInt32, intoBuffer:UnsafeMutablePointer<AudioBufferList>) -> UInt32
     var outputFormat:AudioStreamBasicDescription? { get set }
     var ready:Bool { get }
+    
+    var optionalConverters:(AudioUnit, AUNode)? { get set }
+    var requiresConverter:Bool { get set }
+    var callbackStruct:AURenderCallbackStruct? { get set }
+    var busElement:Int32 { get set }
 }
 
 class LibraryAudioProvider: AudioProvider {
+    var busElement:Int32 = 0
+    var callbackStruct:AURenderCallbackStruct?
+    var requiresConverter:Bool = false
+    var optionalConverters:(AudioUnit, AUNode)?
+
     var ready = false
     
     var outputFormat:AudioStreamBasicDescription?
@@ -176,6 +186,11 @@ class LibraryAudioProvider: AudioProvider {
 
 @objc
 class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDelegate {
+    var busElement:Int32 = 0
+    var callbackStruct:AURenderCallbackStruct?
+    var requiresConverter = false
+    var optionalConverters:(AudioUnit, AUNode)?
+
     var ready = false
     
     var outputFormat:AudioStreamBasicDescription? {
@@ -296,34 +311,34 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
             var audioDescription = audioDescription
             let format = AVAudioFormat(streamDescription: &audioDescription)
             
-            if self.audioConverter == nil {
-                var exportFormat = self.outputFormat!
-                var ref:AudioConverterRef = AudioConverterRef()
-                var inFormat = audioDescription
-                checkError(AudioConverterNew(&inFormat, &exportFormat, &ref), "Create audio converter")
-                self.audioConverter = ref
-            }
             
-            if self.aeConverter == nil {
-                self.aeConverter = AEFloatConverter(sourceFormat: audioDescription)
-            }
+            
+//            if self.audioConverter == nil {
+//                var exportFormat = self.outputFormat!
+//                var ref:AudioConverterRef = AudioConverterRef()
+//                var inFormat = audioDescription
+//                checkError(AudioConverterNew(&inFormat, &exportFormat, &ref), "Create audio converter")
+//                self.audioConverter = ref
+//            }
+//            
+//            if self.aeConverter == nil {
+//                self.aeConverter = AEFloatConverter(sourceFormat: audioDescription)
+//            }
             
             if self.spotifyFormat.value == nil {
 //                let outFormat = AVAudioFormat(commonFormat: .PCMFormatFloat32, sampleRate: format.sampleRate, channels: 2, interleaved: false)
                 let outFormat = AVAudioFormat(streamDescription: &outputFormat!)
                 self.spotifyFormat.put(outFormat)
                 
+                if let delegate = self.providerDelegate {
+                    delegate.provider(delegate as! AudioProvider, format: audioDescription)
+                }
+                
             }
 
-//            print(AVAudioFormat(streamDescription: &audioDescription))
-//            let intBuffer = UnsafeBufferPointer(start:audioFrames, count:frameCount)
-            
-            
+
             let floatBuffer = AVAudioPCMBuffer(PCMFormat: self.spotifyFormat.value!, frameCapacity: AVAudioFrameCount(frameCount))
-//            let buffer = AVAudioPCMBuffer(PCMFormat: format, frameCapacity: AVAudioFrameCount(frameCount))
-            
-//            let intArrayBuffer = UnsafeBufferPointer(start: UnsafePointer<Int>(audioFrames), count: frameCount)
-            
+
             var abl = AudioBufferList(mNumberBuffers: 1, mBuffers: AudioBuffer(mNumberChannels: 2, mDataByteSize: UInt32(frameCount)*2*UInt32(sizeof(Int16)), mData: UnsafeMutablePointer<Void>(audioFrames)))
             
             
@@ -454,6 +469,32 @@ struct ProviderPointer {
 
 class CoreAudioPlayer:AudioProviderDelegate {
     
+    func provider(provider:AudioProvider, format:AudioStreamBasicDescription) {
+        var format = format
+        let avFormat = AVAudioFormat(streamDescription: &format)
+        let outputFormat = AVAudioFormat(streamDescription: &self.outputFormat)
+        
+        if !avFormat.isEqual(outputFormat) {
+            provider.requiresConverter = true
+            var desc = AudioComponentDescription(componentType: OSType(kAudioUnitType_FormatConverter),componentSubType: OSType(kAudioUnitSubType_AUConverter),componentManufacturer: OSType(kAudioUnitManufacturer_Apple),componentFlags: 0,componentFlagsMask: 0)
+            var node = AUNode()
+            checkError(AUGraphAddNode(self.graph, &desc, &node), "add converter node")
+            var unit = AudioUnit()
+            checkError(AUGraphNodeInfo(self.graph, node, &desc, &unit), "get converter unit")
+            
+            AudioUnitSetProperty(unit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &format, UInt32(sizeofValue(format)))
+            AudioUnitSetProperty(unit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &self.outputFormat, UInt32(sizeofValue(format)))
+            var fps:UInt32 = 4096
+            AudioUnitSetProperty(unit, kAudioUnitProperty_MaximumFramesPerSlice, kAudioUnitScope_Global, 0, &fps, UInt32(sizeofValue(fps)))
+            var callback = provider.callbackStruct!
+            AudioUnitSetProperty(unit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, 0, &callback, UInt32(sizeofValue(callback)))
+            AUGraphConnectNodeInput(self.graph, node, 0, self.mixerNode, UInt32(provider.busElement))
+            var updated:Boolean = 0
+            AudioUnitInitialize(unit)
+            AUGraphUpdate(self.graph, &updated)
+        }
+    }
+    
     func providerForCurrentTrack() -> AudioProvider? {
         if let track = self.currentTrack {
             if let providerIndex = self.providers.index(track.source) {
@@ -502,6 +543,8 @@ class CoreAudioPlayer:AudioProviderDelegate {
     var mixerUnit:AudioUnit
     var mixerNode:AUNode
 
+    var outputFormat:AudioStreamBasicDescription
+    
     var callback:AURenderCallback = { (inRefCon, renderFlags, timeStamp, outputBus, numFrames, bufferList) -> OSStatus in
 
         var pointer = UnsafeMutablePointer<ProviderPointer>(inRefCon)
@@ -577,7 +620,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
         )
         
         var sampleRate = AVAudioSession.sharedInstance().sampleRate
-        AudioUnitSetProperty(self.mixerUnit, kAudioUnitProperty_SampleRate, kAudioUnitScope_Output, 0, &sampleRate, UInt32(sizeofValue(sampleRate)))
+        checkError(AudioUnitSetProperty(self.mixerUnit, kAudioUnitProperty_SampleRate, kAudioUnitScope_Output, 0, &sampleRate, UInt32(sizeofValue(sampleRate))), "set mixer sample rate")
         
         // set mixer output to io input
         var mixerOutput = AudioStreamBasicDescription()
@@ -586,7 +629,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
         checkError(AudioUnitGetProperty(self.mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &mixerOutput, &valSize), "get mixer output format")
         status = AudioUnitSetProperty(self.ioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &mixerOutput, valSize)
         checkError(status, "set ioUnit input format")
-        
+        self.outputFormat = mixerOutput
         
         var x:UInt32 = 0
         for provider in self.providers {
@@ -597,8 +640,10 @@ class CoreAudioPlayer:AudioProviderDelegate {
             let pointer = UnsafeMutablePointer<ProviderPointer>.alloc(0)
             pointer.initialize(providerPointer)
             var callbackStruct:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: callback, inputProcRefCon:pointer)
+            provider.callbackStruct = callbackStruct
             status = AudioUnitSetProperty(self.mixerUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, AudioUnitElement(x), &callbackStruct, UInt32(sizeof(AURenderCallbackStruct)))
             checkError(status, "add node input callback: \(provider.identifier)")
+            provider.busElement = Int32(x)
             x += 1
         }
         
