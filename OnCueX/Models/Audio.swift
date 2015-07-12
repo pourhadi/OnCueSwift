@@ -13,3 +13,12 @@ protocol Playable:Identifiable {
     var assetURL:NSURL { get }
     var duration:NSTimeInterval { get }
 }
+
+struct NowPlayingInfo {
+    let track:TrackItem
+    let currentTime:NSTimeInterval
+}
+
+protocol NowPlayingObserver:class, Identifiable {
+    func nowPlayingUpdated(nowPlayingInfo:NowPlayingInfo)
+}

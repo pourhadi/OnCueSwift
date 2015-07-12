@@ -21,7 +21,78 @@ func checkError(error:OSStatus, _ operation:String?) {
     print("error: \(error) \(operation)")
 }
 
-class Player {
+struct NowPlayingObserverWrapper:Identifiable {
+    weak var observer:NowPlayingObserver?
+    
+    var identifier:String {
+        if let observer = self.observer {
+            return observer.identifier
+        }
+        return ""
+    }
+}
+
+class Player:CoreAudioPlayerDelegate {
+    
+    func playerTrackFinished(player:CoreAudioPlayer) {
+        TrackManager.next(true)
+    }
+    
+    var observers:[NowPlayingObserverWrapper] = []
+    func addObserver(observer:NowPlayingObserver) {
+        self.observers.append(NowPlayingObserverWrapper(observer: observer))
+        
+        if self.observers.count == 1 {
+            self.startObserverTimer()
+        }
+    }
+    
+    func removeObserver(observer:NowPlayingObserver) {
+        if let index = self.observers.index(observer) {
+            self.observers.removeAtIndex(index)
+        }
+        
+        if self.observers.count == 0 {
+            self.stopObserverTimer()
+        }
+    }
+    
+    var timer:NSTimer?
+    func startObserverTimer() {
+        self.stopObserverTimer()
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: "observerTimerFired", userInfo: nil, repeats: true)
+        self.timer!.tolerance = 0.1 * 0.25
+    }
+    
+    func stopObserverTimer() {
+        if let timer = self.timer {
+            timer.invalidate()
+        }
+    }
+    
+    func observerTimerFired() {
+        let newArray = self.observers
+        for (index, observer) in newArray.enumerate() {
+            if observer.observer == nil {
+                self.observers.removeAtIndex(index)
+            }
+        }
+        
+        if self.observers.count == 0 {
+            self.stopObserverTimer()
+            return
+        }
+        
+        if let track = self.audioPlayer.currentTrack {
+            let info = NowPlayingInfo(track:track, currentTime:self.audioPlayer.currentTrackTime)
+            for observerWrapper in self.observers {
+                if let observer = observerWrapper.observer {
+                    observer.nowPlayingUpdated(info)
+                }
+            }
+
+        }
+    }
 
     init() {
         self.configure()
@@ -32,7 +103,11 @@ class Player {
        
     }
     
-    let audioPlayer = CoreAudioPlayer()
+    lazy var audioPlayer:CoreAudioPlayer = {
+        let player = CoreAudioPlayer()
+        player.delegate = self
+        return player
+        }()
 //    let enginePlayer = EnginePlayer()
 
     func play(track:TrackItem) {
@@ -54,6 +129,7 @@ class Player {
 
 protocol AudioProviderDelegate:class {
     func provider(provider:AudioProvider, format:AudioStreamBasicDescription)
+    func providerTrackFinished(provider:AudioProvider)
 }
 
 protocol AudioProviderEngineDelegate:class {
@@ -81,8 +157,6 @@ protocol AudioProvider: class, Identifiable {
     var requiresConverter:Bool { get set }
     var callbackStruct:AURenderCallbackStruct? { get set }
     var busElement:Int32 { get set }
-    
-    var totalFramesForCurrentTrack:Int { get }
 }
 
 class LibraryAudioProvider: AudioProvider {
@@ -461,10 +535,26 @@ class EnginePlayer:AudioProviderEngineDelegate {
 */
 
 struct ProviderPointer {
-    var provider:AudioProvider
+    weak var provider:AudioProvider?
+    weak var player:CoreAudioPlayer?
+}
+
+protocol CoreAudioPlayerDelegate:class {
+    func playerTrackFinished(player:CoreAudioPlayer)
 }
 
 class CoreAudioPlayer:AudioProviderDelegate {
+    weak var delegate:CoreAudioPlayerDelegate?
+    
+    func currentTrackFinished() {
+        if let delegate = self.delegate {
+            delegate.playerTrackFinished(self)
+        }
+    }
+    
+    func providerTrackFinished(provider:AudioProvider) {
+        self.currentTrackFinished()
+    }
     
     func provider(provider:AudioProvider, format:AudioStreamBasicDescription) {
         var format = format
@@ -521,6 +611,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
             if let provider = self.providerForCurrentTrack() {
                 provider.reset()
             }
+            currentFrameCount = 0
         }
         
         didSet {
@@ -531,6 +622,31 @@ class CoreAudioPlayer:AudioProviderDelegate {
                 }
             }
         }
+    }
+    
+    var currentFrameCount:Int = 0 {
+        didSet {
+            if self.currentTrack != nil {
+                if (totalFramesForCurrentTrack - currentFrameCount) < 100 {
+                    self.currentTrackFinished()
+                }
+            }
+        }
+    }
+    
+    var currentTrackTime:NSTimeInterval {
+        if let track = currentTrack {
+            return NSTimeInterval(currentFrameCount / totalFramesForCurrentTrack) * track.duration
+        }
+        return 0
+    }
+    
+    var totalFramesForCurrentTrack:Int {
+        if let track = currentTrack {
+            let sampleRate = AVAudioSession.sharedInstance().sampleRate
+            return Int(sampleRate) * Int(track.duration)
+        }
+        return 0
     }
     
     var providers:[AudioProvider] = [LibraryAudioProvider(), SpotifyAudioProvider()]
@@ -546,11 +662,13 @@ class CoreAudioPlayer:AudioProviderDelegate {
     var callback:AURenderCallback = { (inRefCon, renderFlags, timeStamp, outputBus, numFrames, bufferList) -> OSStatus in
 
         var pointer = UnsafeMutablePointer<ProviderPointer>(inRefCon)
-        let provider:AudioProvider = pointer.memory.provider
+        guard let provider:AudioProvider = pointer.memory.provider else { return 0 }
         guard provider.ready else { return 0 }
+        guard let player:CoreAudioPlayer = pointer.memory.player else { return 0 }
         var bufSize:UInt32 = 0
         if provider.ready {
-            provider.renderFrames(numFrames, intoBuffer: bufferList)
+            let renderedFrames = provider.renderFrames(numFrames, intoBuffer: bufferList)
+            player.currentFrameCount += Int(renderedFrames)
         } else {
 //            kAudioUnitRenderAction_OutputIsSilence
             let abl = UnsafeMutableAudioBufferListPointer(bufferList)
@@ -638,7 +756,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
             let provider = provider
             provider.delegate = self
             provider.outputFormat = mixerOutput
-            let providerPointer = ProviderPointer(provider: provider)
+            let providerPointer = ProviderPointer(provider: provider, player:self)
             let pointer = UnsafeMutablePointer<ProviderPointer>.alloc(0)
             pointer.initialize(providerPointer)
             var callbackStruct:AURenderCallbackStruct = AURenderCallbackStruct(inputProc: callback, inputProcRefCon:pointer)

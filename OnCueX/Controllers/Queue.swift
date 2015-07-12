@@ -71,19 +71,34 @@ struct QueueOperation {
 extension Queue {
     func next() {
         self.operation {
-            self.playhead += 1
+            if self.playhead + 1 >= self.allTracks.count {
+                self.playhead = 0
+            } else {
+                self.playhead += 1
+            }
         }
     }
     
     func back() {
         self.operation {
-            self.playhead -= 1
+            if self.playhead - 1 < 0 {
+                self.playhead = self.allTracks.count - 1
+            } else {
+                self.playhead -= 1
+            }
         }
     }
 }
 
 final class Queue {
 
+    var currentTrack:QueuedTrack? {
+        if self.items.count > 0 {
+            return self.allTracks[self.playhead]
+        }
+        return nil
+    }
+    
     var observers:[QueueObserverWrapper] = []
     func addObserver(observer:QueueObserver) {
         self.observers.append(QueueObserverWrapper(observer: observer))
@@ -100,6 +115,12 @@ final class Queue {
             self.operation {
                 self.operations.append(QueueOperation(item: nil, type: .PlayheadChanged, queueIndex: nil))
             }
+        }
+    }
+    
+    var allTracks:[QueuedTrack] {
+        return self.items.flatMap { (item) -> [QueuedTrack] in
+            return item.tracks
         }
     }
     

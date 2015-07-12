@@ -11,6 +11,10 @@ import UIKit
 let _trackManager = TrackManager()
 class TrackManager {
 
+    class func trackSelected(track:TrackItem) {
+        _trackManager.trackSelected(track)
+    }
+    
     func trackSelected(track:TrackItem) {
         func queueTrack() {
             _queue.insert(track as! Queueable, complete: nil)
@@ -22,6 +26,15 @@ class TrackManager {
                     _player.play(track)
                 } else { queueTrack() }
             } else { queueTrack() }
+        }
+    }
+    
+    class func next(play:Bool) {
+        _queue.next()
+        if let track = _queue.currentTrack {
+            if play {
+                _player.play(track.track)
+            }
         }
     }
     
