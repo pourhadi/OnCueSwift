@@ -32,7 +32,7 @@ struct QueueIndex: Equatable {
     let playhead:Int
     
     var displayIndex:String {
-        let diff:UInt = UInt(index) - UInt(playhead)
+        let diff:Int = Int(index) - Int(playhead)
         if diff == 0 {
             return ""
         } else if diff == 1 {
