@@ -76,6 +76,29 @@ class QueueCellIndexView : UIView {
     }
 }
 
+class SongProgressCircle : SAMCircleProgressView, NowPlayingObserver {
+    
+    var identifier = "songCircle"
+    
+    override init(frame: CGRect) {
+        super.init(frame:frame)
+        
+        _player.addObserver(self)
+    }
+    
+    deinit {
+        _player.removeObserver(self)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func nowPlayingUpdated(nowPlayingInfo:NowPlayingInfo) {
+        
+    }
+}
+
 class QueueCell: UICollectionViewCell, QueuedItemObserver {
     
     override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
