@@ -112,7 +112,6 @@ class Player:NSObject, CoreAudioPlayerDelegate {
         player.delegate = self
         return player
         }()
-//    let enginePlayer = EnginePlayer()
 
     func play(track:TrackItem) {
         audioPlayer.currentTrack = track
@@ -144,7 +143,6 @@ protocol AudioProvider: class, Identifiable {
     var delegate:AudioProviderDelegate? { get set }
     
     var engineDelegate:AudioProviderEngineDelegate? { get set }
-//    func startProvidingAudio(track:Playable) -> SignalProducer<AVAudioFormat, NoError>
     func startProvidingAudio(track:Playable)
     func seekToTime(time:NSTimeInterval)
     
@@ -639,8 +637,8 @@ class CoreAudioPlayer:AudioProviderDelegate {
     }
     
     var currentTrackTime:NSTimeInterval {
-        if let track = currentTrack {
-            return NSTimeInterval(currentFrameCount / totalFramesForCurrentTrack) * track.duration
+        if currentTrack != nil {
+            return NSTimeInterval(Double(currentFrameCount) / AVAudioSession.sharedInstance().sampleRate)
         }
         return 0
     }
