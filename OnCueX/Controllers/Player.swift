@@ -32,7 +32,7 @@ struct NowPlayingObserverWrapper:Identifiable {
     }
 }
 
-class Player:CoreAudioPlayerDelegate {
+class Player:NSObject, CoreAudioPlayerDelegate {
     
     func playerTrackFinished(player:CoreAudioPlayer) {
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
@@ -97,7 +97,8 @@ class Player:CoreAudioPlayerDelegate {
         }
     }
 
-    init() {
+    override init() {
+        super.init()
         self.configure()
         self.startSession()
     }
