@@ -549,6 +549,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
     weak var delegate:CoreAudioPlayerDelegate?
     
     func currentTrackFinished() {
+        self.currentTrack = nil
         if let delegate = self.delegate {
             delegate.playerTrackFinished(self)
         }
