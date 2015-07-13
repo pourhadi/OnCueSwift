@@ -95,7 +95,7 @@ class SongProgressCircle : SAMCircleProgressView, NowPlayingObserver {
     }
     
     func nowPlayingUpdated(nowPlayingInfo:NowPlayingInfo) {
-        print(nowPlayingInfo.currentTime)
+        print(CGFloat(nowPlayingInfo.currentTime / nowPlayingInfo.track.duration))
         self.progress = CGFloat(nowPlayingInfo.currentTime / nowPlayingInfo.track.duration)
     }
 }
