@@ -40,7 +40,9 @@ class TrackManager {
     
     class func play(track:TrackItem) {
         if let queueIndex = _queue.indexOfItem(track) {
-            _queue.playhead = queueIndex.index
+            if queueIndex.playhead != queueIndex.index {
+                _queue.playhead = queueIndex.index
+            }
             _player.play(track)
         } else {
             _queue.insert(track, atIndex: _queue.playhead, complete: { (insertedIndex) -> Void in

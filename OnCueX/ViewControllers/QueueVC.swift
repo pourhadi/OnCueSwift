@@ -57,8 +57,14 @@ class QueueVC: UICollectionViewController {
         self.collectionView!.backgroundColor = UIColor.blackColor()
         _queue.addObserver(self)
         self.collectionView!.registerClass(QueueCell.self, forCellWithReuseIdentifier: "queueCell")
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .Plain, target: self, action: "nextHit")
     }
 
+    func nextHit() {
+        TrackManager.next(true)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
