@@ -97,7 +97,6 @@ class SongProgressCircle : SAMCircleProgressView, NowPlayingObserver {
     }
     
     func nowPlayingUpdated(nowPlayingInfo:NowPlayingInfo) {
-        print(CGFloat(nowPlayingInfo.currentTime / nowPlayingInfo.track.duration))
         self.progress = CGFloat(nowPlayingInfo.currentTime / nowPlayingInfo.track.duration)
     }
 }
@@ -136,6 +135,7 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
                     QueueCell.progressCircle.snp_makeConstraints({ (make) -> Void in
                         make.edges.equalTo(self.imageView)
                     })
+                    self.contentView.layoutIfNeeded()
                     return
                 }
             }
@@ -219,5 +219,7 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
         super.layoutSubviews()
         self.imageView.layer.cornerRadius = self.imageView.frame.size.width / 2
         self.imageView.clipsToBounds = true
+        
+        self.updateForNowPlaying(self.item?.queueIndex)
     }
 }
