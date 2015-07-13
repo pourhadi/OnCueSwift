@@ -80,8 +80,8 @@ class SongProgressCircle : SAMCircleProgressView, NowPlayingObserver {
     
     var identifier = "songCircle"
     
-    override init(frame: CGRect) {
-        super.init(frame:frame)
+    init() {
+        super.init(frame:CGRectZero)
         
         _player.addObserver(self)
     }
@@ -95,11 +95,13 @@ class SongProgressCircle : SAMCircleProgressView, NowPlayingObserver {
     }
     
     func nowPlayingUpdated(nowPlayingInfo:NowPlayingInfo) {
-        
+        self.progress = CGFloat(nowPlayingInfo.currentTime / nowPlayingInfo.track.duration)
     }
 }
 
 class QueueCell: UICollectionViewCell, QueuedItemObserver {
+    
+    static let progressCircle = SongProgressCircle()
     
     override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
         super.applyLayoutAttributes(layoutAttributes)
@@ -118,11 +120,30 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
         }
     }
     
+    func updateForNowPlaying(queueIndex:QueueIndex?) {
+        if self.item != nil {
+            if let index = queueIndex {
+                if index.index == index.playhead {
+                    self.contentView.addSubview(QueueCell.progressCircle)
+                    QueueCell.progressCircle.frame = self.imageView.frame
+                    return
+                }
+            }
+        }
+
+        if let superview = QueueCell.progressCircle.superview {
+            if superview == self.contentView {
+                QueueCell.progressCircle.removeFromSuperview()
+            }
+        }
+    }
+    
     func queueIndexUpdated(forItem:Queued, queueIndex:QueueIndex?) {
         if let item = self.item {
             if item.isEqual(forItem) {
                 if let index = queueIndex {
                     self.indexView.setText(index.displayIndex)
+                    self.updateForNowPlaying(queueIndex)
                 }
             }
         }
@@ -144,6 +165,7 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
                 if let index = item.queueIndex {
                     self.indexView.setText(index.displayIndex)
                 }
+                self.updateForNowPlaying(item.queueIndex)
             }
         }
     }
