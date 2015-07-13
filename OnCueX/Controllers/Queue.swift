@@ -111,6 +111,18 @@ final class Queue {
     }
     
     var playhead = 0 {
+        willSet {
+            if self.allTracks.count == 0 {
+                self.playhead = 0
+                return
+            }
+            
+            if newValue >= self.allTracks.count {
+                self.playhead = 0
+            } else if newValue < 0 {
+                self.playhead = self.allTracks.count - 1
+            }
+        }
         didSet {
             self.operation {
                 self.operations.append(QueueOperation(item: nil, type: .PlayheadChanged, queueIndex: nil))

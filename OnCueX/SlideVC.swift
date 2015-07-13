@@ -10,6 +10,10 @@ import Foundation
 import UIKit
 import SnapKit
 
+protocol SlideScrollingObserver {
+    func slideVCScrolled(toOffset:CGFloat, fromOffset:CGFloat)
+}
+
 class CustomScrollView:UIScrollView {
     
     @objc
@@ -146,6 +150,7 @@ class SlideVC: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    var lastOffset:CGFloat = 0
       func scrollViewDidScroll(scrollView: UIScrollView) {
         
         let offset = scrollView.contentOffset.x
@@ -175,6 +180,13 @@ class SlideVC: UIViewController, UIScrollViewDelegate {
         adjustNavContainerPosition()
         adjustLibraryContainerPosition()
         adjustQueueContainerPosition()
+        
+        for viewController in self.viewControllers {
+            if let vc = viewController as? SlideScrollingObserver {
+                vc.slideVCScrolled(offset, fromOffset: self.lastOffset)
+            }
+        }
+        self.lastOffset = scrollView.contentOffset.x
         
     }
     

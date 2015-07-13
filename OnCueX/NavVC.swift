@@ -18,8 +18,12 @@ class NavBar : UINavigationBar {
     }
 }
 
-class NavVC: UIViewController, UINavigationBarDelegate, UINavigationControllerDelegate {
+class NavVC: UIViewController, UINavigationBarDelegate, UINavigationControllerDelegate, SlideScrollingObserver {
 
+    func slideVCScrolled(toOffset:CGFloat, fromOffset:CGFloat) {
+        
+    }
+    
     let navController = UINavigationController(nibName: nil, bundle: nil)
     
     lazy var navBar:UINavigationBar = NavBar()
