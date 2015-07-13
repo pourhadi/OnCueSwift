@@ -127,6 +127,11 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
         if self.item != nil {
             if let index = queueIndex {
                 if index.index == index.playhead {
+                    if let superview = QueueCell.progressCircle.superview {
+                        if superview == self.contentView {
+                            return
+                        }
+                    }
                     self.contentView.addSubview(QueueCell.progressCircle)
                     QueueCell.progressCircle.snp_makeConstraints({ (make) -> Void in
                         make.edges.equalTo(self.imageView)
