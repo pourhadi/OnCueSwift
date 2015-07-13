@@ -48,6 +48,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 5
 #define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 4
 
+// SAMCircleProgressView
+#define COCOAPODS_POD_AVAILABLE_SAMCircleProgressView
+#define COCOAPODS_VERSION_MAJOR_SAMCircleProgressView 0
+#define COCOAPODS_VERSION_MINOR_SAMCircleProgressView 1
+#define COCOAPODS_VERSION_PATCH_SAMCircleProgressView 1
+
 // TheAmazingAudioEngine
 #define COCOAPODS_POD_AVAILABLE_TheAmazingAudioEngine
 #define COCOAPODS_VERSION_MAJOR_TheAmazingAudioEngine 1

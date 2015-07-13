@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-SAMCircleProgressView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-TheAmazingAudioEngine.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -22,17 +27,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>57FB884CBB51F4C88F9684D4</key>
+		<key>10AFA8425BAEA9513AD478E8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A5394416BCBE22E7665797AF</key>
+		<key>1D47935BEC02B4C8808036EF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B68DE07FFFC05B571DFB46E9</key>
+		<key>B3AFF8A7EE3248E9FF489E4C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C3D2160D7B321612CDB2CE79</key>
 		<dict>
 			<key>primary</key>
 			<true/>

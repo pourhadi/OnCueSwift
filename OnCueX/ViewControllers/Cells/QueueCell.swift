@@ -9,6 +9,7 @@
 import UIKit
 import QuartzCore
 import CoreGraphics
+import SAMCircleProgressView
 
 class QueueCellIndexView : UIView {
     let label = UILabel()

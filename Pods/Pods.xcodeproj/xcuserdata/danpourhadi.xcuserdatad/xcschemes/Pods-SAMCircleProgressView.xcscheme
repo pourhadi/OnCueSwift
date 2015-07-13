@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1D47935BEC02B4C8808036EF"
-               BuildableName = "AFNetworking.framework"
-               BlueprintName = "Pods-AFNetworking"
+               BlueprintIdentifier = "C3D2160D7B321612CDB2CE79"
+               BuildableName = "SAMCircleProgressView.framework"
+               BlueprintName = "Pods-SAMCircleProgressView"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

@@ -20,14 +20,17 @@ PODS:
   - AFNetworking/UIKit (2.5.4):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - SAMCircleProgressView (0.1.1)
   - TheAmazingAudioEngine (1.4.6)
 
 DEPENDENCIES:
   - AFNetworking
+  - SAMCircleProgressView
   - TheAmazingAudioEngine
 
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
+  SAMCircleProgressView: 8bfac68a15d1dd1e3d0c1ec411895898efed9dda
   TheAmazingAudioEngine: 014e942f20456feaf5ccb48f440402306350abf8
 
 COCOAPODS: 0.37.2

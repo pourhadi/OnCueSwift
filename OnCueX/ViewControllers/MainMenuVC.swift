@@ -63,6 +63,7 @@ class MainMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.collectionView.directionalLockEnabled = true
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         self.view.addSubview(self.collectionView)
