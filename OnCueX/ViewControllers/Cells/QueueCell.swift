@@ -84,6 +84,8 @@ class SongProgressCircle : SAMCircleProgressView, NowPlayingObserver {
         super.init(frame:CGRectZero)
         
         _player.addObserver(self)
+        self.fillColor = UIColor.clearColor()
+        self.fillBackgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
     }
     
     deinit {
@@ -126,7 +128,9 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
             if let index = queueIndex {
                 if index.index == index.playhead {
                     self.contentView.addSubview(QueueCell.progressCircle)
-                    QueueCell.progressCircle.frame = self.imageView.frame
+                    QueueCell.progressCircle.snp_makeConstraints({ (make) -> Void in
+                        make.edges.equalTo(self.imageView)
+                    })
                     return
                 }
             }
@@ -134,6 +138,7 @@ class QueueCell: UICollectionViewCell, QueuedItemObserver {
 
         if let superview = QueueCell.progressCircle.superview {
             if superview == self.contentView {
+                QueueCell.progressCircle.snp_removeConstraints()
                 QueueCell.progressCircle.removeFromSuperview()
             }
         }
