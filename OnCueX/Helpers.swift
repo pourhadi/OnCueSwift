@@ -28,7 +28,7 @@ extension NSTimeInterval {
         let seconds = self % 60
         let minutes = (self / 60) % 60
         
-        return String(format: "%02d:%02d", arguments: [minutes, seconds])
+        return String(format: "%02f:%02f", arguments: [minutes, seconds])
     }
 
 }

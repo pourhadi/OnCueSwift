@@ -35,7 +35,9 @@ struct NowPlayingObserverWrapper:Identifiable {
 class Player:CoreAudioPlayerDelegate {
     
     func playerTrackFinished(player:CoreAudioPlayer) {
-        TrackManager.next(true)
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            TrackManager.next(true)
+        }
     }
     
     var observers:[NowPlayingObserverWrapper] = []
