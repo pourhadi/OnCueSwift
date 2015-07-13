@@ -84,8 +84,8 @@ class SongProgressCircle : SAMCircleProgressView, NowPlayingObserver {
         super.init(frame:CGRectZero)
         
         _player.addObserver(self)
-        self.fillColor = UIColor.clearColor()
-        self.fillBackgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
+        self.fillBackgroundColor = UIColor.clearColor()
+        self.fillColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
     }
     
     deinit {
