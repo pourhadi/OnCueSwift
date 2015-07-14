@@ -95,6 +95,12 @@ class ListVC: UIViewController {
         }
         
         self.collectionView.reloadData()
+        
+        if let backButton = self.navigationItem.backBarButtonItem {
+            backButton.title = ""
+        } else {
+            self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
