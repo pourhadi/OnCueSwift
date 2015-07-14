@@ -53,7 +53,7 @@ class MainMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
             animation.toValue = -self.view.bounds.size.width
             animation.easingFunction = easingFunctions[kEaseInBack]
             animation.duration = 0.4
-            animation.delay = NSTimeInterval(x) * 0.2
+            animation.delay = NSTimeInterval(x) * 0.05
             animation.view = cell
             group.addAnimation(animation)
         }
@@ -143,10 +143,8 @@ class MainMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let del = self.delegate {
-            self.animateButtonsOut({ () -> Void in
-                del.mainMenuCellSelected(collectionView.cellForItemAtIndexPath(indexPath) as! MainMenuCell, title:self.cellTitles[indexPath.row])
+            del.mainMenuCellSelected(collectionView.cellForItemAtIndexPath(indexPath) as! MainMenuCell, title:self.cellTitles[indexPath.row])
 
-            })
         }
     }
     
