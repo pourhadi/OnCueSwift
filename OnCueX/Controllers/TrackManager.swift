@@ -16,13 +16,11 @@ class TrackManager {
     }
     
     func trackSelected(track:TrackItem) {
-        
         if let index = _queue.indexOfItem(track) {
             if index.playhead == index.index || index.playhead == index.index - 1 {
                 TrackManager.play(track)
             } else { TrackManager.queueTrack(track) }
         } else { TrackManager.queueTrack(track) }
-
     }
     
     class func queueTrack(track:TrackItem) {

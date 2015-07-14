@@ -15,7 +15,6 @@ import ReactiveCocoa
 let _player = Player()
 
 func checkError(error:OSStatus, _ operation:String?) {
-//    print("status:\(error) for: \(operation)")
     guard error != noErr else { return }
     
     print("error: \(error) \(operation)")
@@ -389,19 +388,6 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
         var audioConverter:AudioConverterRef?
         override func attemptToDeliverAudioFrames(audioFrames: UnsafePointer<Void>, ofCount frameCount: Int, streamDescription audioDescription: AudioStreamBasicDescription) -> Int {
             let audioDescription = audioDescription
-            
-//            if self.audioConverter == nil {
-//                var exportFormat = self.outputFormat!
-//                var ref:AudioConverterRef = AudioConverterRef()
-//                var inFormat = audioDescription
-//                checkError(AudioConverterNew(&inFormat, &exportFormat, &ref), "Create audio converter")
-//                self.audioConverter = ref
-//            }
-//            
-//            if self.aeConverter == nil {
-//                self.aeConverter = AEFloatConverter(sourceFormat: audioDescription)
-//            }
-            
             if self.spotifyFormat.value == nil {
                 let outFormat = AVAudioFormat(streamDescription: &outputFormat!)
                 self.spotifyFormat.put(outFormat)
@@ -418,15 +404,6 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
             self.provider!.ready = true
 
             return frameCount
-/*
-            let floatBuffer = AVAudioPCMBuffer(PCMFormat: self.spotifyFormat.value!, frameCapacity: AVAudioFrameCount(frameCount))
-            checkError(AudioConverterConvertComplexBuffer(self.audioConverter!, UInt32(frameCount), &abl, floatBuffer.mutableAudioBufferList), "error converting")
-            floatBuffer.frameLength = AVAudioFrameCount(frameCount)
-            if (!self.buffer.add(floatBuffer.mutableAudioBufferList, frames: UInt32(frameCount), description: floatBuffer.format.streamDescription.memory)) {
-                return 0
-            }
-
-            return frameCount*/
         }
     }
     
@@ -596,21 +573,41 @@ class CoreAudioPlayer:AudioProviderDelegate {
         return nil
     }
     
-    var playing:Bool = false {
-        didSet {
-            var isPlaying:Boolean = 0
-            checkError(AUGraphIsRunning(self.graph, &isPlaying), "check if graph is running")
-            if self.playing && isPlaying == 0 {
-                print("starting graph")
-                checkError(AUGraphStart(self.graph), "start graph")
-            } else if !self.playing && isPlaying != 0 {
-                AUGraphStop(self.graph)
+    var playing:Bool {
+        set {
+            if newValue {
+                self.startGraph()
+            } else {
+                self.stopGraph()
             }
+        }
+        
+        get {
+            return self.isGraphRunning()
+        }
+    }
+    
+    func isGraphRunning() -> Bool {
+        var isPlaying:Boolean = 0
+        checkError(AUGraphIsRunning(self.graph, &isPlaying), "check if graph is running")
+        return isPlaying != 0
+    }
+    
+    func stopGraph() {
+        if self.isGraphRunning() {
+            AUGraphStop(self.graph)
+        }
+    }
+    
+    func startGraph() {
+        if !self.isGraphRunning() {
+            AUGraphStart(self.graph)
         }
     }
     
     var currentTrack:TrackItem? {
         willSet {
+            self.stopGraph()
             if let provider = self.providerForCurrentTrack() {
                 provider.reset()
             }
@@ -622,6 +619,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
                 if let providerIndex = self.providers.index(track.source) {
                     let provider = self.providers[providerIndex]
                     provider.startProvidingAudio(track as Playable)
+                    self.startGraph()
                 }
             }
         }
@@ -673,7 +671,6 @@ class CoreAudioPlayer:AudioProviderDelegate {
             let renderedFrames = provider.renderFrames(numFrames, intoBuffer: bufferList)
             player.currentFrameCount += Int(renderedFrames)
         } else {
-//            kAudioUnitRenderAction_OutputIsSilence
             let abl = UnsafeMutableAudioBufferListPointer(bufferList)
             for buffer in abl {
                 renderFlags.memory = AudioUnitRenderActionFlags.UnitRenderAction_OutputIsSilence

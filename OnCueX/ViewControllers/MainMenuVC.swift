@@ -43,6 +43,28 @@ protocol MainMenuVCDelegate {
 
 
 class MainMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    let animator = Animator()
+    func animateButtonsOut(complete:()->Void) {
+        
+        let group = AnimationGroup()
+        for (x, cell) in self.collectionView.visibleCells().enumerate() {
+            let animation = Animation(keyPath: "layer.transform.translation.x")
+            animation.toValue = -self.view.bounds.size.width
+            animation.easingFunction = easingFunctions[kEaseInBack]
+            animation.duration = 0.4
+            animation.delay = NSTimeInterval(x) * 0.2
+            animation.view = cell
+            group.addAnimation(animation)
+        }
+        
+        group.completionBlock = complete
+        animator.beginAnimations(group)
+    }
+    
+    func animateButtonsIn() {
+        
+    }
 
     var delegate:MainMenuVCDelegate?
     
@@ -121,7 +143,10 @@ class MainMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let del = self.delegate {
-            del.mainMenuCellSelected(collectionView.cellForItemAtIndexPath(indexPath) as! MainMenuCell, title:self.cellTitles[indexPath.row])
+            self.animateButtonsOut({ () -> Void in
+                del.mainMenuCellSelected(collectionView.cellForItemAtIndexPath(indexPath) as! MainMenuCell, title:self.cellTitles[indexPath.row])
+
+            })
         }
     }
     
