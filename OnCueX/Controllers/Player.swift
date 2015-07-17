@@ -20,18 +20,39 @@ func checkError(error:OSStatus, _ operation:String?) {
     print("error: \(error) \(operation)")
 }
 
-struct NowPlayingObserverWrapper:Identifiable {
-    weak var observer:NowPlayingObserver?
+class NowPlayingInfoManager: NowPlayingObserver, QueueObserver, NowPlayingStateObserver {
     
-    var identifier:String {
-        if let observer = self.observer {
-            return observer.identifier
-        }
-        return ""
+    var identifier = "NowPlayingInfoManager"
+    
+    init() {
+        _player.addObserver(self)
+        _queue.addObserver(self)
     }
+    
+    func nowPlayingUpdated(nowPlayingInfo:NowPlayingInfo) {
+        
+    }
+    
+    func queueUpdated(queue:Queue) {
+        
+    }
+
+    func playStateChanged(playing:Bool) {
+        
+    }
+    
 }
 
 class Player:NSObject, CoreAudioPlayerDelegate {
+    
+    var playing:Bool {
+        get {
+            return self.audioPlayer.playing
+        }
+        set {
+            self.audioPlayer.playing = newValue
+        }
+    }
     
     func playerTrackFinished(player:CoreAudioPlayer) {
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
@@ -39,9 +60,9 @@ class Player:NSObject, CoreAudioPlayerDelegate {
         }
     }
     
-    var observers:[NowPlayingObserverWrapper] = []
+    var observers = [ObserverWrapper]()
     func addObserver(observer:NowPlayingObserver) {
-        self.observers.append(NowPlayingObserverWrapper(observer: observer))
+        self.observers.append(ObserverWrapper(observer: observer))
         
         if self.observers.count == 1 {
             self.startObserverTimer()
@@ -56,6 +77,11 @@ class Player:NSObject, CoreAudioPlayerDelegate {
         if self.observers.count == 0 {
             self.stopObserverTimer()
         }
+    }
+    
+    var stateObservers:[ObserverWrapper] = []
+    func addStateObserver(observer:NowPlayingStateObserver) {
+        self.stateObservers.append(ObserverWrapper(observer: observer))
     }
     
     var timer:NSTimer?
@@ -88,7 +114,7 @@ class Player:NSObject, CoreAudioPlayerDelegate {
             let info = NowPlayingInfo(track:track, currentTime:self.audioPlayer.currentTrackTime)
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 for observerWrapper in self.observers {
-                    if let observer = observerWrapper.observer {
+                    if let observer = observerWrapper.observer as? NowPlayingObserver {
                         observer.nowPlayingUpdated(info)
                     }
                 }

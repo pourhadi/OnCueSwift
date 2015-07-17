@@ -9,6 +9,9 @@
 import UIKit
 import AVFoundation
 
+protocol UpdateObserver:class, Identifiable {
+}
+
 protocol Playable:Identifiable {
     var assetURL:NSURL { get }
     var duration:NSTimeInterval { get }
@@ -19,6 +22,22 @@ struct NowPlayingInfo {
     let currentTime:NSTimeInterval
 }
 
-protocol NowPlayingObserver:class, Identifiable {
+
+struct ObserverWrapper {
+    weak var observer:UpdateObserver?
+    
+    var identifier:String {
+        if let observer = self.observer {
+            return observer.identifier
+        }
+        return ""
+    }
+}
+
+protocol NowPlayingObserver:UpdateObserver {
     func nowPlayingUpdated(nowPlayingInfo:NowPlayingInfo)
+}
+
+protocol NowPlayingStateObserver:UpdateObserver {
+    func playStateChanged(playing:Bool)
 }
