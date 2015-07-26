@@ -109,12 +109,6 @@ public final class MutableProperty<T>: MutablePropertyType {
 	}
 }
 
-extension MutableProperty: SinkType {
-	public func put(value: T) {
-		self.value = value
-	}
-}
-
 /// Wraps a `dynamic` property, or one defined in Objective-C, using Key-Value
 /// Coding and Key-Value Observing.
 ///
@@ -149,7 +143,7 @@ extension MutableProperty: SinkType {
 		if let object = object {
 			return object.rac_valuesForKeyPath(keyPath, observer: nil).toSignalProducer()
 				// Errors aren't possible, but the compiler doesn't know that.
-				|> flatMapError { error in
+				.flatMapError { error in
 					assert(false, "Received unexpected error from KVO signal: \(error)")
 					return .empty
 				}
@@ -174,7 +168,7 @@ extension MutableProperty: SinkType {
 infix operator <~ {
 	associativity right
 
-	// Binds tighter than assignment but looser than everything else, including `|>`
+	// Binds tighter than assignment but looser than everything else
 	precedence 93
 }
 

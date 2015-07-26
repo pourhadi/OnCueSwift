@@ -22,7 +22,7 @@ final class ResultTests: XCTestCase {
 
 	func testErrorsIncludeTheSourceFile() {
 		let file = __FILE__
-		XCTAssertEqual(Result<(), NSError>.error().file ?? "", file)
+		XCTAssert(Result<(), NSError>.error().file == file)
 	}
 
 	func testErrorsIncludeTheSourceLine() {
@@ -32,9 +32,20 @@ final class ResultTests: XCTestCase {
 
 	func testErrorsIncludeTheCallingFunction() {
 		let function = __FUNCTION__
-		XCTAssertEqual(Result<(), NSError>.error().function ?? "", function)
+		XCTAssert(Result<(), NSError>.error().function == function)
 	}
 
+	// MARK: Try - Catch
+	
+	func testTryCatchProducesSuccesses() {
+		let result: Result<String, NSError> = Result(try tryIsSuccess("success"))
+		XCTAssert(result == success)
+	}
+	
+	func testTryCatchProducesFailures() {
+		let result: Result<String, NSError> = Result(try tryIsSuccess(nil))
+		XCTAssert(result.error == error)
+	}
 
 	// MARK: Cocoa API idioms
 
@@ -86,11 +97,11 @@ final class ResultTests: XCTestCase {
 
 // MARK: - Fixtures
 
-let success = Result<String, NSError>.success("success")
+let success = Result<String, NSError>.Success("success")
 let error = NSError(domain: "com.antitypical.Result", code: 0xdeadbeef, userInfo: nil)
 let error2 = NSError(domain: "com.antitypical.Result", code: 0x12345678, userInfo: nil)
-let failure = Result<String, NSError>.failure(error)
-let failure2 = Result<String, NSError>.failure(error2)
+let failure = Result<String, NSError>.Failure(error)
+let failure2 = Result<String, NSError>.Failure(error2)
 
 
 // MARK: - Helpers
@@ -102,6 +113,14 @@ func attempt<T>(value: T, succeed: Bool, error: NSErrorPointer) -> T? {
 		error.memory = Result<(), NSError>.error()
 		return nil
 	}
+}
+
+func tryIsSuccess(text: String?) throws -> String {
+	guard let text = text else {
+		throw error
+	}
+	
+	return text
 }
 
 extension NSError {
