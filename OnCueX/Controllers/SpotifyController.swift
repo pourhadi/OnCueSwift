@@ -11,7 +11,7 @@ import UIKit
 let _spotifyController = SpotifyController()
 final internal class SpotifyController: NSObject {
     let clientID = "0ab2dfaddf644af88911dcf5ca5fc4f6"
-    let clientSecret = "3e29644339794e72923a6e596eac764a"
+    let clientSecret = "6ba5ca1bf0bd4587906f16468587396b"
 
     var token:String? {
         if let session = self.session {
