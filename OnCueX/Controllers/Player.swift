@@ -383,13 +383,13 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
                 })
             }
             
-            self.audioController.spotifyFormat.producer
-            |> start(next: { (val) -> () in
+            self.audioController.spotifyFormat.producer.start(next: { val in
                 if let format = val {
                     sendNext(sink, format)
                     sendCompleted(sink)
                 }
             })
+           
         }
     }
     var engineDelegate:AudioProviderEngineDelegate? {
@@ -416,7 +416,7 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
             let audioDescription = audioDescription
             if self.spotifyFormat.value == nil {
                 let outFormat = AVAudioFormat(streamDescription: &outputFormat!)
-                self.spotifyFormat.put(outFormat)
+//                self.spotifyFormat.put(outFormat)
                 
                 if let delegate = self.providerDelegate {
                     delegate.provider(self.provider!, format: audioDescription)

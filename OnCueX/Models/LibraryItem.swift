@@ -189,12 +189,10 @@ extension ArtistItem {
                 sendCompleted(event)
             }
             
-            sp
-                |> flatten(FlattenStrategy.Concat)
-                |> collect
-                |> start({ event in
-                    complete(context:self, images:event.value != nil ? event.value! : [])
-                })
+            sp.flatten(FlattenStrategy.Concat).collect().start(next: { event in
+                
+                complete(context:self, images:event.value != nil ? event.value! : [])
+            })
         }
     }
 }
