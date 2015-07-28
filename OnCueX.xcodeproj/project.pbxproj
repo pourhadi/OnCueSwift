@@ -45,7 +45,7 @@
 		44ABB85B1B3F4E9E00C03130 /* ItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44ABB85A1B3F4E9E00C03130 /* ItemProvider.swift */; };
 		44AC14B51B4D4F0300A95F64 /* CAHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AC14B41B4D4F0300A95F64 /* CAHelper.swift */; };
 		44B6F3C91B44FB3B0086FC7A /* TrackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B6F3C81B44FB3B0086FC7A /* TrackManager.swift */; };
-		44E12A291B65E284007FBB5B /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44E12A281B65E284007FBB5B /* Spotify.framework */; };
+		44E12A2C1B676DAC007FBB5B /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44E12A2B1B676DAC007FBB5B /* Spotify.framework */; };
 		44E5644E1B3D3079004CC5E3 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44E564471B3D301D004CC5E3 /* SnapKit.framework */; };
 		44E564501B3D308A004CC5E3 /* SnapKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 44E564471B3D301D004CC5E3 /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4B6C67CF2C5AEEA6B43C5EEC /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B180B9719C8F2A627B88D5F /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -150,8 +150,8 @@
 		44ABB85A1B3F4E9E00C03130 /* ItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemProvider.swift; path = Controllers/ItemProvider.swift; sourceTree = "<group>"; };
 		44AC14B41B4D4F0300A95F64 /* CAHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAHelper.swift; sourceTree = "<group>"; };
 		44B6F3C81B44FB3B0086FC7A /* TrackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrackManager.swift; path = Controllers/TrackManager.swift; sourceTree = "<group>"; };
-		44E12A281B65E284007FBB5B /* Spotify.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Spotify.framework; sourceTree = "<group>"; };
 		44E12A2A1B65E678007FBB5B /* OnCueX.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = OnCueX.entitlements; sourceTree = "<group>"; };
+		44E12A2B1B676DAC007FBB5B /* Spotify.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Spotify.framework; sourceTree = "<group>"; };
 		44E5643F1B3D301C004CC5E3 /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
 		D33C0BE0F17D33A1E54D273A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -164,7 +164,7 @@
 				446F4A951B3FAA0100EB1B7C /* ReactiveCocoa.framework in Frameworks */,
 				446F4A961B3FAA0100EB1B7C /* Result.framework in Frameworks */,
 				44E5644E1B3D3079004CC5E3 /* SnapKit.framework in Frameworks */,
-				44E12A291B65E284007FBB5B /* Spotify.framework in Frameworks */,
+				44E12A2C1B676DAC007FBB5B /* Spotify.framework in Frameworks */,
 				4B6C67CF2C5AEEA6B43C5EEC /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -334,7 +334,7 @@
 		9F6896E32A760BD6DAFA4138 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				44E12A281B65E284007FBB5B /* Spotify.framework */,
+				44E12A2B1B676DAC007FBB5B /* Spotify.framework */,
 				446F4A931B3FAA0100EB1B7C /* ReactiveCocoa.framework */,
 				446F4A941B3FAA0100EB1B7C /* Result.framework */,
 				44E5643F1B3D301C004CC5E3 /* SnapKit.xcodeproj */,
