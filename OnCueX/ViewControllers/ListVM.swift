@@ -66,9 +66,9 @@ class ListVM {
         if self.lists[0].items.count > 0 {
             let item = self.item(NSIndexPath(forItem: 0, inSection: 0))
             if item.isTrackCollection {
-                return 110
+                return 150
             }
         }
-        return 70
+        return 100
     }
 }

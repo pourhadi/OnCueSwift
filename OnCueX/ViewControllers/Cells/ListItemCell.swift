@@ -49,10 +49,10 @@ class ItemLabelsView: UIView {
         self.addSubview(self.titleLabel)
         self.addSubview(self.subtitleLabel)
         
-        self.titleLabel.font = UIFont.boldSystemFontOfSize(16)
+        self.titleLabel.font = UIFont.boldSystemFontOfSize(24)
         self.titleLabel.textColor = UIColor.whiteColor()
         
-        self.subtitleLabel.font = UIFont.systemFontOfSize(12)
+        self.subtitleLabel.font = UIFont.systemFontOfSize(20)
         self.subtitleLabel.textColor = UIColor.lightGrayColor()
         
         self.titleLabel.snp_makeConstraints {  (make) -> Void in
