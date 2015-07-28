@@ -51,6 +51,8 @@ class ItemLabelsView: UIView {
         
         self.titleLabel.font = UIFont.boldSystemFontOfSize(24)
         self.titleLabel.textColor = UIColor.whiteColor()
+        self.titleLabel.numberOfLines = 0
+        self.titleLabel.lineBreakMode = .ByWordWrapping
         
         self.subtitleLabel.font = UIFont.systemFontOfSize(20)
         self.subtitleLabel.textColor = UIColor.lightGrayColor()
