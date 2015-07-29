@@ -70,12 +70,10 @@ extension SpotifyController: SPTAuthViewDelegate {
         } else {
             self.loginCompletionBlock = complete
             
-            self.authVC.clearCookies({ () -> Void in
                 let rootVC = _uiManager.slideVC
                 rootVC.modalPresentationStyle = .CurrentContext
                 rootVC.definesPresentationContext = true
                 rootVC.presentViewController(self.authVC, animated: true, completion: nil)
-            })
             
             
         }
