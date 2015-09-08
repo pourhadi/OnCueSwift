@@ -385,9 +385,11 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
             
             self.audioController.spotifyFormat.producer.start({ event in
                 
-                if let format = event.value {
-                    sendNext(sink, format)
-                    sendCompleted(sink)
+                if let eventVal = event.value {
+                    if let format = eventVal {
+                        sendNext(sink, format)
+                        sendCompleted(sink)
+                    }
                 }
             })
            
