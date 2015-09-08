@@ -583,7 +583,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
             var callback = provider.callbackStruct!
             AudioUnitSetProperty(unit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, 0, &callback, UInt32(sizeofValue(callback)))
             AUGraphConnectNodeInput(self.graph, node, 0, self.mixerNode, UInt32(provider.busElement))
-            var updated:DarwinBoolean = 0
+            var updated:DarwinBoolean = DarwinBoolean(false)
             AudioUnitInitialize(unit)
             AUGraphUpdate(self.graph, &updated)
             provider.optionalConverters = (unit, node)
@@ -615,9 +615,9 @@ class CoreAudioPlayer:AudioProviderDelegate {
     }
     
     func isGraphRunning() -> Bool {
-        var isPlaying:DarwinBoolean = 0
+        var isPlaying:DarwinBoolean = DarwinBoolean(false)
         checkError(AUGraphIsRunning(self.graph, &isPlaying), "check if graph is running")
-        return isPlaying != 0
+        return isPlaying != DarwinBoolean(false)
     }
     
     func stopGraph() {
