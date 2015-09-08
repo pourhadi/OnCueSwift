@@ -22,7 +22,7 @@ class ListVCDataSource:NSObject, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(self.listVC.listVM.reuseIDForItem(indexPath), forIndexPath: indexPath) as UICollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(self.listVC.listVM.reuseIDForItem(indexPath), forIndexPath: indexPath) as! UICollectionViewCell
         self.listVC.listVM.configureCell(cell, forItemAtIndexPath: indexPath)
         return cell
     }
@@ -107,7 +107,7 @@ class ListVC: UIViewController {
         super.viewWillAppear(animated)
         if let indexPaths = self.collectionView.indexPathsForSelectedItems() {
             for indexPath in indexPaths {
-                self.collectionView.deselectItemAtIndexPath(indexPath, animated: animated)
+                self.collectionView.deselectItemAtIndexPath(indexPath as! NSIndexPath, animated: animated)
             }
         }
     }

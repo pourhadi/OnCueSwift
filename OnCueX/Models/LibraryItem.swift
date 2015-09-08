@@ -42,7 +42,7 @@ internal struct LibraryTrack: TrackItem, Queueable {
     var subtitle:String? {
         let artist = self.mediaItem.artist
         let album = self.mediaItem.albumTitle
-        return "\(String(self.duration.toString())) - " + subtitleString(artist == nil ? nil : [artist!], album: album)
+        return "\(String(self.duration.toString())) - " + subtitleString(artist == nil ? nil : [artist!], album)
     }
     
     var isTrackCollection = false
@@ -93,7 +93,7 @@ internal struct LibraryAlbum : AlbumItem {
     func getTracks(page: Int, complete: (list: List<TrackItem>?) -> Void) {
         var items:[TrackItem] = []
         for item in self.collection.items {
-            items.append(LibraryTrack(mediaItem: item))
+            items.append(LibraryTrack(mediaItem: item as! MPMediaItem))
         }
         complete(list:List(items: items, totalCount: UInt(items.count), pageNumber: 0))
     }
@@ -110,7 +110,7 @@ internal struct LibraryAlbum : AlbumItem {
 extension AlbumItem {
     func getImagesForStack(size:CGSize, complete:(context:StackedImageViewDataSource, images:[UIImage])->Void) {
         self.getImage(size) { (context, image) -> Void in
-            guard let image = image else { return }
+            guard; let image = image; else { return }
             complete(context: self, images: [image])
         }
     }
@@ -140,7 +140,7 @@ internal struct LibraryArtist : ArtistItem {
     func getTracks(page: Int, complete: (list: List<TrackItem>?) -> Void) {
         var items:[TrackItem] = []
         for item in self.collection.items {
-            items.append(LibraryTrack(mediaItem: item))
+            items.append(LibraryTrack(mediaItem: item as! MPMediaItem))
         }
         complete(list:List(items: items, totalCount: UInt(items.count), pageNumber: 0))
     }
@@ -158,7 +158,7 @@ internal struct LibraryArtist : ArtistItem {
         if let collections = query.collections {
             var albums:[TrackCollection] = []
             for collection in collections {
-                albums.append(LibraryAlbum(collection: collection))
+                albums.append(LibraryAlbum(collection: collection as! MPMediaItemCollection))
             }
             complete(albums: List(items: albums, totalCount: UInt(albums.count), pageNumber: 0))
         }
@@ -181,7 +181,7 @@ internal struct LibraryArtist : ArtistItem {
 extension ArtistItem {
     func getImagesForStack(size:CGSize, complete:(context:StackedImageViewDataSource, images:[UIImage])->Void) {
         self.getAlbums(0) { (albums) -> Void in
-            guard let albums = albums else { complete(context: self, images: []); return }
+            guard; let albums = albums; else { complete(context: self, images: []); return }
             let sp:SignalProducer = SignalProducer<SignalProducer<UIImage, NoError>, NoError> { event, _ in
                 for album in albums.items {
                     sendNext(event, album.getImage(size))
@@ -217,7 +217,7 @@ internal struct LibraryPlaylist : PlaylistItem {
     func getTracks(page: Int, complete: (list: List<TrackItem>?) -> Void) {
         var items:[TrackItem] = []
         for item in self.playlist.items {
-            items.append(LibraryTrack(mediaItem: item))
+            items.append(LibraryTrack(mediaItem: item as! MPMediaItem))
         }
         complete(list:List(items: items, totalCount: UInt(items.count), pageNumber: 0))
     }

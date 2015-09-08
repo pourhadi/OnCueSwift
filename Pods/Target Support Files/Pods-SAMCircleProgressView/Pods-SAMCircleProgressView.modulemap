@@ -1,6 +1,0 @@
-framework module SAMCircleProgressView {
-  umbrella header "Pods-SAMCircleProgressView-umbrella.h"
-
-  export *
-  module * { export * }
-}

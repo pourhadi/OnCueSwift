@@ -218,7 +218,7 @@ class SpotifyProvider:SourceItemProvider {
             spotify({ (token) -> Void in
                 SPTYourMusic.savedTracksForUserWithAccessToken(token, callback: { (error, obj) -> Void in
                     if let list = obj as? SPTListPage {
-                        guard let _ = list.items as? [SPTPartialTrack] else {
+                        guard; let _ = list.items as? [SPTPartialTrack]; else {
                             sendNext(sink, [])
                             sendCompleted(sink)
                             return

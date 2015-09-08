@@ -15,7 +15,7 @@ import ReactiveCocoa
 let _player = Player()
 
 func checkError(error:OSStatus, _ operation:String?) {
-    guard error != noErr else { return }
+    guard; error != noErr; else { return }
     
     print("error: \(error) \(operation)")
 }
@@ -146,8 +146,8 @@ class Player:NSObject, CoreAudioPlayerDelegate {
     func startSession() {
         let session = AVAudioSession.sharedInstance()
         do {
-            try session.setCategory(AVAudioSessionCategoryPlayback)
-            try session.setActive(true)
+            try; session.setCategory(AVAudioSessionCategoryPlayback)
+            try; session.setActive(true)
         } catch {
             print("session error")
         }
@@ -241,7 +241,7 @@ class LibraryAudioProvider: AudioProvider {
             let framesDuration = totalFrames - framePosition
             let buffer = AVAudioPCMBuffer(PCMFormat: file.processingFormat, frameCapacity: AVAudioFrameCount(framesDuration))
             file.framePosition = framePosition
-            do { try file.readIntoBuffer(buffer, frameCount: AVAudioFrameCount(framesDuration)) } catch { "error seeking" }
+            do { try; file.readIntoBuffer(buffer, frameCount: AVAudioFrameCount(framesDuration)) } catch { "error seeking" }
             if let delegate = self.engineDelegate {
                 delegate.provider(self, hasNewBuffer:buffer)
                 self.buffering = false
@@ -268,13 +268,13 @@ class LibraryAudioProvider: AudioProvider {
         self.reset()
         return SignalProducer { [unowned self] sink, disposable in
             do {
-                self.file = try AVAudioFile(forReading: track.assetURL)
+                self.file = try; AVAudioFile(forReading: track.assetURL)
                 if let file = self.file {
                     sendNext(sink, file.processingFormat)
                     sendCompleted(sink)
                     self.buffering = true
                     let buffer = AVAudioPCMBuffer(PCMFormat: file.processingFormat, frameCapacity: AVAudioFrameCount(file.length))
-                    try file.readIntoBuffer(buffer)
+                    try; file.readIntoBuffer(buffer)
                     if let delegate = self.engineDelegate {
                         delegate.provider(self, hasNewBuffer:buffer)
                         self.buffering = false
@@ -689,9 +689,9 @@ class CoreAudioPlayer:AudioProviderDelegate {
     var callback:AURenderCallback = { (inRefCon, renderFlags, timeStamp, outputBus, numFrames, bufferList) -> OSStatus in
 
         var pointer = UnsafeMutablePointer<ProviderPointer>(inRefCon)
-        guard let provider:AudioProvider = pointer.memory.provider else { return 0 }
-        guard provider.ready else { return 0 }
-        guard let player:CoreAudioPlayer = pointer.memory.player else { return 0 }
+        guard; let provider:AudioProvider = pointer.memory.provider; else { return 0 }
+        guard; provider.ready; else { return 0 }
+        guard; let player:CoreAudioPlayer = pointer.memory.player; else { return 0 }
         var bufSize:UInt32 = 0
         if provider.ready {
             let renderedFrames = provider.renderFrames(numFrames, intoBuffer: bufferList)

@@ -4,17 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-AFNetworking.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-SAMCircleProgressView.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-TheAmazingAudioEngine.xcscheme</key>
+		<key>AFNetworking.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -24,25 +14,35 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SAMCircleProgressView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>TheAmazingAudioEngine.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>10AFA8425BAEA9513AD478E8</key>
+		<key>3BAE0D6DC69834D9C4E645C8ED010E06</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1D47935BEC02B4C8808036EF</key>
+		<key>ABA618663D2C8840E45B798727D8412F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B3AFF8A7EE3248E9FF489E4C</key>
+		<key>E167D96BA621221DA6858373D0921034</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C3D2160D7B321612CDB2CE79</key>
+		<key>EDE9E6ECD33617BABD95495CAD4C0D25</key>
 		<dict>
 			<key>primary</key>
 			<true/>

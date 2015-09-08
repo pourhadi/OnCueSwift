@@ -49,7 +49,7 @@ internal struct SpotifyTrack: TrackItem, Queueable {
         if self.partialTrack.album != nil {
             albumString = self.partialTrack.album.name
         }
-        return "\(String(self.duration.toString())) - " + subtitleString(artists, album: albumString)
+        return "\(String(self.duration.toString())) - " + subtitleString(artists, albumString)
     }
     
     var isTrackCollection = false
@@ -218,7 +218,7 @@ internal struct SpotifyPlaylist : PlaylistItem {
     var title:String? { return self.partialPlaylist.name }
     var subtitle:String? { return nil }
     
-    var identifier:String { return self.partialPlaylist.uri.absoluteString }
+    var identifier:String { return self.partialPlaylist.uri.absoluteString! }
     var cellReuseID:String { return "textCell" }
     
     func getTracks(page: Int, complete: (list: List<TrackItem>?) -> Void) {

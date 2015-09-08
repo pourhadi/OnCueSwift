@@ -149,7 +149,7 @@ class StackedImageView : UIView, StackedLayerDelegate {
                 }
                 
                 dataSource.getImagesForStack(self.imageSize, complete: { (context, images) -> Void in
-                    guard dataSource.isEqual(context) else { return }
+                    guard; dataSource.isEqual(context); else { return }
                     
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
                         var croppedImages:[UIImage] = images.map({ (image) -> UIImage in
