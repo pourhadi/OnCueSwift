@@ -110,7 +110,7 @@ internal struct LibraryAlbum : AlbumItem {
 extension AlbumItem {
     func getImagesForStack(size:CGSize, complete:(context:StackedImageViewDataSource, images:[UIImage])->Void) {
         self.getImage(size) { (context, image) -> Void in
-            guard; let image = image; else { return }
+            guard let image = image else { return }
             complete(context: self, images: [image])
         }
     }
@@ -181,7 +181,7 @@ internal struct LibraryArtist : ArtistItem {
 extension ArtistItem {
     func getImagesForStack(size:CGSize, complete:(context:StackedImageViewDataSource, images:[UIImage])->Void) {
         self.getAlbums(0) { (albums) -> Void in
-            guard; let albums = albums; else { complete(context: self, images: []); return }
+            guard let albums = albums else { complete(context: self, images: []); return }
             let sp:SignalProducer = SignalProducer<SignalProducer<UIImage, NoError>, NoError> { event, _ in
                 for album in albums.items {
                     sendNext(event, album.getImage(size))
