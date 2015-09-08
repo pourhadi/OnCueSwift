@@ -21,9 +21,9 @@ public class AnimationGroup : AnimationItem {
     var animations = [AnimationItem]()
     var completionBlock:(()->Void)?
 
-    func addAnimation(var animation:AnimationItem) {
+    func addAnimation(animation:AnimationItem) {
         if animation is Animation {
-            var anim = animation as! Animation
+            let anim = animation as! Animation
             anim.group = self
             animations.append(anim)
             return
@@ -123,8 +123,8 @@ class Animator:NSObject {
         if self.currentAnimation is AnimationGroup {
             let group = self.currentAnimation as! AnimationGroup
 
-            var statuses = group.animations.map { return ($0 as! Animation).finished }
-            var allDone:Bool = statuses.reduce(true) { $0 && $1 }
+            let statuses = group.animations.map { return ($0 as! Animation).finished }
+            let allDone:Bool = statuses.reduce(true) { $0 && $1 }
 
             if allDone {
                 if group.completionBlock != nil {
@@ -137,7 +137,7 @@ class Animator:NSObject {
 
             for animation in group.animations {
                 elapsed = self.displayLink!.timestamp - self.startTime
-                var animation = animation as! Animation
+                let animation = animation as! Animation
 
                 if animation.finished {
                     continue
@@ -160,7 +160,7 @@ class Animator:NSObject {
                 var percentComplete:CGFloat = CGFloat(elapsed / animation.duration)
 //                // println("percent: \(percentComplete)")
 
-                var currentVal = animation.easingFunction!(currentTime: elapsed, beginningValue: animation.fromValue, changeInValue: animation.toValue, duration: animation.duration)
+                let currentVal = animation.easingFunction!(currentTime: elapsed, beginningValue: animation.fromValue, changeInValue: animation.toValue, duration: animation.duration)
                 animation.view!.setValue(currentVal, forKeyPath: animation.keyPath!)
             }
 
@@ -169,7 +169,7 @@ class Animator:NSObject {
 
         let animation:Animation = self.currentAnimation as! Animation
         
-        var percentComplete:CGFloat = CGFloat(elapsed / animation.duration)
+        let percentComplete:CGFloat = CGFloat(elapsed / animation.duration)
         var currentVal = animation.easingFunction!(currentTime: elapsed, beginningValue: animation.fromValue, changeInValue: animation.toValue, duration: animation.duration)
         
         if (elapsed > animation.delay && percentComplete >= 1) {

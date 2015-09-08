@@ -25,7 +25,7 @@ class ListCellIndexView: UIView {
         self.label.textColor = UIColor.whiteColor()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -72,7 +72,7 @@ class ItemLabelsView: UIView {
         }
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
@@ -99,7 +99,7 @@ class ListItemCell : UICollectionViewCell {
         
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -117,12 +117,12 @@ class ListItemTextCell: ListItemCell {
 
         if let item = self.item {
             if item.isTrackCollection {
-                let yAdj = CalculatePercentComplete(0, 1000, CGFloat(layoutAttributes.zIndex))
+                let yAdj = CalculatePercentComplete(0, end: 1000, current: CGFloat(layoutAttributes.zIndex))
                 self.imageView.yAdjustment = yAdj
 
                 if layoutAttributes.alpha < 1 {
                     self.imageView.overrideAdjustments = true
-                    let percent = max(0, CalculatePercentComplete(1, 0.5, layoutAttributes.alpha))
+                    let percent = max(0, CalculatePercentComplete(1, end: 0.5, current: layoutAttributes.alpha))
                     self.imageView.overrideXAdjustment = ExtrapolateValue(self.imageView.totalXAdjustment, 0, percent)
                     self.imageView.overrideYAdjustment = ExtrapolateValue(self.imageView.totalYAdjustment, 1, percent)
                 } else {
@@ -171,7 +171,7 @@ class ListItemTextCell: ListItemCell {
         self.indexView.alpha = 0
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -253,7 +253,7 @@ class ListItemTextCell: ListItemCell {
     }
     
     deinit {
-        print("list cell dealloc")
+        print("list cell dealloc", terminator: "")
     }
 }
 

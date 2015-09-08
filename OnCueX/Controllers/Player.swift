@@ -383,7 +383,7 @@ class SpotifyAudioProvider: NSObject, AudioProvider, SPTAudioStreamingPlaybackDe
                 })
             }
             
-            self.audioController.spotifyFormat.producer.start(next: { val in
+            self.audioController.spotifyFormat.producer.start({ val in
                 if let format = val {
                     sendNext(sink, format)
                     sendCompleted(sink)
@@ -582,7 +582,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
             var callback = provider.callbackStruct!
             AudioUnitSetProperty(unit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, 0, &callback, UInt32(sizeofValue(callback)))
             AUGraphConnectNodeInput(self.graph, node, 0, self.mixerNode, UInt32(provider.busElement))
-            var updated:Boolean = 0
+            var updated:DarwinBoolean = 0
             AudioUnitInitialize(unit)
             AUGraphUpdate(self.graph, &updated)
             provider.optionalConverters = (unit, node)
@@ -614,7 +614,7 @@ class CoreAudioPlayer:AudioProviderDelegate {
     }
     
     func isGraphRunning() -> Bool {
-        var isPlaying:Boolean = 0
+        var isPlaying:DarwinBoolean = 0
         checkError(AUGraphIsRunning(self.graph, &isPlaying), "check if graph is running")
         return isPlaying != 0
     }

@@ -25,7 +25,7 @@ class MainMenuCell : UICollectionViewCell {
         self.label.font = UIFont.boldSystemFontOfSize(30)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
@@ -77,7 +77,7 @@ class MainMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -116,7 +116,7 @@ class MainMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
     }
 
      func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("menuCell", forIndexPath: indexPath) as! UICollectionViewCell as! MainMenuCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("menuCell", forIndexPath: indexPath) as! MainMenuCell
     
         cell.label.text = self.cellTitles[indexPath.row].rawValue
         // Configure the cell

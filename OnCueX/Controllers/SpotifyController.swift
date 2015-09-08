@@ -81,7 +81,7 @@ extension SpotifyController: SPTAuthViewDelegate {
     
     func authenticationViewController(authenticationViewController: SPTAuthViewController!, didFailToLogin error: NSError!) {
         if let complete = self.loginCompletionBlock {
-            print(error, appendNewline: false)
+            print(error, terminator: "")
             complete(token: nil, error: error)
         }
     }

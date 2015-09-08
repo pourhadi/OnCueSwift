@@ -59,7 +59,7 @@ class ListVM {
     }
     
     deinit {
-        print("ListVM deinit")
+        print("ListVM deinit", terminator: "")
     }
     
     var cellHeight:CGFloat {

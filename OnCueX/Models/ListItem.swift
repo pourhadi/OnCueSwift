@@ -174,7 +174,7 @@ class ItemViewModel: DisplayContext, QueueObserver {
     
     deinit {
         _queue.removeObserver(self)
-        print("item view model deinit")
+        print("item view model deinit", terminator: "")
     }
     
     var title:String? { return self.item.title }
@@ -219,7 +219,7 @@ class TrackList : ItemList {
     }
     
     deinit {
-        print("tracklist deinit")
+        print("tracklist deinit", terminator: "")
     }
 }
 
@@ -245,7 +245,7 @@ class TrackCollectionList : ItemList {
     }
     
     deinit {
-        print("TrackCollectionList deinit")
+        print("TrackCollectionList deinit", terminator: "")
     }
 }
 

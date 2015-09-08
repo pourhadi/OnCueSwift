@@ -47,7 +47,7 @@ class NavVC: UIViewController, UINavigationBarDelegate, UINavigationControllerDe
         self.pushViewController(rootViewController, animated: false)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

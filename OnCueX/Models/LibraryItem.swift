@@ -42,7 +42,7 @@ internal struct LibraryTrack: TrackItem, Queueable {
     var subtitle:String? {
         let artist = self.mediaItem.artist
         let album = self.mediaItem.albumTitle
-        return "\(String(self.duration.toString())) - " + subtitleString(artist == nil ? nil : [artist!], album)
+        return "\(String(self.duration.toString())) - " + subtitleString(artist == nil ? nil : [artist!], album: album)
     }
     
     var isTrackCollection = false
@@ -93,7 +93,7 @@ internal struct LibraryAlbum : AlbumItem {
     func getTracks(page: Int, complete: (list: List<TrackItem>?) -> Void) {
         var items:[TrackItem] = []
         for item in self.collection.items {
-            items.append(LibraryTrack(mediaItem: item as! MPMediaItem))
+            items.append(LibraryTrack(mediaItem: item ))
         }
         complete(list:List(items: items, totalCount: UInt(items.count), pageNumber: 0))
     }
@@ -140,7 +140,7 @@ internal struct LibraryArtist : ArtistItem {
     func getTracks(page: Int, complete: (list: List<TrackItem>?) -> Void) {
         var items:[TrackItem] = []
         for item in self.collection.items {
-            items.append(LibraryTrack(mediaItem: item as! MPMediaItem))
+            items.append(LibraryTrack(mediaItem: item ))
         }
         complete(list:List(items: items, totalCount: UInt(items.count), pageNumber: 0))
     }
@@ -158,7 +158,7 @@ internal struct LibraryArtist : ArtistItem {
         if let collections = query.collections {
             var albums:[TrackCollection] = []
             for collection in collections {
-                albums.append(LibraryAlbum(collection: collection as! MPMediaItemCollection))
+                albums.append(LibraryAlbum(collection: collection ))
             }
             complete(albums: List(items: albums, totalCount: UInt(albums.count), pageNumber: 0))
         }
@@ -217,7 +217,7 @@ internal struct LibraryPlaylist : PlaylistItem {
     func getTracks(page: Int, complete: (list: List<TrackItem>?) -> Void) {
         var items:[TrackItem] = []
         for item in self.playlist.items {
-            items.append(LibraryTrack(mediaItem: item as! MPMediaItem))
+            items.append(LibraryTrack(mediaItem: item ))
         }
         complete(list:List(items: items, totalCount: UInt(items.count), pageNumber: 0))
     }

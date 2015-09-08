@@ -19,7 +19,7 @@ class ViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         spotify { (token) -> Void in
-            print(token, appendNewline: false)
+            print(token, terminator: "")
         }
     }
 
