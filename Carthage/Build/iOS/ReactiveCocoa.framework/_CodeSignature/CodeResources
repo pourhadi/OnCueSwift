@@ -198,11 +198,11 @@
 		</data>
 		<key>Headers/ReactiveCocoa-Swift.h</key>
 		<data>
-		JC/FyK8wbHDklovsbcqZHWbTW8E=
+		59ZtxjCd6InjVAaSy2qD9Uh7JXw=
 		</data>
 		<key>Headers/ReactiveCocoa.h</key>
 		<data>
-		Qtfp3DpuKnb7P9Ad7NQ9RO+pT3E=
+		xA1xc2bKnsSBQSOHmy0y+hzKf4Q=
 		</data>
 		<key>Headers/UIActionSheet+RACSignalSupport.h</key>
 		<data>
@@ -282,23 +282,23 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		MO6T1y2X6v4PLe5+Fsr8pHy2eJk=
+		h4Y3A2jdAu5KzUD3e758naMGIqc=
 		</data>
 		<key>Modules/ReactiveCocoa.swiftmodule/arm.swiftdoc</key>
 		<data>
-		Qu7p8rf87FMteWRB4npzAJzJdqs=
+		XSqkYSv0wYpLnKspfEy6CvY1M8s=
 		</data>
 		<key>Modules/ReactiveCocoa.swiftmodule/arm.swiftmodule</key>
 		<data>
-		3JI1ACptFZ/GyhPIdkNKnJmfSrI=
+		Qp2mIF7GXWjHCnXYvjCxR6bd99A=
 		</data>
 		<key>Modules/ReactiveCocoa.swiftmodule/arm64.swiftdoc</key>
 		<data>
-		U4rte7HMN7ruZAfKET7e0dxK6Bs=
+		M2kVWvlzt5y5XaEUHHvaiRtcy0g=
 		</data>
 		<key>Modules/ReactiveCocoa.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		b8zyJYPIpYiNHr8XhsLZ6cqOH4E=
+		iwlGIo1adMip288moI/u8vhXmLY=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -501,11 +501,11 @@
 		</data>
 		<key>Headers/ReactiveCocoa-Swift.h</key>
 		<data>
-		JC/FyK8wbHDklovsbcqZHWbTW8E=
+		59ZtxjCd6InjVAaSy2qD9Uh7JXw=
 		</data>
 		<key>Headers/ReactiveCocoa.h</key>
 		<data>
-		Qtfp3DpuKnb7P9Ad7NQ9RO+pT3E=
+		xA1xc2bKnsSBQSOHmy0y+hzKf4Q=
 		</data>
 		<key>Headers/UIActionSheet+RACSignalSupport.h</key>
 		<data>
@@ -585,19 +585,19 @@
 		</data>
 		<key>Modules/ReactiveCocoa.swiftmodule/arm.swiftdoc</key>
 		<data>
-		Qu7p8rf87FMteWRB4npzAJzJdqs=
+		XSqkYSv0wYpLnKspfEy6CvY1M8s=
 		</data>
 		<key>Modules/ReactiveCocoa.swiftmodule/arm.swiftmodule</key>
 		<data>
-		3JI1ACptFZ/GyhPIdkNKnJmfSrI=
+		Qp2mIF7GXWjHCnXYvjCxR6bd99A=
 		</data>
 		<key>Modules/ReactiveCocoa.swiftmodule/arm64.swiftdoc</key>
 		<data>
-		U4rte7HMN7ruZAfKET7e0dxK6Bs=
+		M2kVWvlzt5y5XaEUHHvaiRtcy0g=
 		</data>
 		<key>Modules/ReactiveCocoa.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		b8zyJYPIpYiNHr8XhsLZ6cqOH4E=
+		iwlGIo1adMip288moI/u8vhXmLY=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>

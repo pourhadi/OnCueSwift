@@ -10,8 +10,7 @@ public protocol PropertyType {
 	var producer: SignalProducer<Value, NoError> { get }
 }
 
-/// Represents a read-only view to a property of type T that allows observation
-/// of its changes.
+/// A read-only property that allows observation of its changes.
 public struct PropertyOf<T>: PropertyType {
 	public typealias Value = T
 
@@ -25,11 +24,27 @@ public struct PropertyOf<T>: PropertyType {
 	public var producer: SignalProducer<T, NoError> {
 		return _producer()
 	}
-
-	/// Initializes the receiver as a wrapper around the given property.
+	
+	/// Initializes a property as a read-only view of the given property.
 	public init<P: PropertyType where P.Value == T>(_ property: P) {
 		_value = { property.value }
 		_producer = { property.producer }
+	}
+	
+	/// Initializes a property that first takes on `initialValue`, then each value 
+	/// sent on a signal created by `producer`.
+	public init(initialValue: T, producer: SignalProducer<T, NoError>) {
+		let mutableProperty = MutableProperty(initialValue)
+		mutableProperty <~ producer
+		self.init(mutableProperty)
+	}
+	
+	/// Initializes a property that first takes on `initialValue`, then each value
+	/// sent on `signal`.
+	public init(initialValue: T, signal: Signal<T, NoError>) {
+		let mutableProperty = MutableProperty(initialValue)
+		mutableProperty <~ signal
+		self.init(mutableProperty)
 	}
 }
 
@@ -161,7 +176,7 @@ public final class MutableProperty<T>: MutablePropertyType {
 		/// DynamicProperty stay alive as long as object is alive.
 		/// This is made possible by strong reference cycles.
 		super.init()
-		object?.rac_willDeallocSignal()?.toSignalProducer().start(completed: { self })
+		object?.rac_willDeallocSignal()?.toSignalProducer().startWithCompleted { self }
 	}
 }
 
@@ -179,15 +194,20 @@ infix operator <~ {
 /// or when the signal sends a `Completed` event.
 public func <~ <P: MutablePropertyType>(property: P, signal: Signal<P.Value, NoError>) -> Disposable {
 	let disposable = CompositeDisposable()
-	disposable += property.producer.start(completed: {
+	disposable += property.producer.startWithCompleted {
 		disposable.dispose()
-	})
+	}
 
-	disposable += signal.observe(next: { [weak property] value in
-		property?.value = value
-	}, completed: {
-		disposable.dispose()
-	})
+	disposable += signal.observe { [weak property] event in
+		switch event {
+		case let .Next(value):
+			property?.value = value
+		case .Completed:
+			disposable.dispose()
+		default:
+			break
+		}
+	}
 
 	return disposable
 }
@@ -206,9 +226,9 @@ public func <~ <P: MutablePropertyType>(property: P, producer: SignalProducer<P.
 		property <~ signal
 		disposable = signalDisposable
 
-		property.producer.start(completed: {
+		property.producer.startWithCompleted {
 			signalDisposable.dispose()
-		})
+		}
 	}
 
 	return disposable

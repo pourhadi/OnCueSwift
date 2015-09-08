@@ -2,7 +2,7 @@ import Foundation
 import Nimble
 import XCTest
 
-func failsWithErrorMessage(messages: [String], file: String = __FILE__, line: UInt = __LINE__, preferOriginalSourceLocation: Bool = false, closure: () -> Void) {
+func failsWithErrorMessage(messages: [String], file: String = __FILE__, line: UInt = __LINE__, preferOriginalSourceLocation: Bool = false, closure: () throws -> Void) {
     var filePath = file
     var lineNumber = line
 
@@ -73,5 +73,15 @@ public class NimbleHelper : NSObject {
 
     class func expectFailureMessageForNil(message: NSString, block: () -> Void, file: String, line: UInt) {
         failsWithErrorMessageForNil(message as String, file: file, line: line, preferOriginalSourceLocation: true, closure: block)
+    }
+}
+
+extension NSDate {
+    convenience init(dateTimeString:String) {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        let date = dateFormatter.dateFromString(dateTimeString)!
+        self.init(timeInterval:0, sinceDate:date)
     }
 }

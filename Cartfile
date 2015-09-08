@@ -1,2 +1,2 @@
-github "reactivecocoa/ReactiveCocoa" "fc54992143255e085371e1bb2e638931e19680e0"
+github "reactivecocoa/ReactiveCocoa" "swift2"
 github "SnapKit/SnapKit" "swift-2.0"

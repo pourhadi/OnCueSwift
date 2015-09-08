@@ -9,6 +9,7 @@ public class FailureMessage: NSObject {
     public var to: String = "to"
     public var postfixMessage: String = "match"
     public var postfixActual: String = ""
+    public var userDescription: String? = nil
 
     public var stringValue: String {
         get {
@@ -36,7 +37,7 @@ public class FailureMessage: NSObject {
         var lines: [String] = (str as NSString).componentsSeparatedByString("\n") as [String]
         let whitespace = NSCharacterSet.whitespaceAndNewlineCharacterSet()
         lines = lines.map { line in line.stringByTrimmingCharactersInSet(whitespace) }
-        return "".join(lines)
+        return lines.joinWithSeparator("")
     }
 
     internal func computeStringValue() -> String {
@@ -44,6 +45,12 @@ public class FailureMessage: NSObject {
         if let actualValue = actualValue {
             value = "\(expected) \(to) \(postfixMessage), got \(actualValue)\(postfixActual)"
         }
-        return stripNewlines(value)
+        value = stripNewlines(value)
+        
+        if let userDescription = userDescription {
+            return "\(userDescription)\n\(value)"
+        }
+        
+        return value
     }
 }

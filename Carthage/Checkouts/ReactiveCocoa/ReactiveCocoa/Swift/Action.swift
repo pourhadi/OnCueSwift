@@ -44,9 +44,9 @@ public final class Action<Input, Output, Error: ErrorType> {
 	/// Whether the instantiator of this action wants it to be enabled.
 	private let userEnabled: PropertyOf<Bool>
 
-	/// Lazy creation and storage of a UI bindable `CocoaAction``. The default behavior
+	/// Lazy creation and storage of a UI bindable `CocoaAction`. The default behavior
 	/// force casts the AnyObject? input to match the action's `Input` type. This makes
-	/// it unsafe for use when the action is paramerterized for something like `Void`
+	/// it unsafe for use when the action is parameterized for something like `Void`
 	/// input. In those cases, explicitly assign a value to this property that transforms
 	/// the input to suit your needs.
 	public lazy var unsafeCocoaAction: CocoaAction = { _ in
@@ -168,32 +168,25 @@ public final class CocoaAction: NSObject {
 
 		disposable += action.enabled.producer
 			.observeOn(UIScheduler())
-			.start(next: { [weak self] value in
+			.startWithNext { [weak self] value in
 				self?.willChangeValueForKey("enabled")
 				self?._enabled = value
 				self?.didChangeValueForKey("enabled")
-			})
+			}
 
 		disposable += action.executing.producer
 			.observeOn(UIScheduler())
-			.start(next: { [weak self] value in
+			.startWithNext { [weak self] value in
 				self?.willChangeValueForKey("executing")
 				self?._executing = value
 				self?.didChangeValueForKey("executing")
-			})
+			}
 	}
 
 	/// Initializes a Cocoa action that will invoke the given Action by
 	/// always providing the given input.
 	public convenience init<Input, Output, Error>(_ action: Action<Input, Output, Error>, input: Input) {
 		self.init(action, { _ in input })
-	}
-
-	/// Initializes a Cocoa action that will invoke the given Action with the
-	/// object given to execute(), if it can be downcast successfully, or nil
-	/// otherwise.
-	public convenience init<Input: AnyObject, Output, Error>(_ action: Action<Input?, Output, Error>) {
-		self.init(action, { $0 as? Input })
 	}
 
 	deinit {
