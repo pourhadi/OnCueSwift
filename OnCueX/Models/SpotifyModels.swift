@@ -225,14 +225,19 @@ internal struct SpotifyPlaylist : PlaylistItem {
         SPTPlaylistSnapshot.playlistWithURI(self.partialPlaylist.uri, accessToken: _spotifyController.token!) { (error, album) -> Void in
             if error == nil {
                 autoreleasepool({ () -> () in
-                    if let items = album.firstTrackPage!.items as? [SPTPartialTrack] {
-                        var listItems:[TrackItem] = []
-                        for track in items {
-                            listItems.append(SpotifyTrack(partialTrack: track))
+                    if let album = album as? SPTPlaylistSnapshot {
+                        let page = album.firstTrackPage as SPTListPage
+                            if let items = page.items as? [SPTPartialTrack] {
+                                var listItems:[TrackItem] = []
+                                for track in items {
+                                    listItems.append(SpotifyTrack(partialTrack: track))
+                                }
+                                let itemList = List(items: listItems, totalCount:album.firstTrackPage!.totalListLength, pageNumber:page)
+                                complete(list: itemList)
                         }
-                        let itemList = List(items: listItems, totalCount:album.firstTrackPage!.totalListLength, pageNumber:page)
-                        complete(list: itemList)
+                        
                     }
+                    
                 })
             }
         }
