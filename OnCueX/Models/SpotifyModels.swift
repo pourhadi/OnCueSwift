@@ -218,7 +218,7 @@ internal struct SpotifyPlaylist : PlaylistItem {
     var title:String? { return self.partialPlaylist.name }
     var subtitle:String? { return nil }
     
-    var identifier:String { return self.partialPlaylist.uri.absoluteString! }
+    var identifier:String { return self.partialPlaylist.uri.absoluteString }
     var cellReuseID:String { return "textCell" }
     
     func getTracks(page: Int, complete: (list: List<TrackItem>?) -> Void) {

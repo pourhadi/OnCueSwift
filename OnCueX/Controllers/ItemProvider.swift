@@ -140,7 +140,7 @@ class SpotifyProvider:SourceItemProvider {
                 if let tracks = event.value {
                     var artists:[SPTPartialArtist] = []
                     for track in tracks {
-                        artists.extend(track.artists as! [SPTPartialArtist])
+                        artists.appendContentsOf(track.artists as! [SPTPartialArtist])
                     }
                     let artistItems:[TrackCollection] = artists.map({ (artist) -> TrackCollection in
                         return SpotifyArtist(partialArtist: artist)
