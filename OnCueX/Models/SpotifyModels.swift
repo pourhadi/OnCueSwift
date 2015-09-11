@@ -230,7 +230,7 @@ internal struct SpotifyPlaylist : PlaylistItem {
                 }
                 
                     if let playlist = album as? SPTPlaylistSnapshot {
-                        if let items = playlist.firstTrackPage!.items as? [SPTPartialTrack] {
+                        if let items = playlist.firstTrackPage.items as? [SPTPartialTrack] {
                             var listItems:[TrackItem] = []
                             for track in items {
                                 listItems.append(SpotifyTrack(partialTrack: track))
