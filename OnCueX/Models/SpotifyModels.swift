@@ -222,7 +222,7 @@ internal struct SpotifyPlaylist : PlaylistItem {
     var cellReuseID:String { return "textCell" }
     
     func getTracks(page: Int, complete: (list: List<TrackItem>?) -> Void) {
-        SPTPlaylistSnapshot.playlistWithURI(self.partialPlaylist.uri, accessToken: _spotifyController.token!) { (error, album) -> Void in
+        SPTPlaylistSnapshot.playlistWithURI(self.partialPlaylist.playableUri, accessToken: _spotifyController.token!) { (error, album) -> Void in
             if error == nil {
 //                autoreleasepool({ () -> () in
                 if let pp = album as? SPTPlaylistSnapshot {
