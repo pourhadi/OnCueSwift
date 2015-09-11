@@ -224,7 +224,7 @@ internal struct SpotifyPlaylist : PlaylistItem {
     func getTracks(page: Int, complete: (list: List<TrackItem>?) -> Void) {
         SPTPlaylistSnapshot.playlistWithURI(self.partialPlaylist.uri, accessToken: _spotifyController.token!) { (error, album) -> Void in
             if error == nil {
-                autoreleasepool({ () -> () in
+//                autoreleasepool({ () -> () in
                     if let album = album as? SPTPlaylistSnapshot {
                         if let items = album.firstTrackPage!.items as? [SPTPartialTrack] {
                             var listItems:[TrackItem] = []
@@ -236,7 +236,7 @@ internal struct SpotifyPlaylist : PlaylistItem {
                         }
                     }
                     
-                })
+//                })
             }
         }
     }
