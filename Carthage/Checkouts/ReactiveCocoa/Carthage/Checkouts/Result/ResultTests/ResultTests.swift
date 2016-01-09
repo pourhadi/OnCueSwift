@@ -47,6 +47,36 @@ final class ResultTests: XCTestCase {
 		XCTAssert(result.error == error)
 	}
 
+	func testTryCatchWithFunctionProducesSuccesses() {
+		let function = { try tryIsSuccess("success") }
+
+		let result: Result<String, NSError> = Result(attempt: function)
+		XCTAssert(result == success)
+	}
+
+	func testTryCatchWithFunctionCatchProducesFailures() {
+		let function = { try tryIsSuccess(nil) }
+
+		let result: Result<String, NSError> = Result(attempt: function)
+		XCTAssert(result.error == error)
+	}
+
+	func testMaterializeProducesSuccesses() {
+		let result1 = materialize(try tryIsSuccess("success"))
+		XCTAssert(result1 == success)
+
+		let result2 = materialize { try tryIsSuccess("success") }
+		XCTAssert(result2 == success)
+	}
+
+	func testMaterializeProducesFailures() {
+		let result1 = materialize(try tryIsSuccess(nil))
+		XCTAssert(result1.error == error)
+
+		let result2 = materialize { try tryIsSuccess(nil) }
+		XCTAssert(result2.error == error)
+	}
+
 	// MARK: Cocoa API idioms
 
 	func testTryProducesFailuresForBooleanAPIWithErrorReturnedByReference() {
@@ -71,6 +101,16 @@ final class ResultTests: XCTestCase {
 		let result = `try` { attempt(1, succeed: true, error: $0) }
 		XCTAssertEqual(result ?? 0, 1)
 		XCTAssertNil(result.error)
+	}
+
+	func testTryMapProducesSuccess() {
+		let result = success.tryMap(tryIsSuccess)
+		XCTAssert(result == success)
+	}
+
+	func testTryMapProducesFailure() {
+		let result = Result<String, NSError>.Success("fail").tryMap(tryIsSuccess)
+		XCTAssert(result == failure)
 	}
 
 	// MARK: Operators
@@ -98,8 +138,8 @@ final class ResultTests: XCTestCase {
 // MARK: - Fixtures
 
 let success = Result<String, NSError>.Success("success")
-let error = NSError(domain: "com.antitypical.Result", code: 0xdeadbeef, userInfo: nil)
-let error2 = NSError(domain: "com.antitypical.Result", code: 0x12345678, userInfo: nil)
+let error = NSError(domain: "com.antitypical.Result", code: 1, userInfo: nil)
+let error2 = NSError(domain: "com.antitypical.Result", code: 2, userInfo: nil)
 let failure = Result<String, NSError>.Failure(error)
 let failure2 = Result<String, NSError>.Failure(error2)
 
@@ -116,7 +156,7 @@ func attempt<T>(value: T, succeed: Bool, error: NSErrorPointer) -> T? {
 }
 
 func tryIsSuccess(text: String?) throws -> String {
-	guard let text = text else {
+	guard let text = text where text == "success" else {
 		throw error
 	}
 	

@@ -17,24 +17,28 @@ public enum Result<T, Error: ErrorType>: ResultType, CustomStringConvertible, Cu
 		self = .Failure(error)
 	}
 
-	/// Constructs a result from an Optional, failing with `Error` if `nil`
+	/// Constructs a result from an Optional, failing with `Error` if `nil`.
 	public init(_ value: T?, @autoclosure failWith: () -> Error) {
 		self = value.map(Result.Success) ?? .Failure(failWith())
 	}
 
-	/// Constructs a result from a function that uses `throw`, failing with `Error` if throws
+	/// Constructs a result from a function that uses `throw`, failing with `Error` if throws.
 	public init(@autoclosure _ f: () throws -> T) {
+		self.init(attempt: f)
+	}
+
+	/// Constructs a result from a function that uses `throw`, failing with `Error` if throws.
+	public init(@noescape attempt f: () throws -> T) {
 		do {
 			self = .Success(try f())
 		} catch {
 			self = .Failure(error as! Error)
 		}
 	}
-	
 
 	// MARK: Deconstruction
 
-	/// Returns the value from `Success` Results or `throw`s the error
+	/// Returns the value from `Success` Results or `throw`s the error.
 	public func dematerialize() throws -> T {
 		switch self {
 		case let .Success(value):
@@ -58,18 +62,6 @@ public enum Result<T, Error: ErrorType>: ResultType, CustomStringConvertible, Cu
 
 
 	// MARK: Higher-order functions
-
-	/// Returns a new Result by mapping `Success`es’ values using `transform`, or re-wrapping `Failure`s’ errors.
-	public func map<U>(@noescape transform: T -> U) -> Result<U, Error> {
-		return flatMap { .Success(transform($0)) }
-	}
-
-	/// Returns the result of applying `transform` to `Success`es’ values, or re-wrapping `Failure`’s errors.
-	public func flatMap<U>(@noescape transform: T -> Result<U, Error>) -> Result<U, Error> {
-		return analysis(
-			ifSuccess: transform,
-			ifFailure: Result<U, Error>.Failure)
-	}
 	
 	/// Returns `self.value` if this result is a .Success, or the given value otherwise. Equivalent with `??`
 	public func recover(@autoclosure value: () -> T) -> T {
@@ -82,18 +74,6 @@ public enum Result<T, Error: ErrorType>: ResultType, CustomStringConvertible, Cu
 			ifSuccess: { _ in self },
 			ifFailure: { _ in result() })
 	}
-
-	/// Transform a function from one that uses `throw` to one that returns a `Result`
-//	public static func materialize<T, U>(f: T throws -> U) -> T -> Result<U, ErrorType> {
-//		return { x in
-//			do {
-//				return .Success(try f(x))
-//			} catch {
-//				return .Failure(error)
-//			}
-//		}
-//	}
-
 
 	// MARK: Errors
 
@@ -170,14 +150,17 @@ public func ?? <T, Error> (left: Result<T, Error>, @autoclosure right: () -> Res
 
 // MARK: - Derive result from failable closure
 
-// Disable until http://www.openradar.me/21341337 is fixed.
-//public func materialize<T>(f: () throws -> T) -> Result<T, ErrorType> {
-//	do {
-//		return .Success(try f())
-//	} catch {
-//		return .Failure(error)
-//	}
-//}
+public func materialize<T>(@noescape f: () throws -> T) -> Result<T, NSError> {
+	return materialize(try f())
+}
+
+public func materialize<T>(@autoclosure f: () throws -> T) -> Result<T, NSError> {
+	do {
+		return .Success(try f())
+	} catch {
+		return .Failure(error as NSError)
+	}
+}
 
 // MARK: - Cocoa API conveniences
 
@@ -214,14 +197,6 @@ infix operator >>- {
 	precedence 100
 }
 
-infix operator &&& {
-	/// Same associativity as &&.
-	associativity left
-
-	/// Same precedence as &&.
-	precedence 120
-}
-
 /// Returns the result of applying `transform` to `Success`es’ values, or re-wrapping `Failure`’s errors.
 ///
 /// This is a synonym for `flatMap`.
@@ -229,9 +204,14 @@ public func >>- <T, U, Error> (result: Result<T, Error>, @noescape transform: T 
 	return result.flatMap(transform)
 }
 
-/// Returns a Result with a tuple of `left` and `right` values if both are `Success`es, or re-wrapping the error of the earlier `Failure`.
-public func &&& <T, U, Error> (left: Result<T, Error>, @autoclosure right: () -> Result<U, Error>) -> Result<(T, U), Error> {
-	return left.flatMap { left in right().map { right in (left, right) } }
+
+// MARK: - ErrorTypeConvertible conformance
+
+/// Make NSError conform to ErrorTypeConvertible
+extension NSError: ErrorTypeConvertible {
+	public static func errorFromErrorType(error: ErrorType) -> NSError {
+		return error as NSError
+	}
 }
 
 

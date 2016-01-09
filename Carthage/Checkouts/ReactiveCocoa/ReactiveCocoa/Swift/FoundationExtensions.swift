@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Result
 
 extension NSNotificationCenter {
 	/// Returns a producer of notifications posted that match the given criteria.
@@ -16,7 +15,7 @@ extension NSNotificationCenter {
 	public func rac_notifications(name: String? = nil, object: AnyObject? = nil) -> SignalProducer<NSNotification, NoError> {
 		return SignalProducer { observer, disposable in
 			let notificationObserver = self.addObserverForName(name, object: object, queue: nil) { notification in
-				sendNext(observer, notification)
+				observer.sendNext(notification)
 			}
 
 			disposable.addDisposable {
@@ -33,14 +32,14 @@ extension NSURLSession {
 	/// invocation of start().
 	public func rac_dataWithRequest(request: NSURLRequest) -> SignalProducer<(NSData, NSURLResponse), NSError> {
 		return SignalProducer { observer, disposable in
-			let task = self.dataTaskWithRequest(request, completionHandler: { data, response, error in
+			let task = self.dataTaskWithRequest(request) { data, response, error in
 				if let data = data, response = response {
-					sendNext(observer, (data, response))
-					sendCompleted(observer)
+					observer.sendNext((data, response))
+					observer.sendCompleted()
 				} else {
-					sendError(observer, error ?? defaultSessionError)
+					observer.sendFailed(error ?? defaultSessionError)
 				}
-			})
+			}
 
 			disposable.addDisposable {
 				task.cancel()

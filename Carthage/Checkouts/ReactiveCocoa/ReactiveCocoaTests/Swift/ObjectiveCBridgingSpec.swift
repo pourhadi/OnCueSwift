@@ -14,6 +14,45 @@ import XCTest
 
 class ObjectiveCBridgingSpec: QuickSpec {
 	override func spec() {
+		describe("RACScheduler") {
+			var originalScheduler: RACTestScheduler!
+			var scheduler: DateSchedulerType!
+
+			beforeEach {
+				originalScheduler = RACTestScheduler()
+				scheduler = originalScheduler as DateSchedulerType
+			}
+
+			it("gives current date") {
+				expect(scheduler.currentDate).to(beCloseTo(NSDate()))
+			}
+
+			it("schedules actions") {
+				var actionRan: Bool = false
+
+				scheduler.schedule {
+					actionRan = true
+				}
+
+				expect(actionRan) == false
+				originalScheduler.step()
+				expect(actionRan) == true
+			}
+
+			it("does not invoke action if disposed") {
+				var actionRan: Bool = false
+
+				let disposable: Disposable? = scheduler.schedule {
+					actionRan = true
+				}
+
+				expect(actionRan) == false
+				disposable!.dispose()
+				originalScheduler.step()
+				expect(actionRan) == false
+			}
+		}
+
 		describe("RACSignal.toSignalProducer") {
 			it("should subscribe once per start()") {
 				var subscriptions = 0
@@ -44,10 +83,13 @@ class ObjectiveCBridgingSpec: QuickSpec {
 		}
 
 		describe("toRACSignal") {
+			let key = "TestKey"
+			let userInfo: [String: String] = [key: "TestValue"]
+			let testNSError = NSError(domain: "TestDomain", code: 1, userInfo: userInfo)
 			describe("on a Signal") {
 				it("should forward events") {
-					let (signal, sink) = Signal<NSNumber, NoError>.pipe()
-					let racSignal = toRACSignal(signal)
+					let (signal, observer) = Signal<NSNumber, NoError>.pipe()
+					let racSignal = signal.toRACSignal()
 
 					var lastValue: NSNumber?
 					var didComplete = false
@@ -61,18 +103,18 @@ class ObjectiveCBridgingSpec: QuickSpec {
 					expect(lastValue).to(beNil())
 
 					for number in [1, 2, 3] {
-						sendNext(sink, number)
+						observer.sendNext(number)
 						expect(lastValue).to(equal(number))
 					}
 
 					expect(didComplete).to(beFalse())
-					sendCompleted(sink)
+					observer.sendCompleted()
 					expect(didComplete).to(beTrue())
 				}
 
 				it("should convert errors to NSError") {
-					let (signal, sink) = Signal<AnyObject, TestError>.pipe()
-					let racSignal = toRACSignal(signal)
+					let (signal, observer) = Signal<AnyObject, TestError>.pipe()
+					let racSignal = signal.toRACSignal()
 
 					let expectedError = TestError.Error2
 					var error: NSError?
@@ -82,8 +124,25 @@ class ObjectiveCBridgingSpec: QuickSpec {
 						return
 					}
 
-					sendError(sink, expectedError)
+					observer.sendFailed(expectedError)
 					expect(error).to(equal(expectedError as NSError))
+				}
+				
+				it("should maintain userInfo on NSError") {
+					let (signal, observer) = Signal<AnyObject, NSError>.pipe()
+					let racSignal = signal.toRACSignal()
+					
+					var error: NSError?
+					
+					racSignal.subscribeError {
+						error = $0
+						return
+					}
+					
+					observer.sendFailed(testNSError)
+					
+					let userInfoValue = error?.userInfo[key] as? String
+					expect(userInfoValue).to(equal(userInfo[key]))
 				}
 			}
 
@@ -94,7 +153,7 @@ class ObjectiveCBridgingSpec: QuickSpec {
 					let producer = SignalProducer<NSNumber, NoError>.attempt {
 						return .Success(subscriptions++)
 					}
-					let racSignal = toRACSignal(producer)
+					let racSignal = producer.toRACSignal()
 
 					expect(racSignal.first() as? NSNumber).to(equal(0))
 					expect(racSignal.first() as? NSNumber).to(equal(1))
@@ -103,10 +162,19 @@ class ObjectiveCBridgingSpec: QuickSpec {
 
 				it("should convert errors to NSError") {
 					let producer = SignalProducer<AnyObject, TestError>(error: .Error1)
-					let racSignal = toRACSignal(producer).materialize()
+					let racSignal = producer.toRACSignal().materialize()
 
 					let event = racSignal.first() as? RACEvent
 					expect(event?.error).to(equal(TestError.Error1 as NSError))
+				}
+				
+				it("should maintain userInfo on NSError") {
+					let producer = SignalProducer<AnyObject, NSError>(error: testNSError)
+					let racSignal = producer.toRACSignal().materialize()
+					
+					let event = racSignal.first() as? RACEvent
+					let userInfoValue = event?.error.userInfo[key] as? String
+					expect(userInfoValue).to(equal(userInfo[key]))
 				}
 			}
 		}
