@@ -197,16 +197,17 @@ class SpotifyProvider:SourceItemProvider {
                             sendNext(sink, colList)
                             sendCompleted(sink)
                         } else {
-                            sendError(sink, NSError(domain: kSpotifyErrorDomain, code: 0, userInfo: nil))
+                            
+                            sink.sendFailed(NSError(domain: kSpotifyErrorDomain, code: 0, userInfo: nil))
                             sendCompleted(sink)
                         }
                     } else {
-                        sendError(sink, NSError(domain: kSpotifyErrorDomain, code: 0, userInfo: nil))
+                        sink.sendFailed(NSError(domain: kSpotifyErrorDomain, code: 0, userInfo: nil))
                         sendCompleted(sink)
                     }
                 })
                 }) { () -> Void in
-                    sendError(sink, NSError(domain: kSpotifyErrorDomain, code: 0, userInfo: nil))
+                    sink.sendFailed(NSError(domain: kSpotifyErrorDomain, code: 0, userInfo: nil))
                     sendCompleted(sink)
             }
         }
@@ -226,13 +227,13 @@ class SpotifyProvider:SourceItemProvider {
                         sendNext(sink, list.items as! [SPTPartialTrack])
                         sendCompleted(sink)
                     } else {
-                        sendError(sink, NSError(domain: kSpotifyErrorDomain, code: 0, userInfo: nil))
+                        sink.sendFailed(NSError(domain: kSpotifyErrorDomain, code: 0, userInfo: nil))
                         sendCompleted(sink)
                     }
                 })
 
                 }) { () -> Void in
-                    sendError(sink, NSError(domain: kSpotifyErrorDomain, code: 0, userInfo: nil))
+                    sink.sendFailed(NSError(domain: kSpotifyErrorDomain, code: 0, userInfo: nil))
                     sendCompleted(sink)
             }
             
