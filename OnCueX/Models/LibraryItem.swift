@@ -184,9 +184,9 @@ extension ArtistItem {
             guard let albums = albums else { complete(context: self, images: []); return }
             let sp:SignalProducer = SignalProducer<SignalProducer<UIImage, NoError>, NoError> { event, _ in
                 for album in albums.items {
-                    sendNext(event, album.getImage(size))
+                    event.sendNext(album.getImage(size))
                 }
-                sendCompleted(event)
+                event.sendCompleted()
             }
             
             sp.flatten(FlattenStrategy.Concat).collect().start({ event in

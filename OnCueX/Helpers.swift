@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ReactiveCocoa
 
 func uniq<S : SequenceType, T : Hashable where S.Generator.Element == T>(source: S) -> [T] {
     var buffer = [T]()
@@ -31,4 +32,12 @@ extension NSTimeInterval {
         return String(format: "%02d:%02d", arguments: [Int(minutes), Int(seconds)])
     }
 
+}
+
+public func sendNext<T, E>(sink: Observer<T, E>, _ value:T) {
+    sink.sendNext(value)
+}
+
+public func sendCompleted<T, E>(sink:Observer<T, E>) {
+    sink.sendCompleted()
 }

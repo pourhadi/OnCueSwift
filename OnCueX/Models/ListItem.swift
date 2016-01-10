@@ -77,8 +77,8 @@ extension ImageSource {
         return SignalProducer {
             sink, disposable in
             self.getImage(forSize, complete: { (context, image) -> Void in
-                sendNext(sink, image != nil ? image! : UIImage())
-                sendCompleted(sink)
+                sink.sendNext(image != nil ? image! : UIImage())
+                sink.sendCompleted()
             })
         }
     }

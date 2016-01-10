@@ -29,7 +29,7 @@ class ItemProvider:ListVMDelegate {
             sink, disposable in
             var signals:[RACSignal] = []
             for provider in self.providers {
-                signals.append(toRACSignal(provider.getCollections(type)))
+                signals.append(provider.getCollections(type).toRACSignal())
             }
             var lists:[ItemList] = []
             RACSignal.merge(signals).subscribeNext({ (obj) -> Void in
@@ -37,8 +37,8 @@ class ItemProvider:ListVMDelegate {
                     lists.append(list)
                 }
                 }, completed: { () -> Void in
-                    sendNext(sink, ListVM(lists: lists, displayContext: CustomDisplayContext(type.rawValue), delegate: self))
-                    sendCompleted(sink)
+                    sink.sendNext(ListVM(lists: lists, displayContext: CustomDisplayContext(type.rawValue), delegate: self))
+                    sink.sendCompleted()
             })
         }
     }
